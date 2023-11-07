@@ -1,0 +1,18 @@
+# Ignore IntelliJ IDEA configuration files
+.idea/
+
+# Ignore Maven configuration files
+.mvn/
+mvnw
+mvnw.cmd
+
+# Ignore Maven build files
+target/
+
+# Ignore Eclipse configuration files
+.classpath
+.project
+.settings/
+
+# Ignore macOS system files
+.DS_Store
