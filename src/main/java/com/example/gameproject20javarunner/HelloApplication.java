@@ -1,5 +1,6 @@
 package com.example.gameproject20javarunner;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
@@ -32,11 +33,21 @@ public class HelloApplication extends Application {
         // Configuration of the stage with the scene
         primaryStage.setScene(scene);
 
-        // Test: Print the camera coordinates using getGameCamera()
-        System.out.println(scene.getGameCamera());
-
         // Display the stage
         primaryStage.show();
+
+        // Use an AnimationTimer to create a game loop
+        AnimationTimer gameLoop = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                // Game logic update (call render, camera movement, etc.)
+                scene.render();
+                camera.move(-1, 0);  // Example: Move the camera one unit to the left each frame
+            }
+        };
+
+        // Start the game loop
+        gameLoop.start();
     }
 
     private StackPane createRootPane() {

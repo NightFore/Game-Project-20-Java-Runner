@@ -19,6 +19,12 @@ public class Camera {
         return y;
     }
 
+    // Move method to update the position of the camera
+    public void move(int deltaX, int deltaY) {
+        x += deltaX;
+        y += deltaY;
+    }
+
     // Override toString method to display x and y comma separated
     @Override
     public String toString() {

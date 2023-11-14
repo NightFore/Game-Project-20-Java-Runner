@@ -33,10 +33,10 @@ public class GameScene extends Scene {
         double cameraY = camera.getY();
 
         // Adjust the position of the ImageViews of StaticThings based on the camera
-        backgroundLeft.getImageView().setLayoutX(cameraX - getWidth() / 2);
-        backgroundLeft.getImageView().setLayoutY(cameraY - getHeight() / 2);
+        backgroundLeft.getImageView().setTranslateX(cameraX - getWidth() / 2);
+        backgroundLeft.getImageView().setTranslateY(cameraY);
 
-        backgroundRight.getImageView().setLayoutX(cameraX + getWidth() / 2);
-        backgroundRight.getImageView().setLayoutY(cameraY - getHeight() / 2);
+        backgroundRight.getImageView().setTranslateX(cameraX + getWidth() / 2);
+        backgroundRight.getImageView().setTranslateY(cameraY);
     }
 }
