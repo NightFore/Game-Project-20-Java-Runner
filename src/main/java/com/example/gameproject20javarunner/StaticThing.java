@@ -1,3 +1,5 @@
+// StaticThing.java
+
 package com.example.gameproject20javarunner;
 
 import javafx.scene.image.Image;
@@ -8,16 +10,19 @@ import java.util.Objects;
 public class StaticThing {
     private double sizeX;
     private double sizeY;
-    private ImageView imageView;
+    private final ImageView imageView;
 
     // Constructor taking multiple parameters, including fileName for the background
     public StaticThing(double sizeX, double sizeY, String fileName) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
-        // Load the image from resources (adjust the file name if necessary)
+
+        // Load the image from resources
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(fileName)));
+
         // Create an ImageView with the loaded image
         imageView = new ImageView(image);
+
         // Set the size of the ImageView
         imageView.setFitWidth(sizeX);
         imageView.setFitHeight(sizeY);
