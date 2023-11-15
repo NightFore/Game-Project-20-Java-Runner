@@ -4,7 +4,7 @@ package com.example.gameproject20javarunner;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class HelloApplication extends Application {
@@ -22,8 +22,8 @@ public class HelloApplication extends Application {
         // Create an instance of Camera
         Camera camera = new Camera(0, 0);
 
-        // Create the main container (StackPane)
-        StackPane root = new StackPane();
+        // Create the main container (Pane)
+        Pane root = new Pane();
 
         // Create an instance of GameScene with the Camera, main container, and scene dimensions
         GameScene scene = new GameScene(camera, root, 800, 600);

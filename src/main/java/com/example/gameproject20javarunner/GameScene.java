@@ -3,7 +3,7 @@
 package com.example.gameproject20javarunner;
 
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
 
 public class GameScene extends Scene {
     private Camera camera;
@@ -11,7 +11,7 @@ public class GameScene extends Scene {
     private StaticThing backgroundRight;
 
     // Constructor taking the camera, the main container, and the dimensions of the scene
-    public GameScene(Camera camera, StackPane root, double width, double height) {
+    public GameScene(Camera camera, Pane root, double width, double height) {
         super(root, width, height);
         this.camera = camera;
 
@@ -35,10 +35,10 @@ public class GameScene extends Scene {
         double cameraY = camera.getY();
 
         // Adjust the position of the ImageViews of StaticThings based on the camera
-        backgroundLeft.getImageView().setTranslateX(cameraX - getWidth() / 2);
-        backgroundLeft.getImageView().setTranslateY(cameraY);
+        backgroundLeft.getImageView().setX(cameraX - getWidth() / 2);
+        backgroundLeft.getImageView().setY(cameraY);
 
-        backgroundRight.getImageView().setTranslateX(cameraX + getWidth() / 2);
-        backgroundRight.getImageView().setTranslateY(cameraY);
+        backgroundRight.getImageView().setX(cameraX + getWidth() / 2);
+        backgroundRight.getImageView().setY(cameraY);
     }
 }
