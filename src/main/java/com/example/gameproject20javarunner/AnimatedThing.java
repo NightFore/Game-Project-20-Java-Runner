@@ -11,25 +11,27 @@ import java.util.Objects;
 public abstract class AnimatedThing {
     private double x;
     private double y;
+    private final double width;
+    private final double height;
     private final ImageView imageView;
     private final int attitude;
     private int index;
+    private final int maxIndex;
     private final int duration;
     private int frameDuration;
-    private final int maxIndex;
-    private final double windowSize;
     private final double frameOffsetX;
     private final double frameOffsetY;
 
-    public AnimatedThing(double x, double y, int attitude, int index, int duration, int maxIndex, double windowSize, double frameOffsetX, double frameOffsetY, String fileName) {
+    public AnimatedThing(double x, double y, double width, double height, int attitude, int index, int maxIndex, int duration, double frameOffsetX, double frameOffsetY, String fileName) {
         this.x = x;
         this.y = y;
+        this.width = width;
+        this.height = height;
         this.attitude = attitude;
         this.index = index;
+        this.maxIndex = maxIndex;
         this.duration = duration;
         this.frameDuration = duration;
-        this.maxIndex = maxIndex;
-        this.windowSize = windowSize;
         this.frameOffsetX = frameOffsetX;
         this.frameOffsetY = frameOffsetY;
 
@@ -76,9 +78,9 @@ public abstract class AnimatedThing {
 
     // Method to update the viewport based on the current index
     private void updateViewport() {
-        double frameX = index * frameOffsetX;
-        double frameY = attitude * (windowSize + frameOffsetY);
-        Rectangle2D viewport = new Rectangle2D(frameX, frameY, windowSize, windowSize);
+        double frameX = index * width + frameOffsetX;
+        double frameY = attitude * height + frameOffsetY;
+        Rectangle2D viewport = new Rectangle2D(frameX, frameY, width, height);
         imageView.setViewport(viewport);
     }
 

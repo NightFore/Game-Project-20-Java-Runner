@@ -6,10 +6,10 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
 public class GameScene extends Scene {
-    private Camera camera;
-    private StaticThing backgroundLeft;
-    private StaticThing backgroundRight;
-    private Heart[] hearts;
+    private final Camera camera;
+    private final StaticThing backgroundLeft;
+    private final StaticThing backgroundRight;
+    private final Hero hero;
 
     // Constructor taking the camera, the main container, and the dimensions of the scene
     public GameScene(Camera camera, Pane root, double width, double height) {
@@ -27,16 +27,19 @@ public class GameScene extends Scene {
         int numberOfLives = 3;
 
         // Instantiate hearts to indicate the initial number of lives
-        hearts = new Heart[numberOfLives];
+        Heart[] hearts = new Heart[numberOfLives];
         for (int i = 0; i < numberOfLives; i++) {
-            // Position the hearts at a certain distance from each other
-            double heartX = i * Heart.getSize();
-            double heartY = 20.0;
+            double heartX = 10 + i * Heart.getSize();
+            double heartY = 10;
 
             // Instantiate a heart and add it to the main container
             hearts[i] = new Heart(heartX, heartY);
             root.getChildren().add(hearts[i].getImageView());
         }
+
+        // Instantiate the hero and add its ImageView to the main container
+        hero = new Hero(100, 300);
+        root.getChildren().add(hero.getImageView());
     }
 
     // Getter for the camera
@@ -56,5 +59,8 @@ public class GameScene extends Scene {
 
         backgroundRight.getImageView().setX(cameraX + getWidth() / 2);
         backgroundRight.getImageView().setY(cameraY);
+
+        // Render the hero
+        hero.render();
     }
 }
