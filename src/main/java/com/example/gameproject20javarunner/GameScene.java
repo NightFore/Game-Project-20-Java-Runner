@@ -1,3 +1,5 @@
+// GameScene.java
+
 package com.example.gameproject20javarunner;
 
 import javafx.scene.Scene;
@@ -49,10 +51,10 @@ public class GameScene extends Scene {
         double cameraY = camera.getY();
 
         // Adjust the position of the ImageViews of static elements based on the camera
-        backgroundLeft.getImageView().setTranslateX(cameraX - getWidth() / 2);
-        backgroundLeft.getImageView().setTranslateY(cameraY);
+        backgroundLeft.getImageView().setX(cameraX - getWidth() / 2);
+        backgroundLeft.getImageView().setY(cameraY);
 
-        backgroundRight.getImageView().setTranslateX(cameraX + getWidth() / 2);
-        backgroundRight.getImageView().setTranslateY(cameraY);
+        backgroundRight.getImageView().setX(cameraX + getWidth() / 2);
+        backgroundRight.getImageView().setY(cameraY);
     }
 }

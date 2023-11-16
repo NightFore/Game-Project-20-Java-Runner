@@ -28,8 +28,8 @@ public class Heart {
         imageView.setViewport(fullHeartFrame);
 
         // Position the heart
-        imageView.setTranslateX(x);
-        imageView.setTranslateY(y);
+        imageView.setX(x);
+        imageView.setY(y);
     }
 
     // Getter for the heart's ImageView
