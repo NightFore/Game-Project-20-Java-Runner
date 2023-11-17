@@ -3,21 +3,31 @@
 package com.example.gameproject20javarunner;
 
 public class Camera {
-    private int x;
-    private int y;
+    private double x;
+    private double y;
+    private double vx;
+    private double ax;
+    private final double m; // mass constant
+    private final double k; // spring constant
+    private final double f; // damping constant
 
     // Constructor with two Integer arguments
-    public Camera(int x, int y) {
+    public Camera(double x, double y, double m, double k, double f) {
         this.x = x;
         this.y = y;
+        this.m = m;
+        this.k = k;
+        this.f = f;
+        this.vx = 0;
+        this.ax = 0;
     }
 
     // Getters for x and y
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
@@ -31,5 +41,14 @@ public class Camera {
     @Override
     public String toString() {
         return x + "," + y;
+    }
+
+    // Update method to apply physics equations
+    public void update(double deltaTime, double targetX) {
+        double springForce = k / m * (targetX - x);
+        double dampingForce = f / m * vx;
+        ax = springForce - dampingForce;
+        vx += ax * deltaTime;
+        x += vx * deltaTime;
     }
 }

@@ -20,7 +20,7 @@ public class HelloApplication extends Application {
         primaryStage.setTitle("[Game Project 20] Java Runner");
 
         // Create an instance of Camera
-        Camera camera = new Camera(0, 0);
+        Camera camera = new Camera(400, 0, 5, 5, 6);
 
         // Create the main container (Pane)
         Pane root = new Pane();
@@ -36,11 +36,21 @@ public class HelloApplication extends Application {
 
         // Use an AnimationTimer to create a game loop
         AnimationTimer gameLoop = new AnimationTimer() {
+            long prevTime = System.nanoTime(); // Initialize prevTime with the current time in nanoseconds
+
             @Override
             public void handle(long now) {
-                // Game logic update (call render, camera movement, etc.)
+                // Calculate the deltaTime (time elapsed since the last frame)
+                double deltaTime = (now - prevTime) / 1e9; // Convert nanoseconds to seconds
+
+                // Game logic update
                 scene.render();
-                camera.move(-2, 0);  // Test: Move the camera each frame
+
+                // Move the camera using physics equations
+                camera.update(deltaTime, scene.getHero().getX());
+
+                // Update the previous time for the next frame
+                prevTime = now;
             }
         };
 

@@ -47,6 +47,11 @@ public class GameScene extends Scene {
         return camera;
     }
 
+    // Getter for the hero
+    public Hero getHero() {
+        return hero;
+    }
+
     // Rendering method to adjust the position of elements based on the camera
     public void render() {
         // Get the camera coordinates
