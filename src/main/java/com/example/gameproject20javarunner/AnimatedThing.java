@@ -67,13 +67,11 @@ public abstract class AnimatedThing {
     // Public method to set the x position
     public void setX(double x) {
         this.x = x;
-        imageView.setX(x);
     }
 
     // Public method to set the y position
     public void setY(double y) {
         this.y = y;
-        imageView.setY(y);
     }
 
     // Method to update the viewport based on the current index

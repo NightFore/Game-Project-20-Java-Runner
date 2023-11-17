@@ -6,7 +6,6 @@ public class Camera {
     private double x;
     private double y;
     private double vx;
-    private double ax;
     private final double m; // mass constant
     private final double k; // spring constant
     private final double f; // damping constant
@@ -19,7 +18,6 @@ public class Camera {
         this.k = k;
         this.f = f;
         this.vx = 0;
-        this.ax = 0;
     }
 
     // Getters for x and y
@@ -45,10 +43,20 @@ public class Camera {
 
     // Update method to apply physics equations
     public void update(double deltaTime, double targetX) {
-        double springForce = k / m * (targetX - x);
-        double dampingForce = f / m * vx;
-        ax = springForce - dampingForce;
+        double springForce = k * (targetX - x);
+        double dampingForce = f * vx;
+        double totalForce = springForce - dampingForce;
+        double ax = totalForce / m;
         vx += ax * deltaTime;
         x += vx * deltaTime;
+        System.out.println("Spring Force: " + springForce);
+        System.out.println("Damping Force: " + dampingForce);
+        System.out.println("Total Force: " + totalForce);
+        System.out.println("deltaTime: " + deltaTime);
+        System.out.println("Ax: " + ax);
+        System.out.println("Vx: " + vx);
+        System.out.println("X: " + x);
+        System.out.println("targetX: " + targetX);
+        System.out.println("--------");
     }
 }

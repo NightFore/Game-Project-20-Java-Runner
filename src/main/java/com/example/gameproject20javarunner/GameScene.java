@@ -38,7 +38,7 @@ public class GameScene extends Scene {
         }
 
         // Instantiate the hero and add its ImageView to the main container
-        hero = new Hero(100, 300);
+        hero = new Hero(400, 300);
         root.getChildren().add(hero.getImageView());
     }
 
@@ -65,7 +65,8 @@ public class GameScene extends Scene {
         backgroundRight.getImageView().setX(cameraX + getWidth() / 2);
         backgroundRight.getImageView().setY(cameraY);
 
-        // Render the hero
+        // Render the hero at the camera position
+        hero.draw(cameraX);
         hero.render();
     }
 }
