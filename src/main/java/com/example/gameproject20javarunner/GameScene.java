@@ -10,11 +10,13 @@ public class GameScene extends Scene {
     private final StaticThing backgroundLeft;
     private final StaticThing backgroundRight;
     private final Hero hero;
+    private final double gameSpeed;
 
     // Constructor taking the camera, the main container, and the dimensions of the scene
     public GameScene(Camera camera, Pane root, double width, double height) {
         super(root, width, height);
         this.camera = camera;
+        this.gameSpeed = 25.0;
 
         // Instantiate static elements to represent the background (one on the left and one on the right)
         backgroundLeft = new StaticThing(800, 600, "/img/desert.png");
@@ -38,7 +40,7 @@ public class GameScene extends Scene {
         }
 
         // Instantiate the hero and add its ImageView to the main container
-        hero = new Hero(400, 300);
+        hero = new Hero(1000, 300);
         root.getChildren().add(hero.getImageView());
     }
 
@@ -53,10 +55,16 @@ public class GameScene extends Scene {
     }
 
     // Rendering method to adjust the position of elements based on the camera
-    public void render() {
+    public void render(double deltaTime) {
         // Get the camera coordinates
         double cameraX = camera.getX();
         double cameraY = camera.getY();
+
+        // Move the hero the game speed
+        hero.move(gameSpeed * deltaTime);
+
+        // Move the camera using physics equations
+        camera.update(deltaTime, hero.getX());
 
         // Adjust the position of the ImageViews of static elements based on the camera
         backgroundLeft.getImageView().setX(cameraX - getWidth() / 2);

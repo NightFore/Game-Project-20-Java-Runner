@@ -30,7 +30,7 @@ public class Camera {
     }
 
     // Move method to update the position of the camera
-    public void move(int deltaX, int deltaY) {
+    public void move(double deltaX, double deltaY) {
         x += deltaX;
         y += deltaY;
     }
@@ -56,7 +56,8 @@ public class Camera {
         System.out.println("Ax: " + ax);
         System.out.println("Vx: " + vx);
         System.out.println("X: " + x);
-        System.out.println("targetX: " + targetX);
+        System.out.println("tX: " + targetX);
+        System.out.println("dX: " + (targetX - x));
         System.out.println("--------");
     }
 }

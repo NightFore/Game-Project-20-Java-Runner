@@ -20,8 +20,7 @@ public class HelloApplication extends Application {
         primaryStage.setTitle("[Game Project 20] Java Runner");
 
         // Create an instance of Camera
-        Camera camera = new Camera(0, 0, 1, 25, 10);
-
+        Camera camera = new Camera(0, 0, 1, 35, 10);
 
         // Create the main container (Pane)
         Pane root = new Pane();
@@ -44,14 +43,8 @@ public class HelloApplication extends Application {
                 // Calculate the deltaTime (time elapsed since the last frame)
                 double deltaTime = (now - prevTime) / 1e9; // Convert nanoseconds to seconds
 
-                // Move the hero with a fixed speed
-                scene.getHero().move(1);
-
-                // Move the camera using physics equations
-                camera.update(deltaTime, scene.getHero().getX());
-
                 // Game logic update
-                scene.render();
+                scene.render(deltaTime);
 
                 // Update the previous time for the next frame
                 prevTime = now;
