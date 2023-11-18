@@ -42,6 +42,11 @@ public class GameScene extends Scene {
         // Instantiate the hero and add its ImageView to the main container
         hero = new Hero(1000, 300);
         root.getChildren().add(hero.getImageView());
+
+        // Add the click listener for the hero's jump
+        setOnMouseClicked(event -> {
+            hero.jump();
+        });
     }
 
     // Getter for the camera
@@ -74,7 +79,7 @@ public class GameScene extends Scene {
         backgroundRight.getImageView().setY(cameraY);
 
         // Render the hero at the camera position
-        hero.draw(cameraX);
-        hero.render();
+        hero.draw(camera);
+        hero.render(deltaTime);
     }
 }

@@ -83,7 +83,7 @@ public abstract class AnimatedThing {
     }
 
     // Rendering method to handle animation logic
-    public void render() {
+    public void render(double deltaTime) {
         // Update the duration
         frameDuration--;
 

@@ -49,15 +49,5 @@ public class Camera {
         double ax = totalForce / m;
         vx += ax * deltaTime;
         x += vx * deltaTime;
-        System.out.println("Spring Force: " + springForce);
-        System.out.println("Damping Force: " + dampingForce);
-        System.out.println("Total Force: " + totalForce);
-        System.out.println("deltaTime: " + deltaTime);
-        System.out.println("Ax: " + ax);
-        System.out.println("Vx: " + vx);
-        System.out.println("X: " + x);
-        System.out.println("tX: " + targetX);
-        System.out.println("dX: " + (targetX - x));
-        System.out.println("--------");
     }
 }
