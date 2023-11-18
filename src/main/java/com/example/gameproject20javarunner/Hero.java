@@ -3,19 +3,24 @@
 package com.example.gameproject20javarunner;
 
 public class Hero extends AnimatedThing {
-    private static final double GRAVITY = 1000;
-    private static final double JUMP_INITIAL_SPEED = -400;
+    private static final double INITIAL_JUMP_SPEED = -800;
+    private static final double JUMP_ACCELERATION_UP = 2400;
+    private static final double JUMP_ACCELERATION_DOWN = 1200;
+    private static final double JUMP_TOP_DURATION = 0.15;
+    private static final double MAX_JUMP_HEIGHT = 100;
     private double speed;
     private final double initialX;
     private final double initialY;
-    private boolean isJumping;
     private double jumpSpeed;
+    private double jumpTopTime;
+    private boolean isJumping;
 
     public Hero(double x, double y) {
         super(x, y, 84, 100, 0, 0, 5, 8, 5, 0, "/img/heros.png");
         this.initialX = x; // Initial X position
         this.initialY = y; // Initial Y position
         this.jumpSpeed = 0; // Initial jump speed
+        this.jumpTopTime = 0; // Time spent at the top of the jump
         this.isJumping = false; // Jump flag
     }
 
@@ -37,8 +42,9 @@ public class Hero extends AnimatedThing {
     // Method to handle the hero's jump
     public void jump() {
         if (!isJumping) {
+            jumpSpeed = INITIAL_JUMP_SPEED;
+            jumpTopTime = 0;
             isJumping = true;
-            jumpSpeed = JUMP_INITIAL_SPEED;
         }
     }
 
@@ -46,14 +52,29 @@ public class Hero extends AnimatedThing {
     private void updateJump(double deltaTime) {
         if (isJumping) {
             double newY = getY() + jumpSpeed * deltaTime;
-            // Check if the jump height is reached
-            if (newY >= initialY) {
+
+            // Phase 4: Land
+            if (newY > initialY) {
                 newY = initialY;
                 isJumping = false;
-                jumpSpeed = 0;
             }
+            // Phase 3: Descend
+            else if (jumpTopTime > JUMP_TOP_DURATION) {
+                jumpSpeed += JUMP_ACCELERATION_DOWN * deltaTime;
+            }
+            // Phase 2: Pause
+            else if (newY <= initialY - MAX_JUMP_HEIGHT) {
+                newY = initialY - MAX_JUMP_HEIGHT;
+                jumpSpeed = 0;
+                jumpTopTime += deltaTime;
+            }
+            // Phase 1: Ascend
+            else if (jumpTopTime < JUMP_TOP_DURATION) {
+                jumpSpeed += JUMP_ACCELERATION_UP * deltaTime;
+            }
+
+            // Update position
             setY(newY);
-            jumpSpeed += GRAVITY * deltaTime; // Apply gravity during the jump
         }
     }
 
