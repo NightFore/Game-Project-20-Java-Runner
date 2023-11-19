@@ -3,28 +3,33 @@
 package com.example.gameproject20javarunner;
 
 public class Camera {
+    // Variables
     private double x;
     private double y;
     private double vx;
-    private final double m; // mass constant
-    private final double k; // spring constant
-    private final double f; // damping constant
 
-    // Constructor with two Integer arguments
+    // Constants
+    private final double m; // Mass constant
+    private final double k; // Spring constant
+    private final double f; // Damping constant
+    private static final double INITIAL_VELOCITY_X = 0;
+
+    // Constructor
     public Camera(double x, double y, double m, double k, double f) {
         this.x = x;
         this.y = y;
         this.m = m;
         this.k = k;
         this.f = f;
-        this.vx = 0;
+        this.vx = INITIAL_VELOCITY_X;
     }
 
-    // Getters for x and y
+    // Getters for the x position
     public double getX() {
         return x;
     }
 
+    // Getters for the y position
     public double getY() {
         return y;
     }
@@ -33,12 +38,6 @@ public class Camera {
     public void move(double deltaX, double deltaY) {
         x += deltaX;
         y += deltaY;
-    }
-
-    // Override toString method to display x and y comma separated
-    @Override
-    public String toString() {
-        return x + "," + y;
     }
 
     // Update method to apply physics equations

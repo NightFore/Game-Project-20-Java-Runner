@@ -8,15 +8,10 @@ import javafx.scene.image.ImageView;
 import java.util.Objects;
 
 public class StaticThing {
-    private double sizeX;
-    private double sizeY;
     private final ImageView imageView;
 
-    // Constructor taking multiple parameters, including fileName for the background
+    // Constructor taking the size and the file name
     public StaticThing(double sizeX, double sizeY, String fileName) {
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
-
         // Load the image from resources
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(fileName)));
 

@@ -8,6 +8,15 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class HelloApplication extends Application {
+    // Constants
+    private static final String PROJECT_TITLE = "[Game Project 20] Java Runner";
+    private static final int SCENE_WIDTH = 800;
+    private static final int SCENE_HEIGHT = 600;
+    private static final int CAMERA_INITIAL_X = 0;
+    private static final int CAMERA_INITIAL_Y = 0;
+    private static final double CAMERA_M = 1;
+    private static final double CAMERA_K = 35;
+    private static final double CAMERA_F = 10;
 
     public static void main(String[] args) {
         // Launch the JavaFX application
@@ -17,16 +26,16 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Configure the stage
-        primaryStage.setTitle("[Game Project 20] Java Runner");
+        primaryStage.setTitle(PROJECT_TITLE);
 
         // Create an instance of Camera
-        Camera camera = new Camera(0, 0, 1, 35, 10);
+        Camera camera = new Camera(CAMERA_INITIAL_X, CAMERA_INITIAL_Y, CAMERA_M, CAMERA_K, CAMERA_F);
 
         // Create the main container (Pane)
         Pane root = new Pane();
 
         // Create an instance of GameScene with the Camera, main container, and scene dimensions
-        GameScene scene = new GameScene(camera, root, 800, 600);
+        GameScene scene = new GameScene(camera, root, SCENE_WIDTH, SCENE_HEIGHT);
 
         // Configure the stage with the scene
         primaryStage.setScene(scene);

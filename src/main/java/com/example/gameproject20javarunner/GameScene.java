@@ -6,33 +6,39 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
 public class GameScene extends Scene {
+    // Instances
     private final Camera camera;
     private final StaticThing backgroundLeft;
     private final StaticThing backgroundRight;
     private final Hero hero;
-    private final double gameSpeed;
+
+    // Constants
+    private static final String BACKGROUND_IMAGE_PATH = "/img/desert.png";
+    private static final double BACKGROUND_WIDTH = 800;
+    private static final double BACKGROUND_HEIGHT = 600;
+    private static final double INITIAL_HERO_X = 1000;
+    private static final double INITIAL_HERO_Y = 300;
+    private static final int NUMBER_OF_LIVES = 3;
+    private static final double HEART_START_X = 10;
+    private static final double HEART_START_Y = 10;
 
     // Constructor taking the camera, the main container, and the dimensions of the scene
     public GameScene(Camera camera, Pane root, double width, double height) {
         super(root, width, height);
         this.camera = camera;
-        this.gameSpeed = 25.0;
 
         // Instantiate static elements to represent the background (one on the left and one on the right)
-        backgroundLeft = new StaticThing(800, 600, "/img/desert.png");
-        backgroundRight = new StaticThing(800, 600, "/img/desert.png");
+        backgroundLeft = new StaticThing(BACKGROUND_WIDTH, BACKGROUND_HEIGHT, BACKGROUND_IMAGE_PATH);
+        backgroundRight = new StaticThing(BACKGROUND_WIDTH, BACKGROUND_HEIGHT, BACKGROUND_IMAGE_PATH);
 
         // Add the ImageViews of static elements to the main container
         root.getChildren().addAll(backgroundLeft.getImageView(), backgroundRight.getImageView());
 
-        // Initial number of lives
-        int numberOfLives = 3;
-
         // Instantiate hearts to indicate the initial number of lives
-        Heart[] hearts = new Heart[numberOfLives];
-        for (int i = 0; i < numberOfLives; i++) {
-            double heartX = 10 + i * Heart.getSize();
-            double heartY = 10;
+        Heart[] hearts = new Heart[NUMBER_OF_LIVES];
+        for (int i = 0; i < NUMBER_OF_LIVES; i++) {
+            double heartX = HEART_START_X + i * Heart.getSize();
+            double heartY = HEART_START_Y;
 
             // Instantiate a heart and add it to the main container
             hearts[i] = new Heart(heartX, heartY);
@@ -40,7 +46,7 @@ public class GameScene extends Scene {
         }
 
         // Instantiate the hero and add its ImageView to the main container
-        hero = new Hero(1000, 300);
+        hero = new Hero(INITIAL_HERO_X, INITIAL_HERO_Y);
         root.getChildren().add(hero.getImageView());
 
         // Add the click listener for the hero's jump
@@ -49,24 +55,17 @@ public class GameScene extends Scene {
         });
     }
 
-    // Getter for the camera
-    public Camera getGameCamera() {
-        return camera;
-    }
-
-    // Getter for the hero
-    public Hero getHero() {
-        return hero;
-    }
-
     // Rendering method to adjust the position of elements based on the camera
     public void render(double deltaTime) {
         // Get the camera coordinates
         double cameraX = camera.getX();
         double cameraY = camera.getY();
 
-        // Move the hero the game speed
-        hero.move(gameSpeed * deltaTime);
+        // Default direction
+        double heroDirection = 1.0;
+
+        // Move the hero based on the speed and direction
+        hero.move(heroDirection, deltaTime);
 
         // Move the camera using physics equations
         camera.update(deltaTime, hero.getX());
