@@ -12,10 +12,10 @@ public class Hero extends AnimatedThing {
 
     // Constants
     private static final double MOVEMENT_SPEED = 100.0;
-    private static final double INITIAL_JUMP_SPEED = -800;
-    private static final double JUMP_ACCELERATION_UP = 2400;
+    private static final double INITIAL_JUMP_SPEED = -600;
+    private static final double JUMP_ACCELERATION_UP = 1800;
     private static final double JUMP_ACCELERATION_DOWN = 1200;
-    private static final double JUMP_TOP_DURATION = 0.15;
+    private static final double JUMP_TOP_DURATION = 0.10;
     private static final double MAX_JUMP_HEIGHT = 100;
 
     public Hero(double x, double y) {

@@ -65,9 +65,7 @@ public class GameScene extends Scene {
         root.getChildren().add(hero.getImageView());
 
         // Add the click listener for the hero's jump
-        setOnMouseClicked(event -> {
-            hero.jump();
-        });
+        setOnMouseClicked(event -> hero.jump());
     }
 
     // Rendering method to adjust the position of elements based on the camera
@@ -86,10 +84,10 @@ public class GameScene extends Scene {
         camera.update(deltaTime, hero.getX());
 
         // Adjust the position of the ImageViews of static elements based on the camera
-        backgroundLeft.getImageView().setX(cameraX - getWidth() / 2);
+        backgroundLeft.getImageView().setX(-getWidth() / 2 - cameraX);
         backgroundLeft.getImageView().setY(cameraY);
 
-        backgroundRight.getImageView().setX(cameraX + getWidth() / 2);
+        backgroundRight.getImageView().setX(getWidth() / 2 - cameraX);
         backgroundRight.getImageView().setY(cameraY);
 
         // Render the hero at the camera position
