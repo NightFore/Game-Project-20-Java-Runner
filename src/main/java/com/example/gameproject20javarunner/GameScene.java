@@ -41,9 +41,14 @@ public class GameScene extends Scene {
             double heartY = HEART_START_Y;
 
             // Instantiate a heart and add it to the main container
-            hearts[i] = new Heart(heartX, heartY);
-            root.getChildren().add(hearts[i].getImageView());
+            hearts[i] = new Heart(heartX, heartY, 0);
+            root.getChildren().addAll(hearts[i].getFullHeart(), hearts[i].getHalfHeart(), hearts[i].getEmptyHeart());
         }
+
+        // Test the different heart states: Full, Half, Empty
+        hearts[0].setHeartState(0); // Full heart
+        hearts[1].setHeartState(1); // Half heart
+        hearts[2].setHeartState(2); // Empty heart
 
         // Instantiate the hero and add its ImageView to the main container
         hero = new Hero(INITIAL_HERO_X, INITIAL_HERO_Y);

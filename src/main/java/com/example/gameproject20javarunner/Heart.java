@@ -1,5 +1,3 @@
-// Heart.java
-
 package com.example.gameproject20javarunner;
 
 import javafx.geometry.Rectangle2D;
@@ -10,44 +8,73 @@ import java.util.Objects;
 
 public class Heart {
     // Instances
-    private final ImageView imageView;
+    private final ImageView fullHeart;
+    private final ImageView halfHeart;
+    private final ImageView emptyHeart;
 
     // Constants
     private static final String HEART_SPRITE_SHEET_PATH = "/img/NicoleMarieT_Heart_Sprite_Sheet_32x32.png";
     private static final double SIZE = 32.0;
-    private static final double FULL_HEART_FRAME_X = 0;
-    private static final double FULL_HEART_FRAME_Y = 0;
 
-    // Constructor taking the position
-    public Heart(double x, double y) {
+    // Constructor taking the position and the initial heart state
+    public Heart(double x, double y, int initialState) {
         // Load heart sprite sheet image from resources
         Image heartSpriteSheet = new Image(Objects.requireNonNull(getClass().getResourceAsStream(HEART_SPRITE_SHEET_PATH)));
 
-        // Create an ImageView with the heart sprite sheet
-        imageView = new ImageView(heartSpriteSheet);
+        // Create ImageView for each heart state
+        fullHeart = createHeartImageView(heartSpriteSheet, 0, x, y);
+        halfHeart = createHeartImageView(heartSpriteSheet, 1, x, y);
+        emptyHeart = createHeartImageView(heartSpriteSheet, 2, x, y);
 
-        // Set the size of the ImageView
-        imageView.setFitWidth(SIZE);
-        imageView.setFitHeight(SIZE);
-
-        // Define the rectangle for the full heart frame on the sprite sheet
-        Rectangle2D fullHeartFrame = new Rectangle2D(FULL_HEART_FRAME_X, FULL_HEART_FRAME_Y, SIZE, SIZE);
-
-        // Set the viewport of the ImageView to display the full heart frame
-        imageView.setViewport(fullHeartFrame);
-
-        // Position the heart
-        imageView.setX(x);
-        imageView.setY(y);
+        // Set the initial heart state
+        setHeartState(initialState);
     }
 
-    // Getter for the heart's ImageView
-    public ImageView getImageView() {
+    // Method to create an ImageView for a specific heart state
+    private ImageView createHeartImageView(Image spriteSheet, int state, double x, double y) {
+        double frameX = state * SIZE;
+        double frameY = 0;
+
+        // Create ImageView with the specified state
+        ImageView imageView = new ImageView(spriteSheet);
+        imageView.setFitWidth(SIZE);
+        imageView.setFitHeight(SIZE);
+        Rectangle2D frameRectangle = new Rectangle2D(frameX, frameY, SIZE, SIZE);
+        imageView.setViewport(frameRectangle);
+
+        // Set the position of the heart
+        imageView.setX(x);
+        imageView.setY(y);
+
+        // Return the created ImageView
         return imageView;
+    }
+
+    // Method to set the current heart state
+    public void setHeartState(int state) {
+        // Set visibility based on the current state
+        fullHeart.setVisible(state == 0);
+        halfHeart.setVisible(state == 1);
+        emptyHeart.setVisible(state == 2);
     }
 
     // Getter for the SIZE constant
     public static double getSize() {
         return SIZE;
+    }
+
+    // Getter for the full heart ImageView
+    public ImageView getFullHeart() {
+        return fullHeart;
+    }
+
+    // Getter for the half heart ImageView
+    public ImageView getHalfHeart() {
+        return halfHeart;
+    }
+
+    // Getter for the empty heart ImageView
+    public ImageView getEmptyHeart() {
+        return emptyHeart;
     }
 }
