@@ -11,7 +11,7 @@ public class Hero extends AnimatedThing {
     private boolean isJumping;
 
     // Constants
-    private static final double MOVEMENT_SPEED = 25.0;
+    private static final double MOVEMENT_SPEED = 100.0;
     private static final double INITIAL_JUMP_SPEED = -800;
     private static final double JUMP_ACCELERATION_UP = 2400;
     private static final double JUMP_ACCELERATION_DOWN = 1200;
