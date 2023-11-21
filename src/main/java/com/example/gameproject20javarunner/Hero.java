@@ -11,6 +11,7 @@ public class Hero extends AnimatedThing {
     private boolean isJumping;
 
     // Constants
+    private static final String HERO_BLUE_RUN_SPRITE_SHEET_PATH = "/img/SecretHideout_Gunner/Blue/Gunner_Blue_Run.png";
     private static final double MOVEMENT_SPEED = 100.0;
     private static final double INITIAL_JUMP_SPEED = -600;
     private static final double JUMP_ACCELERATION_UP = 1800;
@@ -19,7 +20,7 @@ public class Hero extends AnimatedThing {
     private static final double MAX_JUMP_HEIGHT = 100;
 
     public Hero(double x, double y) {
-        super(x, y, 84, 100, 0, 0, 5, 8, 5, 0, "/img/heros.png");
+        super(x, y, 48, 48, 0, 0, 5, 8, 5, 0, HERO_BLUE_RUN_SPRITE_SHEET_PATH);
         this.initialX = x;
         this.initialY = y;
         this.jumpSpeed = 0;
