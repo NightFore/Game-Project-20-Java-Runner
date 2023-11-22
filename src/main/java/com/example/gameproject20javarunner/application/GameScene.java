@@ -2,13 +2,13 @@
 
 package com.example.gameproject20javarunner;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
+import com.example.gameproject20javarunner.manager.BackgroundManager;
+import com.example.gameproject20javarunner.manager.FoeManager;
+import com.example.gameproject20javarunner.manager.HeartManager;
+import com.example.gameproject20javarunner.manager.HeroManager;
+import com.example.gameproject20javarunner.view.Camera;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.geometry.Rectangle2D;
 
 public class GameScene extends Scene {
     // Instances

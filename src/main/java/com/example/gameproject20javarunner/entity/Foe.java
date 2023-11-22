@@ -1,6 +1,6 @@
 package com.example.gameproject20javarunner;
 
-import javafx.scene.shape.Rectangle;
+import com.example.gameproject20javarunner.model.MovingThing;
 
 public class Foe extends MovingThing {
     // Variables

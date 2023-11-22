@@ -2,6 +2,8 @@
 
 package com.example.gameproject20javarunner;
 
+import com.example.gameproject20javarunner.model.AnimatedThing;
+
 public class Hero extends AnimatedThing {
     // Variables
     private final double initialX;
