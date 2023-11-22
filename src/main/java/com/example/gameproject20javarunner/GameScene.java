@@ -14,15 +14,13 @@ public class GameScene extends Scene {
     // Instances
     private final Camera camera;
     private final Background background;
+    private final HeartManager heartManager;
     private Hero hero;
     private List<Foe> foes;
 
     // Constants
     private static final double INITIAL_HERO_X = 0;
     private static final double INITIAL_HERO_Y = 425;
-    private static final int NUMBER_OF_LIVES = 3;
-    private static final double HEART_START_X = 10;
-    private static final double HEART_START_Y = 10;
 
     // Constants (Foe)
     private static final int MIN_FOES = 2;
@@ -38,25 +36,9 @@ public class GameScene extends Scene {
         this.camera = camera;
 
         background = new Background(root);
-        initializeHearts(root);
+        heartManager = new HeartManager(root);
         initializeHero(root);
         initializeFoes(root);
-    }
-
-    // Separate method to initialize hearts
-    private void initializeHearts(Pane root) {
-        // Instantiate hearts to indicate the initial number of lives
-        Heart[] hearts = new Heart[NUMBER_OF_LIVES];
-        for (int i = 0; i < NUMBER_OF_LIVES; i++) {
-            // Instantiate a heart and add it to the main container
-            hearts[i] = new Heart(HEART_START_X + i * Heart.getWidth(), HEART_START_Y, 0);
-            root.getChildren().addAll(hearts[i].getFullHeart(), hearts[i].getHalfHeart(), hearts[i].getEmptyHeart());
-        }
-
-        // Test the different heart states: Full, Half, Empty
-        hearts[0].setHeartState(0); // Full heart
-        hearts[1].setHeartState(1); // Half heart
-        hearts[2].setHeartState(2); // Empty heart
     }
 
     // Separate method to initialize the foes
