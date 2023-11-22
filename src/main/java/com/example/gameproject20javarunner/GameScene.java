@@ -16,6 +16,7 @@ public class GameScene extends Scene {
     private final Background background;
     private final HeartManager heartManager;
     private final HeroManager heroManager;
+    private final FoeManager foeManager;
     private List<Foe> foes;
 
     // Constants (Foe)
@@ -34,7 +35,7 @@ public class GameScene extends Scene {
         background = new Background(root);
         heartManager = new HeartManager(root);
         heroManager = new HeroManager(root);
-        initializeFoes(root);
+        foeManager = new FoeManager(root);
 
         // Add the click listener for the hero's jump
         setOnMouseClicked(event -> heroManager.jump());
@@ -79,9 +80,7 @@ public class GameScene extends Scene {
         heroManager.move(heroDirection, deltaTime);
 
         // Move the foes based on the direction
-        for (Foe foe : foes) {
-            foe.move(foeDirection, deltaTime);
-        }
+        foeManager.moveFoes(foeDirection, deltaTime);
 
         // Move the camera using physics equations
         camera.update(deltaTime, heroManager.getX());
@@ -89,13 +88,10 @@ public class GameScene extends Scene {
         background.update();
         heartManager.update();
         heroManager.update(deltaTime);
+        foeManager.update(deltaTime);
         background.draw(camera);
         heartManager.draw();
         heroManager.draw(camera);
-
-        for (Foe foe : foes) {
-            foe.draw(camera);
-            foe.render(deltaTime);
-        }
+        foeManager.draw(camera);
     }
 }
