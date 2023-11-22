@@ -24,20 +24,14 @@ public class Camera {
         this.vx = INITIAL_VELOCITY_X;
     }
 
-    // Getters for the x position
+    // Getter for the x position
     public double getX() {
         return x;
     }
 
-    // Getters for the y position
+    // Getter for the y position
     public double getY() {
         return y;
-    }
-
-    // Move method to update the position of the camera
-    public void move(double deltaX, double deltaY) {
-        x += deltaX;
-        y += deltaY;
     }
 
     // Update method to apply physics equations

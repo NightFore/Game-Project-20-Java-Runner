@@ -14,7 +14,8 @@ public class Heart {
 
     // Constants
     private static final String HEART_SPRITE_SHEET_PATH = "/img/NicoleMarieT_Heart_Sprite_Sheet_32x32.png";
-    private static final double SIZE = 32.0;
+    private static final double WIDTH = 32.0;
+    private static final double HEIGHT = 32.0;
 
     // Constructor taking the position and the initial heart state
     public Heart(double x, double y, int initialState) {
@@ -32,14 +33,14 @@ public class Heart {
 
     // Method to create an ImageView for a specific heart state
     private ImageView createHeartImageView(Image spriteSheet, int state, double x, double y) {
-        double frameX = state * SIZE;
+        double frameX = state * WIDTH;
         double frameY = 0;
 
         // Create ImageView with the specified state
         ImageView imageView = new ImageView(spriteSheet);
-        imageView.setFitWidth(SIZE);
-        imageView.setFitHeight(SIZE);
-        Rectangle2D frameRectangle = new Rectangle2D(frameX, frameY, SIZE, SIZE);
+        imageView.setFitWidth(WIDTH);
+        imageView.setFitHeight(HEIGHT);
+        Rectangle2D frameRectangle = new Rectangle2D(frameX, frameY, WIDTH, HEIGHT);
         imageView.setViewport(frameRectangle);
 
         // Set the position of the heart
@@ -58,9 +59,14 @@ public class Heart {
         emptyHeart.setVisible(state == 2);
     }
 
-    // Getter for the SIZE constant
-    public static double getSize() {
-        return SIZE;
+    // Getter for the width
+    public static double getWidth() {
+        return WIDTH;
+    }
+
+    // Getter for the height
+    public static double getHeight() {
+        return HEIGHT;
     }
 
     // Getter for the full heart ImageView

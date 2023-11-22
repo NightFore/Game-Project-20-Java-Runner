@@ -13,15 +13,11 @@ import javafx.geometry.Rectangle2D;
 public class GameScene extends Scene {
     // Instances
     private final Camera camera;
-    private StaticThing backgroundLeft;
-    private StaticThing backgroundRight;
+    private final Background background;
     private Hero hero;
     private List<Foe> foes;
 
     // Constants
-    private static final String BACKGROUND_IMAGE_PATH = "/img/desert.png";
-    private static final double BACKGROUND_WIDTH = 800;
-    private static final double BACKGROUND_HEIGHT = 600;
     private static final double INITIAL_HERO_X = 0;
     private static final double INITIAL_HERO_Y = 425;
     private static final int NUMBER_OF_LIVES = 3;
@@ -41,20 +37,10 @@ public class GameScene extends Scene {
         super(root, width, height);
         this.camera = camera;
 
-        initializeBackground(root);
+        background = new Background(root);
         initializeHearts(root);
         initializeHero(root);
         initializeFoes(root);
-    }
-
-    // Separate method to initialize the background
-    private void initializeBackground(Pane root) {
-        // Instantiate static elements to represent the background (one on the left and one on the right)
-        backgroundLeft = new StaticThing(BACKGROUND_WIDTH, BACKGROUND_HEIGHT, BACKGROUND_IMAGE_PATH);
-        backgroundRight = new StaticThing(BACKGROUND_WIDTH, BACKGROUND_HEIGHT, BACKGROUND_IMAGE_PATH);
-
-        // Add the ImageViews of static elements to the main container
-        root.getChildren().addAll(backgroundLeft.getImageView(), backgroundRight.getImageView());
     }
 
     // Separate method to initialize hearts
@@ -63,7 +49,7 @@ public class GameScene extends Scene {
         Heart[] hearts = new Heart[NUMBER_OF_LIVES];
         for (int i = 0; i < NUMBER_OF_LIVES; i++) {
             // Instantiate a heart and add it to the main container
-            hearts[i] = new Heart(HEART_START_X + i * Heart.getSize(), HEART_START_Y, 0);
+            hearts[i] = new Heart(HEART_START_X + i * Heart.getWidth(), HEART_START_Y, 0);
             root.getChildren().addAll(hearts[i].getFullHeart(), hearts[i].getHalfHeart(), hearts[i].getEmptyHeart());
         }
 
@@ -134,10 +120,6 @@ public class GameScene extends Scene {
 
     // Rendering method to adjust the position of elements based on the camera
     public void render(double deltaTime) {
-        // Get the camera coordinates
-        double cameraX = camera.getX();
-        double cameraY = camera.getY();
-
         // Default direction
         double heroDirection = 1.0;
         double foeDirection = -1.0;
@@ -153,12 +135,8 @@ public class GameScene extends Scene {
         // Move the camera using physics equations
         camera.update(deltaTime, hero.getX());
 
-        // Adjust the position of the ImageViews of static elements based on the camera
-        backgroundLeft.getImageView().setX(-getWidth() / 2 - cameraX);
-        backgroundLeft.getImageView().setY(cameraY);
-
-        backgroundRight.getImageView().setX(getWidth() / 2 - cameraX);
-        backgroundRight.getImageView().setY(cameraY);
+        background.update();
+        background.draw(camera);
 
         // Render the hero at the camera position
         hero.draw(camera);
