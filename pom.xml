@@ -61,7 +61,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.example.gameproject20javarunner/com.example.gameproject20javarunner.HelloApplication
+                                com.example.gameproject20javarunner/com.example.gameproject20javarunner.application.HelloApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

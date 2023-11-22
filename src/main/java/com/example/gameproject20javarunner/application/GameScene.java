@@ -1,6 +1,6 @@
 // GameScene.java
 
-package com.example.gameproject20javarunner;
+package com.example.gameproject20javarunner.application;
 
 import com.example.gameproject20javarunner.manager.BackgroundManager;
 import com.example.gameproject20javarunner.manager.FoeManager;

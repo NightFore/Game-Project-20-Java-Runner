@@ -1,6 +1,6 @@
 // Camera.java
 
-package com.example.gameproject20javarunner;
+package com.example.gameproject20javarunner.view;
 
 public class Camera {
     // Variables

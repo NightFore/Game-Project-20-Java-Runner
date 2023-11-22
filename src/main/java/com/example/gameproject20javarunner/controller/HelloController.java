@@ -1,4 +1,4 @@
-package com.example.gameproject20javarunner;
+package com.example.gameproject20javarunner.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

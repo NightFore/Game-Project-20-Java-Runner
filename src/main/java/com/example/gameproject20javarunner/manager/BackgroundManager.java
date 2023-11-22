@@ -1,7 +1,9 @@
 // BackgroundManager.java
 
-package com.example.gameproject20javarunner;
+package com.example.gameproject20javarunner.manager;
 
+import com.example.gameproject20javarunner.view.Background;
+import com.example.gameproject20javarunner.view.Camera;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 

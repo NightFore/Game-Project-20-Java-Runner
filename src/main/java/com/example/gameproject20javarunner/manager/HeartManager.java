@@ -1,7 +1,8 @@
 // HeartManager.java
 
-package com.example.gameproject20javarunner;
+package com.example.gameproject20javarunner.manager;
 
+import com.example.gameproject20javarunner.entity.Heart;
 import javafx.scene.layout.Pane;
 
 public class HeartManager {

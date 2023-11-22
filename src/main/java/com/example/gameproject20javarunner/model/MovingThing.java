@@ -1,4 +1,4 @@
-package com.example.gameproject20javarunner;
+package com.example.gameproject20javarunner.model;
 
 import javafx.geometry.Rectangle2D;
 

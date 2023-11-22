@@ -1,7 +1,9 @@
 // FoeManager.java
 
-package com.example.gameproject20javarunner;
+package com.example.gameproject20javarunner.manager;
 
+import com.example.gameproject20javarunner.view.Camera;
+import com.example.gameproject20javarunner.entity.Foe;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;

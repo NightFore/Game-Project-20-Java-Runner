@@ -1,21 +1,13 @@
 // AnimatedThing.java
 
-package com.example.gameproject20javarunner;
+package com.example.gameproject20javarunner.model;
+import com.example.gameproject20javarunner.view.Camera;
 
 import javafx.geometry.Rectangle2D;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
-import java.util.Objects;
-
-public abstract class AnimatedThing {
-    private double x;
-    private double y;
-    private final double width;
-    private final double height;
+public abstract class AnimatedThing extends Thing {
     private double finalWidth;
     private double finalHeight;
-    private final ImageView imageView;
     private final int attitude;
     private int index;
     private final int maxIndex;
@@ -25,6 +17,7 @@ public abstract class AnimatedThing {
     private final double frameOffsetY;
 
     public AnimatedThing(double x, double y, double width, double height, int attitude, int index, int maxIndex, int duration, double frameOffsetX, double frameOffsetY, String fileName) {
+        super(fileName);
         this.x = x;
         this.y = y;
         this.width = width;
@@ -37,12 +30,6 @@ public abstract class AnimatedThing {
         this.frameOffsetX = frameOffsetX;
         this.frameOffsetY = frameOffsetY;
 
-        // Load sprite sheet image from resources
-        Image spriteSheet = new Image(Objects.requireNonNull(getClass().getResourceAsStream(fileName)));
-
-        // Create an ImageView with the sprite sheet
-        imageView = new ImageView(spriteSheet);
-
         // Set the initial viewport of the ImageView to the first frame
         updateViewport();
 
@@ -53,21 +40,6 @@ public abstract class AnimatedThing {
         // Default final size to the original size
         this.finalWidth = width;
         this.finalHeight = height;
-    }
-
-    // Getter for the ImageView
-    public ImageView getImageView() {
-        return imageView;
-    }
-
-    // Getter for the x position
-    public double getX() {
-        return x;
-    }
-
-    // Getter for the y position
-    public double getY() {
-        return y;
     }
 
     // Getter for the final width

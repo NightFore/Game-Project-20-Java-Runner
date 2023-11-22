@@ -1,6 +1,6 @@
 // Hero.java
 
-package com.example.gameproject20javarunner;
+package com.example.gameproject20javarunner.entity;
 
 import com.example.gameproject20javarunner.model.AnimatedThing;
 
