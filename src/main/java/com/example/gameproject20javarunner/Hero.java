@@ -9,6 +9,7 @@ public class Hero extends AnimatedThing {
     private double jumpSpeed;
     private double jumpTopTime;
     private boolean isJumping;
+    private long invincibilityTime;  // in nanoseconds
 
     // Constants (AnimatedThing)
     private static final String HERO_BLUE_RUN_SPRITE_SHEET_PATH = "/img/SecretHideout_Gunner/Blue/Gunner_Blue_Run.png";
@@ -29,7 +30,7 @@ public class Hero extends AnimatedThing {
     private static final double JUMP_ACCELERATION_DOWN = 1200;
     private static final double JUMP_TOP_DURATION = 0.10;
     private static final double MAX_JUMP_HEIGHT = 100;
-    
+
     public Hero(double x, double y) {
         super(x, y, HERO_WIDTH, HERO_HEIGHT, ATTITUDE, INDEX, MAX_INDEX, DURATION, FRAME_OFFSET_X, FRAME_OFFSET_Y, HERO_BLUE_RUN_SPRITE_SHEET_PATH);
         setFinalSizeAndAdjustView(HERO_FINAL_SIZE, HERO_FINAL_SIZE);
@@ -38,6 +39,7 @@ public class Hero extends AnimatedThing {
         this.jumpSpeed = 0;
         this.jumpTopTime = 0;
         this.isJumping = false;
+        this.invincibilityTime = 0;
     }
 
     // Method for movement with direction
@@ -51,6 +53,18 @@ public class Hero extends AnimatedThing {
             jumpSpeed = INITIAL_JUMP_SPEED;
             jumpTopTime = 0;
             isJumping = true;
+        }
+    }
+
+    public boolean isInvincible() {
+        return invincibilityTime > 0;
+    }
+
+    public void setInvincible(boolean invincible) {
+        if (invincible) {
+            invincibilityTime = 25000000000L;  // Set invincibility time to 25 seconds
+        } else {
+            invincibilityTime = 0;
         }
     }
 
@@ -84,16 +98,18 @@ public class Hero extends AnimatedThing {
         }
     }
 
-    // Draw method to update the position of the hero based on the camera
-    public void draw(Camera camera) {
-        getImageView().setX(getX() - camera.getX());
-        getImageView().setY(getY() - camera.getY());
-    }
-
     // Method to handle the hero's rendering logic
     @Override
     public void render(double deltaTime) {
         super.render(deltaTime);
         updateJump(deltaTime);
+
+        // Subtract the time passed from invincibility time
+        if (invincibilityTime > 0) {
+            invincibilityTime -= deltaTime * 1_000_000_000L;  // Convert deltaTime to nanoseconds
+            if (invincibilityTime <= 0) {
+                setInvincible(false);  // Reset invincibility once time is up
+            }
+        }
     }
 }

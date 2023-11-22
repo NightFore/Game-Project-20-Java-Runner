@@ -13,6 +13,8 @@ public abstract class AnimatedThing {
     private double y;
     private final double width;
     private final double height;
+    private double finalWidth;
+    private double finalHeight;
     private final ImageView imageView;
     private final int attitude;
     private int index;
@@ -49,6 +51,8 @@ public abstract class AnimatedThing {
         imageView.setY(y);
 
         // Default final size to the original size
+        this.finalWidth = width;
+        this.finalHeight = height;
     }
 
     // Getter for the ImageView
@@ -66,6 +70,21 @@ public abstract class AnimatedThing {
         return y;
     }
 
+    // Getter for the final width
+    public double getFinalWidth() {
+        return finalWidth;
+    }
+
+    // Getter for the final height
+    public double getFinalHeight() {
+        return finalHeight;
+    }
+
+    // Method to get the hitbox of the animated thing
+    public Rectangle2D getHitBox() {
+        return new Rectangle2D(x, y, finalWidth, finalHeight);
+    }
+
     // Public method to set the x position
     public void setX(double x) {
         this.x = x;
@@ -79,6 +98,8 @@ public abstract class AnimatedThing {
     // Function to set the final size of the image and adjust the view
     public void setFinalSizeAndAdjustView(double finalWidth, double finalHeight) {
         if (finalWidth > 0 && finalHeight > 0) {
+            this.finalWidth = finalWidth;
+            this.finalHeight = finalHeight;
             imageView.setFitWidth(finalWidth);
             imageView.setFitHeight(finalHeight);
         }
@@ -90,6 +111,12 @@ public abstract class AnimatedThing {
         double frameY = attitude * height + frameOffsetY;
         Rectangle2D viewport = new Rectangle2D(frameX, frameY, width, height);
         imageView.setViewport(viewport);
+    }
+
+    // Draw method to update the position based on the camera
+    public void draw(Camera camera) {
+        getImageView().setX(getX() - camera.getX());
+        getImageView().setY(getY() - camera.getY());
     }
 
     // Rendering method to handle animation logic
