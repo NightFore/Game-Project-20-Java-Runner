@@ -29,4 +29,10 @@ public class HeartManager {
     // Method to decrease the number of hearts
     public void decreaseHearts() {
     }
+
+    public void update() {
+    }
+
+    public void draw() {
+    }
 }

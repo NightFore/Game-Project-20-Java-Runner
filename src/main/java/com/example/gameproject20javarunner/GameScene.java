@@ -15,12 +15,8 @@ public class GameScene extends Scene {
     private final Camera camera;
     private final Background background;
     private final HeartManager heartManager;
-    private Hero hero;
+    private final HeroManager heroManager;
     private List<Foe> foes;
-
-    // Constants
-    private static final double INITIAL_HERO_X = 0;
-    private static final double INITIAL_HERO_Y = 425;
 
     // Constants (Foe)
     private static final int MIN_FOES = 2;
@@ -37,18 +33,11 @@ public class GameScene extends Scene {
 
         background = new Background(root);
         heartManager = new HeartManager(root);
-        initializeHero(root);
+        heroManager = new HeroManager(root);
         initializeFoes(root);
-    }
-
-    // Separate method to initialize the foes
-    private void initializeHero(Pane root) {
-        // Instantiate the hero and add its ImageView to the main container
-        hero = new Hero(INITIAL_HERO_X, INITIAL_HERO_Y);
-        root.getChildren().add(hero.getImageView());
 
         // Add the click listener for the hero's jump
-        setOnMouseClicked(event -> hero.jump());
+        setOnMouseClicked(event -> heroManager.jump());
     }
 
     // Separate method to initialize the hero
@@ -80,26 +69,6 @@ public class GameScene extends Scene {
         }
     }
 
-    // Check for collisions between Hero and Foes
-    private void checkCollisions() {
-        if (!hero.isInvincible()) {
-            Rectangle2D heroHitBox = hero.getHitBox();
-            for (Foe foe : foes) {
-                Rectangle2D foeHitBox = foe.getHitBox();
-                if (heroHitBox.intersects(foeHitBox)) {
-                    // Collision detected
-                    handleCollision();
-                    break;  // Assuming only one collision at a time
-                }
-            }
-        }
-    }
-
-    private void handleCollision() {
-        // Add logic for handling collisions, e.g., decrease lives, reset positions, etc.
-        hero.setInvincible(true);
-    }
-
     // Rendering method to adjust the position of elements based on the camera
     public void render(double deltaTime) {
         // Default direction
@@ -107,7 +76,7 @@ public class GameScene extends Scene {
         double foeDirection = -1.0;
 
         // Move the hero based on the direction
-        hero.move(heroDirection, deltaTime);
+        heroManager.move(heroDirection, deltaTime);
 
         // Move the foes based on the direction
         for (Foe foe : foes) {
@@ -115,21 +84,18 @@ public class GameScene extends Scene {
         }
 
         // Move the camera using physics equations
-        camera.update(deltaTime, hero.getX());
+        camera.update(deltaTime, heroManager.getX());
 
         background.update();
+        heartManager.update();
+        heroManager.update(deltaTime);
         background.draw(camera);
-
-        // Render the hero at the camera position
-        hero.draw(camera);
-        hero.render(deltaTime);
+        heartManager.draw();
+        heroManager.draw(camera);
 
         for (Foe foe : foes) {
             foe.draw(camera);
             foe.render(deltaTime);
         }
-
-        // Check for collisions
-        checkCollisions();
     }
 }
