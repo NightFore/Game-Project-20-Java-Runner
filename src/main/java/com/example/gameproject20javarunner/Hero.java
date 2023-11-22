@@ -10,17 +10,29 @@ public class Hero extends AnimatedThing {
     private double jumpTopTime;
     private boolean isJumping;
 
-    // Constants
+    // Constants (AnimatedThing)
     private static final String HERO_BLUE_RUN_SPRITE_SHEET_PATH = "/img/SecretHideout_Gunner/Blue/Gunner_Blue_Run.png";
+    private static final double HERO_WIDTH = 48;
+    private static final double HERO_HEIGHT = 48;
+    private static final double HERO_FINAL_SIZE = 144;
+    private static final int ATTITUDE = 0;
+    private static final int INDEX = 0;
+    private static final int MAX_INDEX = 5;
+    private static final int DURATION = 8;
+    private static final double FRAME_OFFSET_X = 0;
+    private static final double FRAME_OFFSET_Y = 0;
+
+    // Constants (Hero)
     private static final double MOVEMENT_SPEED = 100.0;
     private static final double INITIAL_JUMP_SPEED = -600;
     private static final double JUMP_ACCELERATION_UP = 1800;
     private static final double JUMP_ACCELERATION_DOWN = 1200;
     private static final double JUMP_TOP_DURATION = 0.10;
     private static final double MAX_JUMP_HEIGHT = 100;
-
+    
     public Hero(double x, double y) {
-        super(x, y, 48, 48, 0, 0, 5, 8, 5, 0, HERO_BLUE_RUN_SPRITE_SHEET_PATH);
+        super(x, y, HERO_WIDTH, HERO_HEIGHT, ATTITUDE, INDEX, MAX_INDEX, DURATION, FRAME_OFFSET_X, FRAME_OFFSET_Y, HERO_BLUE_RUN_SPRITE_SHEET_PATH);
+        setFinalSizeAndAdjustView(HERO_FINAL_SIZE, HERO_FINAL_SIZE);
         this.initialX = x;
         this.initialY = y;
         this.jumpSpeed = 0;

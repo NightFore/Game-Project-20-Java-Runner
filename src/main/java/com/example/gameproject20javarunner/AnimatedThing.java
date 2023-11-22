@@ -47,6 +47,8 @@ public abstract class AnimatedThing {
         // Set the position of the AnimatedThing
         imageView.setX(x);
         imageView.setY(y);
+
+        // Default final size to the original size
     }
 
     // Getter for the ImageView
@@ -72,6 +74,14 @@ public abstract class AnimatedThing {
     // Public method to set the y position
     public void setY(double y) {
         this.y = y;
+    }
+
+    // Function to set the final size of the image and adjust the view
+    public void setFinalSizeAndAdjustView(double finalWidth, double finalHeight) {
+        if (finalWidth > 0 && finalHeight > 0) {
+            imageView.setFitWidth(finalWidth);
+            imageView.setFitHeight(finalHeight);
+        }
     }
 
     // Method to update the viewport based on the current index
