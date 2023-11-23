@@ -51,7 +51,7 @@ public class HeroManager {
     }
 
     public void update(double deltaTime) {
-        hero.render(deltaTime);
+        hero.update(deltaTime);
     }
 
     public void draw(Camera camera) {

@@ -1,5 +1,6 @@
 package com.example.gameproject20javarunner.model;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -8,8 +9,12 @@ import java.util.Objects;
 public abstract class Thing {
     protected double x;
     protected double y;
-    protected double width;
-    protected double height;
+    protected double frameWidth;
+    protected double frameHeight;
+    protected double frameOffsetX;
+    protected double frameOffsetY;
+    protected double displayWidth;
+    protected double displayHeight;
     protected final ImageView imageView;
 
     // Constructor taking initial position
@@ -31,14 +36,24 @@ public abstract class Thing {
         return y;
     }
 
-    // Getter for the width
-    public double getWidth() {
-        return width;
+    // Getter for the display width
+    public double getDisplayWidth() {
+        return displayWidth;
     }
 
-    // Getter for the height
-    public double getHeight() {
-        return height;
+    // Getter for the display height
+    public double getDisplayHeight() {
+        return displayHeight;
+    }
+
+    // Getter for the frame width
+    public double getFrameWidth() {
+        return frameWidth;
+    }
+
+    // Getter for the frame height
+    public double getFrameHeight() {
+        return frameHeight;
     }
 
     // Getter for the ImageView
@@ -46,13 +61,28 @@ public abstract class Thing {
         return imageView;
     }
 
-    // Public method to set the x position
+    // Method to get the hitbox of the animated thing
+    public Rectangle2D getHitBox() {
+        return new Rectangle2D(x, y, displayWidth, displayHeight);
+    }
+
+    // Set the x position
     public void setX(double x) {
         this.x = x;
     }
 
-    // Public method to set the y position
+    // Set the y position
     public void setY(double y) {
         this.y = y;
+    }
+
+    // Set the display width
+    public void setDisplayWidth(double displayWidth) {
+        this.displayWidth = displayWidth;
+    }
+
+    // Set the display height
+    public void setDisplayHeight(double displayHeight) {
+        this.displayHeight = displayHeight;
     }
 }

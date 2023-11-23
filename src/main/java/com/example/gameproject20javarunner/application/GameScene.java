@@ -50,7 +50,7 @@ public class GameScene extends Scene {
         backgroundManager.update();
         heartManager.update();
         heroManager.update(deltaTime);
-        foeManager.update(deltaTime);
+        foeManager.update();
         backgroundManager.draw(camera);
         heartManager.draw();
         heroManager.draw(camera);

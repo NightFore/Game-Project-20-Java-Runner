@@ -19,7 +19,6 @@ public class Hero extends AnimatedThing {
     private static final double HERO_HEIGHT = 48;
     private static final double HERO_FINAL_SIZE = 144;
     private static final int ATTITUDE = 0;
-    private static final int INDEX = 0;
     private static final int MAX_INDEX = 5;
     private static final int DURATION = 8;
     private static final double FRAME_OFFSET_X = 0;
@@ -34,8 +33,8 @@ public class Hero extends AnimatedThing {
     private static final double MAX_JUMP_HEIGHT = 100;
 
     public Hero(double x, double y) {
-        super(x, y, HERO_WIDTH, HERO_HEIGHT, ATTITUDE, INDEX, MAX_INDEX, DURATION, FRAME_OFFSET_X, FRAME_OFFSET_Y, HERO_BLUE_RUN_SPRITE_SHEET_PATH);
-        setFinalSizeAndAdjustView(HERO_FINAL_SIZE, HERO_FINAL_SIZE);
+        super(x, y, HERO_WIDTH, HERO_HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, HERO_BLUE_RUN_SPRITE_SHEET_PATH);
+        setDisplaySizeAndAdjustView(HERO_FINAL_SIZE, HERO_FINAL_SIZE);
         this.initialX = x;
         this.initialY = y;
         this.jumpSpeed = 0;
@@ -101,9 +100,8 @@ public class Hero extends AnimatedThing {
     }
 
     // Method to handle the hero's rendering logic
-    @Override
-    public void render(double deltaTime) {
-        super.render(deltaTime);
+    public void update(double deltaTime) {
+        super.update();
         updateJump(deltaTime);
 
         // Subtract the time passed from invincibility time

@@ -25,7 +25,7 @@ public class Foe extends MovingThing {
 
     public Foe(double x, double y) {
         super(x, y, WIDTH, HEIGHT, ATTITUDE, INDEX, MAX_INDEX, DURATION, FRAME_OFFSET_X, FRAME_OFFSET_Y, SPRITE_SHEET_PATH);
-        setFinalSizeAndAdjustView(FINAL_WIDTH, FINAL_HEIGHT);
+        setDisplaySizeAndAdjustView(FINAL_WIDTH, FINAL_HEIGHT);
         this.initialX = x;
         this.initialY = y;
     }
