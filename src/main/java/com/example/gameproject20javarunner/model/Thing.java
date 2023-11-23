@@ -106,7 +106,7 @@ public abstract class Thing {
 
     // Draw method to update the position based on the camera
     public void draw(Camera camera) {
-        getImageView().setX(getX() - camera.getX());
-        getImageView().setY(getY() - camera.getY());
+        imageView.setX(getX() - camera.getX());
+        imageView.setY(getY() - camera.getY());
     }
 }

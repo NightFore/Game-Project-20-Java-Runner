@@ -8,6 +8,8 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public class HelloApplication extends Application {
     // Constants
@@ -19,6 +21,9 @@ public class HelloApplication extends Application {
     private static final double CAMERA_M = 1;
     private static final double CAMERA_K = 35;
     private static final double CAMERA_F = 10;
+
+    // Attribute for the hitbox rectangle
+    private Rectangle hitboxRectangle;
 
     public static void main(String[] args) {
         // Launch the JavaFX application

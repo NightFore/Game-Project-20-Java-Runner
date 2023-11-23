@@ -2,7 +2,10 @@
 
 package com.example.gameproject20javarunner.model;
 
+import com.example.gameproject20javarunner.view.Camera;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 // A class representing an animated element in the game
 public abstract class AnimatedThing extends Thing {
@@ -11,6 +14,9 @@ public abstract class AnimatedThing extends Thing {
     private final int attitude; // The attitude of the element (e.g., running)
     private final int maxIndex; // Maximum index of frames in the animation
     private final int duration; // Total duration of the animation
+
+    // Attribute for the hitbox rectangle
+    private final Rectangle hitboxRectangle;
 
     // Constructor to initialize properties of the animated element
     public AnimatedThing(double x, double y, double frameWidth, double frameHeight, double frameOffsetX, double frameOffsetY, int attitude, int maxIndex, int duration, String fileName) {
@@ -34,6 +40,29 @@ public abstract class AnimatedThing extends Thing {
 
         // Set the initial viewport of the ImageView to the first frame
         updateViewport();
+
+        // Initialize the hitbox rectangle
+        hitboxRectangle = new Rectangle();
+        hitboxRectangle.setStroke(Color.CYAN);
+        hitboxRectangle.setFill(Color.TRANSPARENT);
+        updateHitboxRectangle();
+    }
+
+    // Method to get the hitbox rectangle
+    public Rectangle getHitboxRectangle() {
+        return hitboxRectangle;
+    }
+
+    // Set the display width
+    public void setDisplayWidth(double displayWidth) {
+        super.setDisplayWidth(displayWidth);
+        updateHitboxRectangle();
+    }
+
+    // Set the display height
+    public void setDisplayHeight(double displayHeight) {
+        super.setDisplayHeight(displayHeight);
+        updateHitboxRectangle();
     }
 
     // Method to update the viewport based on the current index
@@ -42,6 +71,12 @@ public abstract class AnimatedThing extends Thing {
         double frameY = attitude * frameHeight + frameOffsetY;
         Rectangle2D viewport = new Rectangle2D(frameX, frameY, frameWidth, frameHeight);
         imageView.setViewport(viewport);
+    }
+
+    // Method to update the hitbox rectangle
+    private void updateHitboxRectangle() {
+        hitboxRectangle.setWidth(getDisplayWidth());
+        hitboxRectangle.setHeight(getDisplayHeight());
     }
 
     // Update method to handle animation logic
@@ -66,5 +101,11 @@ public abstract class AnimatedThing extends Thing {
             // Update the viewport based on the new index
             updateViewport();
         }
+    }
+
+    public void draw(Camera camera) {
+        super.draw(camera);
+        hitboxRectangle.setX(getX() - camera.getX());
+        hitboxRectangle.setY(getY() - camera.getY());
     }
 }

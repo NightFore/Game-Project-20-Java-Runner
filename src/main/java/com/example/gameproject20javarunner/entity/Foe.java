@@ -19,13 +19,13 @@ public class Foe extends MovingThing {
     private static final String SPRITE_SHEET_PATH = "/img/SecretHideout_Gunner/Red/Gunner_Red_Run.png";
 
     // Constants (MovingThing)
-    private static final double MOVEMENT_SPEED = 100.0;
+    private static final double MOVEMENT_SPEED = -100.0;
 
     public Foe(double x, double y) {
         super(x, y, WIDTH, HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, SPRITE_SHEET_PATH);
         setDisplaySize(FINAL_WIDTH, FINAL_HEIGHT);
         this.initialX = x;
         this.initialY = y;
-        setSpeed(100, 0);
+        setSpeed(MOVEMENT_SPEED, 0);
     }
 }

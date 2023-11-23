@@ -27,8 +27,11 @@ public class FoeManager {
     }
 
     private void initializeFoes(Pane root) {
-        // Add a single Foe at pixel 250
-        foes.add(new Foe(250, 0));
+        // Add a single Foe
+        Random random = new Random();
+        double x = random.nextDouble() * (FOE_MAX_X - FOE_MIN_X) + FOE_MIN_X;
+        double y = random.nextDouble() * (FOE_MAX_Y - FOE_MIN_Y) + FOE_MIN_Y;
+        foes.add(new Foe(x, y));
 
         // Add the ImageViews of Foes to the main container
         for (Foe foe : foes) {

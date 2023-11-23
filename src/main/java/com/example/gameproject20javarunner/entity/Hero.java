@@ -27,7 +27,7 @@ public class Hero extends MovingThing {
     private static final String HERO_BLUE_RUN_SPRITE_SHEET_PATH = "/img/SecretHideout_Gunner/Blue/Gunner_Blue_Run.png";
 
     // Constants (MovingThing)
-    private static final double MOVEMENT_SPEED = 100.0;
+    private static final double MOVEMENT_SPEED = 250;
     private static final double INITIAL_JUMP_SPEED = -600;
     private static final double JUMP_ACCELERATION_UP = 1800;
     private static final double JUMP_ACCELERATION_DOWN = 1200;
@@ -42,6 +42,7 @@ public class Hero extends MovingThing {
         this.isJumping = false;
         this.invincibilityTime = 0;
         root.getChildren().add(getImageView());
+        root.getChildren().add(getHitboxRectangle());
     }
 
     // Method to set the hero's speed in the left direction
