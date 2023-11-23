@@ -2,9 +2,9 @@
 
 package com.example.gameproject20javarunner.entity;
 
-import com.example.gameproject20javarunner.model.AnimatedThing;
+import com.example.gameproject20javarunner.model.MovingThing;
 
-public class Hero extends AnimatedThing {
+public class Hero extends MovingThing {
     // Variables
     private final double initialX;
     private final double initialY;
@@ -14,17 +14,18 @@ public class Hero extends AnimatedThing {
     private long invincibilityTime;  // in nanoseconds
 
     // Constants (AnimatedThing)
-    private static final String HERO_BLUE_RUN_SPRITE_SHEET_PATH = "/img/SecretHideout_Gunner/Blue/Gunner_Blue_Run.png";
-    private static final double HERO_WIDTH = 48;
-    private static final double HERO_HEIGHT = 48;
-    private static final double HERO_FINAL_SIZE = 144;
+    private static final double WIDTH = 48;
+    private static final double HEIGHT = 48;
+    private static final double DISPLAY_WIDTH = 144;
+    private static final double DISPLAY_HEIGHT = 144;
     private static final int ATTITUDE = 0;
     private static final int MAX_INDEX = 5;
     private static final int DURATION = 8;
     private static final double FRAME_OFFSET_X = 0;
     private static final double FRAME_OFFSET_Y = 0;
+    private static final String HERO_BLUE_RUN_SPRITE_SHEET_PATH = "/img/SecretHideout_Gunner/Blue/Gunner_Blue_Run.png";
 
-    // Constants (Hero)
+    // Constants (MovingThing)
     private static final double MOVEMENT_SPEED = 100.0;
     private static final double INITIAL_JUMP_SPEED = -600;
     private static final double JUMP_ACCELERATION_UP = 1800;
@@ -33,19 +34,17 @@ public class Hero extends AnimatedThing {
     private static final double MAX_JUMP_HEIGHT = 100;
 
     public Hero(double x, double y) {
-        super(x, y, HERO_WIDTH, HERO_HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, HERO_BLUE_RUN_SPRITE_SHEET_PATH);
-        setDisplaySize(HERO_FINAL_SIZE, HERO_FINAL_SIZE);
+        super(x, y, WIDTH, HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, HERO_BLUE_RUN_SPRITE_SHEET_PATH);
+        setDisplaySize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
         this.initialX = x;
         this.initialY = y;
         this.jumpSpeed = 0;
         this.jumpTopTime = 0;
         this.isJumping = false;
         this.invincibilityTime = 0;
-    }
 
-    // Method for movement with direction
-    public void move(double direction, double deltaTime) {
-        setX(getX() + MOVEMENT_SPEED * direction * deltaTime);
+        setDirection(1, 0);
+        setSpeed(100, 0);
     }
 
     // Method to handle the hero's jump
@@ -63,7 +62,7 @@ public class Hero extends AnimatedThing {
 
     public void setInvincible(boolean invincible) {
         if (invincible) {
-            invincibilityTime = 25000000000L;  // Set invincibility time to 25 seconds
+            invincibilityTime = 1000000000L;  // Set invincibility time to 1 second
         } else {
             invincibilityTime = 0;
         }
@@ -99,11 +98,7 @@ public class Hero extends AnimatedThing {
         }
     }
 
-    // Method to handle the hero's rendering logic
-    public void update(double deltaTime) {
-        super.update();
-        updateJump(deltaTime);
-
+    private void updateInvincibility(double deltaTime) {
         // Subtract the time passed from invincibility time
         if (invincibilityTime > 0) {
             invincibilityTime -= deltaTime * 1_000_000_000L;  // Convert deltaTime to nanoseconds
@@ -111,5 +106,12 @@ public class Hero extends AnimatedThing {
                 setInvincible(false);  // Reset invincibility once time is up
             }
         }
+    }
+
+    // Method to handle the hero's rendering logic
+    public void update(double deltaTime) {
+        super.update(deltaTime);
+        updateJump(deltaTime);
+        updateInvincibility(deltaTime);
     }
 }

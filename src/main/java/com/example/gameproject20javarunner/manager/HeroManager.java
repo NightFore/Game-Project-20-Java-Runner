@@ -15,11 +15,6 @@ public class HeroManager {
         hero = new Hero(INITIAL_HERO_X, INITIAL_HERO_Y);
 
         root.getChildren().add(hero.getImageView());
-
-    }
-
-    public void move(double direction, double deltaTime) {
-        hero.move(direction, deltaTime);
     }
 
     public void jump() {

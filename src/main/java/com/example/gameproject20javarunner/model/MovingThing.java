@@ -3,7 +3,7 @@
 package com.example.gameproject20javarunner.model;
 
 // A class representing a moving animated element in the game
-public class MovingThing extends AnimatedThing {
+public abstract class MovingThing extends AnimatedThing {
     private double speedX = 0; // Speed in the x-direction
     private double speedY = 0; // Speed in the y-direction
     private double directionX = 0; // Direction in the x-direction (-1.0 for left, 1.0 for right)

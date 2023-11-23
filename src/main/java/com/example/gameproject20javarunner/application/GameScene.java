@@ -34,12 +34,6 @@ public class GameScene extends Scene {
 
     // Rendering method to adjust the position of elements based on the camera
     public void render(double deltaTime) {
-        // Default direction
-        double heroDirection = 1.0;
-        double foeDirection = -1.0;
-
-        // Move the hero based on the direction
-        heroManager.move(heroDirection, deltaTime);
 
         // Move the camera using physics equations
         camera.update(deltaTime, heroManager.getX());
