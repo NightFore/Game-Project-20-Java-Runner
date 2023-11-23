@@ -1,21 +1,23 @@
 // AnimatedThing.java
 
 package com.example.gameproject20javarunner.model;
-import com.example.gameproject20javarunner.view.Camera;
 
 import javafx.geometry.Rectangle2D;
 
+// A class representing an animated element in the game
 public abstract class AnimatedThing extends Thing {
-    private int index;
-    private int frameDuration;
-    private final int attitude;
-    private final int maxIndex;
-    private final int duration;
+    private int index; // Index of the current image in the animation
+    private int frameDuration; // Duration of the current frame
+    private final int attitude; // The attitude of the element (e.g., running)
+    private final int maxIndex; // Maximum index of frames in the animation
+    private final int duration; // Total duration of the animation
 
+    // Constructor to initialize properties of the animated element
     public AnimatedThing(double x, double y, double frameWidth, double frameHeight, double frameOffsetX, double frameOffsetY, int attitude, int maxIndex, int duration, String fileName) {
-        super(fileName);
-        this.x = x;
-        this.y = y;
+        // Call to the constructor of the parent class Thing
+        super(x, y, fileName);
+
+        // Initialization of properties specific to AnimatedThing
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
         this.frameOffsetX = frameOffsetX;
@@ -32,20 +34,6 @@ public abstract class AnimatedThing extends Thing {
 
         // Set the initial viewport of the ImageView to the first frame
         updateViewport();
-
-        // Set the position of the AnimatedThing
-        imageView.setX(x);
-        imageView.setY(y);
-    }
-
-    // Function to set the display size of the image and adjust the view
-    public void setDisplaySizeAndAdjustView(double displayWidth, double displayHeight) {
-        if (displayWidth > 0 && displayHeight > 0) {
-            this.displayWidth = displayWidth;
-            this.displayHeight = displayHeight;
-            imageView.setFitWidth(displayWidth);
-            imageView.setFitHeight(displayHeight);
-        }
     }
 
     // Method to update the viewport based on the current index
@@ -56,13 +44,7 @@ public abstract class AnimatedThing extends Thing {
         imageView.setViewport(viewport);
     }
 
-    // Draw method to update the position based on the camera
-    public void draw(Camera camera) {
-        getImageView().setX(getX() - camera.getX());
-        getImageView().setY(getY() - camera.getY());
-    }
-
-    // Rendering method to handle animation logic
+    // Update method to handle animation logic
     public void update() {
         // Update the duration
         frameDuration++;

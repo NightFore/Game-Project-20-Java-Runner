@@ -34,7 +34,7 @@ public class Hero extends AnimatedThing {
 
     public Hero(double x, double y) {
         super(x, y, HERO_WIDTH, HERO_HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, HERO_BLUE_RUN_SPRITE_SHEET_PATH);
-        setDisplaySizeAndAdjustView(HERO_FINAL_SIZE, HERO_FINAL_SIZE);
+        setDisplaySize(HERO_FINAL_SIZE, HERO_FINAL_SIZE);
         this.initialX = x;
         this.initialY = y;
         this.jumpSpeed = 0;

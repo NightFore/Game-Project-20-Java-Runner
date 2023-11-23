@@ -24,8 +24,8 @@ public class Foe extends MovingThing {
     private static final double MOVEMENT_SPEED = 100.0;
 
     public Foe(double x, double y) {
-        super(x, y, WIDTH, HEIGHT, ATTITUDE, INDEX, MAX_INDEX, DURATION, FRAME_OFFSET_X, FRAME_OFFSET_Y, SPRITE_SHEET_PATH);
-        setDisplaySizeAndAdjustView(FINAL_WIDTH, FINAL_HEIGHT);
+        super(x, y, WIDTH, HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, SPRITE_SHEET_PATH);
+        setDisplaySize(FINAL_WIDTH, FINAL_HEIGHT);
         this.initialX = x;
         this.initialY = y;
     }

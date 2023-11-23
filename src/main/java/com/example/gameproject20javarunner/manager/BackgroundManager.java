@@ -15,8 +15,8 @@ public class BackgroundManager {
     private static final double HEIGHT = 600;
 
     public BackgroundManager(Pane root) {
-        backgroundLeft = new Background(WIDTH, HEIGHT, IMAGE_PATH);
-        backgroundRight = new Background(WIDTH, HEIGHT, IMAGE_PATH);
+        backgroundLeft = new Background(0, 0, WIDTH, HEIGHT, IMAGE_PATH);
+        backgroundRight = new Background(0, 0, WIDTH, HEIGHT, IMAGE_PATH);
         root.getChildren().addAll(getBackgroundLeft(), getBackgroundRight());
     }
 

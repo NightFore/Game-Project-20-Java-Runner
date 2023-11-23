@@ -1,24 +1,10 @@
 package com.example.gameproject20javarunner.model;
 
-import javafx.geometry.Rectangle2D;
 
 public class MovingThing extends AnimatedThing {
     private double speed;
 
-    public MovingThing(double x, double y, double width, double height, int attitude, int index, int maxIndex, int duration, double frameOffsetX, double frameOffsetY, String fileName) {
-        super(x, y, width, height, frameOffsetX, frameOffsetY, attitude, maxIndex, duration, fileName);
-    }
-
-    public void move(double deltaTime) {
-        setX(getX() + speed * deltaTime);
-    }
-
-    // Add more methods or properties as needed
-
-    // Override the getHitBox method to provide a more accurate hitbox for moving things
-    @Override
-    public Rectangle2D getHitBox() {
-        // Assuming a rectangular hitbox based on the current position and size
-        return new Rectangle2D(getX(), getY(), getDisplayWidth(), getDisplayHeight());
+    public MovingThing(double x, double y, double frameWidth, double frameHeight, double frameOffsetX, double frameOffsetY, int attitude, int maxIndex, int duration, String fileName) {
+        super(x, y, frameWidth, frameHeight, frameOffsetX, frameOffsetY, attitude, maxIndex, duration, fileName);
     }
 }
