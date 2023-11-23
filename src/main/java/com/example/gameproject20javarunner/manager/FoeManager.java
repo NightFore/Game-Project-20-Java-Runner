@@ -51,15 +51,9 @@ public class FoeManager {
         }
     }
 
-    public void moveFoes(double direction, double deltaTime) {
+    public void update(double deltaTime) {
         for (Foe foe : foes) {
-            foe.move(direction, deltaTime);
-        }
-    }
-
-    public void update() {
-        for (Foe foe : foes) {
-            foe.update();
+            foe.update(deltaTime);
         }
     }
 

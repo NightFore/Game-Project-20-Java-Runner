@@ -41,16 +41,13 @@ public class GameScene extends Scene {
         // Move the hero based on the direction
         heroManager.move(heroDirection, deltaTime);
 
-        // Move the foes based on the direction
-        foeManager.moveFoes(foeDirection, deltaTime);
-
         // Move the camera using physics equations
         camera.update(deltaTime, heroManager.getX());
 
         backgroundManager.update();
         heartManager.update();
         heroManager.update(deltaTime);
-        foeManager.update();
+        foeManager.update(deltaTime);
         backgroundManager.draw(camera);
         heartManager.draw();
         heroManager.draw(camera);
