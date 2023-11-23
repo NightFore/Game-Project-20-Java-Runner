@@ -17,6 +17,21 @@ public class HeroManager {
         root.getChildren().add(hero.getImageView());
     }
 
+    // Method to set the hero's speed in the left direction
+    public void setMoveLeft() {
+        hero.setMoveLeft();
+    }
+
+    // Method to set the hero's speed in the right direction
+    public void setMoveRight() {
+        hero.setMoveRight();
+    }
+
+    // Method to stop the hero's horizontal movement
+    public void setMoveStop() {
+        hero.setMoveStop();
+    }
+
     public void jump() {
         hero.jump();
     }

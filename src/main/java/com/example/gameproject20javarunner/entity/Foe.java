@@ -26,7 +26,6 @@ public class Foe extends MovingThing {
         setDisplaySize(FINAL_WIDTH, FINAL_HEIGHT);
         this.initialX = x;
         this.initialY = y;
-        setDirection(1, 0);
         setSpeed(100, 0);
     }
 }

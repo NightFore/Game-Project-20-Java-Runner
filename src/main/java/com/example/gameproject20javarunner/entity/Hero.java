@@ -42,9 +42,21 @@ public class Hero extends MovingThing {
         this.jumpTopTime = 0;
         this.isJumping = false;
         this.invincibilityTime = 0;
+    }
 
-        setDirection(1, 0);
-        setSpeed(100, 0);
+    // Method to set the hero's speed in the left direction
+    public void setMoveLeft() {
+        setSpeedX(-MOVEMENT_SPEED);
+    }
+
+    // Method to set the hero's speed in the right direction
+    public void setMoveRight() {
+        setSpeedX(MOVEMENT_SPEED);
+    }
+
+    // Method to stop the hero's horizontal movement
+    public void setMoveStop() {
+        setSpeedX(0);
     }
 
     // Method to handle the hero's jump

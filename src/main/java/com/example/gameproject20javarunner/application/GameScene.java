@@ -28,8 +28,20 @@ public class GameScene extends Scene {
         heroManager = new HeroManager(root);
         foeManager = new FoeManager(root);
 
-        // Add the click listener for the hero's jump
         setOnMouseClicked(event -> heroManager.jump());
+
+        setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case LEFT -> heroManager.setMoveLeft();
+                case RIGHT -> heroManager.setMoveRight();
+            }
+        });
+
+        setOnKeyReleased(event -> {
+            switch (event.getCode()) {
+                case LEFT, RIGHT -> heroManager.setMoveStop();
+            }
+        });
     }
 
     // Rendering method to adjust the position of elements based on the camera
