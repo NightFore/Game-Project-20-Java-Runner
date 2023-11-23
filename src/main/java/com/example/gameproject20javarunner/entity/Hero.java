@@ -3,17 +3,18 @@
 package com.example.gameproject20javarunner.entity;
 
 import com.example.gameproject20javarunner.model.MovingThing;
+import javafx.scene.layout.Pane;
 
 public class Hero extends MovingThing {
     // Variables
-    private final double initialX;
-    private final double initialY;
     private double jumpSpeed;
     private double jumpTopTime;
     private boolean isJumping;
     private long invincibilityTime;  // in nanoseconds
 
     // Constants (AnimatedThing)
+    private static final double INITIAL_X = 0;
+    private static final double INITIAL_Y = 425;
     private static final double WIDTH = 48;
     private static final double HEIGHT = 48;
     private static final double DISPLAY_WIDTH = 144;
@@ -33,15 +34,14 @@ public class Hero extends MovingThing {
     private static final double JUMP_TOP_DURATION = 0.10;
     private static final double MAX_JUMP_HEIGHT = 100;
 
-    public Hero(double x, double y) {
-        super(x, y, WIDTH, HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, HERO_BLUE_RUN_SPRITE_SHEET_PATH);
+    public Hero(Pane root) {
+        super(INITIAL_X, INITIAL_Y, WIDTH, HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, HERO_BLUE_RUN_SPRITE_SHEET_PATH);
         setDisplaySize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
-        this.initialX = x;
-        this.initialY = y;
         this.jumpSpeed = 0;
         this.jumpTopTime = 0;
         this.isJumping = false;
         this.invincibilityTime = 0;
+        root.getChildren().add(getImageView());
     }
 
     // Method to set the hero's speed in the left direction
@@ -86,8 +86,8 @@ public class Hero extends MovingThing {
             double newY = getY() + jumpSpeed * deltaTime;
 
             // Phase 4: Land
-            if (newY > initialY) {
-                newY = initialY;
+            if (newY > INITIAL_Y) {
+                newY = INITIAL_Y;
                 isJumping = false;
             }
             // Phase 3: Descend
@@ -95,8 +95,8 @@ public class Hero extends MovingThing {
                 jumpSpeed += JUMP_ACCELERATION_DOWN * deltaTime;
             }
             // Phase 2: Pause
-            else if (newY <= initialY - MAX_JUMP_HEIGHT) {
-                newY = initialY - MAX_JUMP_HEIGHT;
+            else if (newY <= INITIAL_Y - MAX_JUMP_HEIGHT) {
+                newY = INITIAL_Y - MAX_JUMP_HEIGHT;
                 jumpSpeed = 0;
                 jumpTopTime += deltaTime;
             }

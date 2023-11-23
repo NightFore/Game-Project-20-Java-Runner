@@ -55,7 +55,8 @@ public class HelloApplication extends Application {
                 double deltaTime = (now - prevTime) / 1e9; // Convert nanoseconds to seconds
 
                 // Game logic update
-                scene.render(deltaTime);
+                scene.draw();
+                scene.update(deltaTime);
 
                 // Update the previous time for the next frame
                 prevTime = now;
