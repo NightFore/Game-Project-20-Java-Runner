@@ -65,11 +65,6 @@ public abstract class Thing {
         return imageView;
     }
 
-    // Method to get the hitbox of the thing
-    public Rectangle2D getHitBox() {
-        return new Rectangle2D(x, y, displayWidth, displayHeight);
-    }
-
     // Set the x position
     public void setX(double x) {
         this.x = x;
@@ -102,6 +97,11 @@ public abstract class Thing {
     public void setDisplaySize(double displayWidth, double displayHeight) {
         setDisplayWidth(displayWidth);
         setDisplayHeight(displayHeight);
+    }
+
+    // Method to get the display box of the thing
+    public Rectangle2D getDisplayBox() {
+        return new Rectangle2D(x, y, displayWidth, displayHeight);
     }
 
     // Draw method to update the position based on the camera

@@ -46,16 +46,16 @@ public class GameScene extends Scene {
     // Method to handle key press events
     private void handleKeyPress(KeyCode code) {
         switch (code) {
-            case LEFT, A -> hero.setMoveLeft();
-            case RIGHT, D -> hero.setMoveRight();
-            case UP, W, SPACE -> hero.jump();
+            case LEFT, A -> hero.setMove(-1);
+            case RIGHT, D -> hero.setMove(1);
+            case UP, W, SPACE -> hero.setJump();
         }
     }
 
     // Method to handle key release events
     private void handleKeyRelease(KeyCode code) {
         switch (code) {
-            case LEFT, RIGHT, A, D -> hero.setMoveStop();
+            case LEFT, RIGHT, A, D -> hero.setMove(0);
         }
     }
 

@@ -10,19 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Hero extends MovingThing {
-    // Screen variables
+    // Game Attributes
     private final Camera camera;
     private final Pane root;
 
-    // Variables
-    private double directionX;
-    private double jumpSpeed;
-    private double jumpTopTime;
-    private boolean isJumping;
-    private long invincibilityTime;  // in nanoseconds
-    private final List<Projectile> projectiles;
-
-    // Constants (AnimatedThing)
+    // AnimatedThing Attributes
     private static final double INITIAL_X = 0;
     private static final double INITIAL_Y = 425;
     private static final double WIDTH = 48;
@@ -39,7 +31,13 @@ public class Hero extends MovingThing {
     // Constants (MovingThing)
     private static final double MOVEMENT_SPEED = 2500;
 
-    // Constants (Hero)
+    // Hero Attributes
+    private double directionX;
+    private double jumpSpeed;
+    private double jumpTopTime;
+    private boolean isJumping;
+    private long invincibilityTime;  // in nanoseconds
+    private final List<Projectile> projectiles;
     private static final double INITIAL_JUMP_SPEED = -600;
     private static final double JUMP_ACCELERATION_UP = 1800;
     private static final double JUMP_ACCELERATION_DOWN = 1200;
@@ -62,56 +60,20 @@ public class Hero extends MovingThing {
         root.getChildren().add(getHitboxRectangle());
     }
 
-    // Method to set the hero's speed in the left direction
-    public void setMoveLeft() {
-        directionX = -1;
-        setSpeedX(MOVEMENT_SPEED);
+    // Method to set the hero's speed
+    public void setMove(double direction) {
+        directionX = direction;
+        setSpeedX(direction * MOVEMENT_SPEED);
         setDirectionX(directionX);
     }
 
-    // Method to set the hero's speed in the right direction
-    public void setMoveRight() {
-        directionX = 1;
-        setSpeedX(MOVEMENT_SPEED);
-        setDirectionX(directionX);
-    }
-
-    // Method to stop the hero's horizontal movement
-    public void setMoveStop() {
-        directionX = 0;
-        setSpeedX(0);
-        setDirectionX(directionX);
-    }
-
-    // Method to handle the hero's jump
-    public void jump() {
+    // Method to set the hero to jump state
+    public void setJump() {
         if (!isJumping) {
             jumpSpeed = INITIAL_JUMP_SPEED;
             jumpTopTime = 0;
             isJumping = true;
         }
-    }
-
-    public boolean isInvincible() {
-        return invincibilityTime > 0;
-    }
-
-    public void setInvincible(boolean invincible) {
-        if (invincible) {
-            invincibilityTime = 1000000000L;  // Set invincibility time to 1 second
-        } else {
-            invincibilityTime = 0;
-        }
-    }
-
-    // Method to create and add a projectile
-    public void shootProjectile() {
-        Projectile projectile = new Projectile(root);
-        double projectileX = getX() + getDisplayWidth();
-        double projectileY = getY() + (getDisplayHeight() - projectile.getDisplayHeight()) / 2;
-        projectile.setPosition(projectileX, projectileY);
-        projectile.setDirectionX(PROJECTILE_DIRECTION);
-        projectiles.add(projectile);
     }
 
     // Method to update the hero's position during a jump
@@ -144,6 +106,18 @@ public class Hero extends MovingThing {
         }
     }
 
+    public boolean isInvincible() {
+        return invincibilityTime > 0;
+    }
+
+    public void setInvincible(boolean invincible) {
+        if (invincible) {
+            invincibilityTime = 1000000000L;  // Set invincibility time to 1 second
+        } else {
+            invincibilityTime = 0;
+        }
+    }
+
     private void updateInvincibility(double deltaTime) {
         // Subtract the time passed from invincibility time
         if (invincibilityTime > 0) {
@@ -154,13 +128,23 @@ public class Hero extends MovingThing {
         }
     }
 
+    // Method to create and add a projectile
+    public void shootProjectile() {
+        Projectile projectile = new Projectile(root);
+        double projectileX = getX() + getDisplayWidth();
+        double projectileY = getY() + (getDisplayHeight() - projectile.getDisplayHeight()) / 2;
+        projectile.setPosition(projectileX, projectileY);
+        projectile.setDirectionX(PROJECTILE_DIRECTION);
+        projectiles.add(projectile);
+    }
+
     // Method to update projectiles
     private void updateProjectiles(double deltaTime) {
         // Remove projectiles that go off-screen and update the remaining projectiles
         projectiles.removeIf(projectile -> {
             double leftX = projectile.getX() - camera.getX() + projectile.getDisplayWidth();
             double rightX = projectile.getX() - camera.getX();
-            boolean offScreen = leftX < 0 || rightX > root.getWidth();
+            boolean offScreen = leftX < -root.getWidth() || rightX > 2 * root.getWidth();
             if (offScreen) {
                 projectile.removeFromRoot();
             }
