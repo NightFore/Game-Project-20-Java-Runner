@@ -6,6 +6,9 @@ import com.example.gameproject20javarunner.model.MovingThing;
 import javafx.scene.layout.Pane;
 
 public class Projectile extends MovingThing {
+    // Screen variables
+    private final Pane root;
+
     // Constants (AnimatedThing)
     private static final double INITIAL_X = 0;
     private static final double INITIAL_Y = 0;
@@ -25,9 +28,18 @@ public class Projectile extends MovingThing {
 
     public Projectile(Pane root) {
         super(INITIAL_X, INITIAL_Y, WIDTH, HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, SPRITE_SHEET_PATH);
+        setDisplaySize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+        this.root = root;
         setSpeedX(MOVEMENT_SPEED);
         root.getChildren().add(getImageView());
         root.getChildren().add(getHitboxRectangle());
+    }
+
+    public void removeFromRoot() {
+        if (root.getChildren().contains(getImageView())) {
+            root.getChildren().remove(getImageView());
+            root.getChildren().remove(getHitboxRectangle());
+        }
     }
 
     // Method to handle the hero's rendering logic

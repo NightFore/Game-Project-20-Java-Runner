@@ -157,16 +157,17 @@ public class Hero extends MovingThing {
 
     // Method to update projectiles
     private void updateProjectiles(double deltaTime) {
-        Iterator<Projectile> iterator = projectiles.iterator();
-        while (iterator.hasNext()) {
-            Projectile projectile = iterator.next();
-            projectile.update(deltaTime);
-
-            // Remove projectiles that go off-screen
-            if (projectile.getX() > screenWidth) {
-                iterator.remove();
+        // Remove projectiles that go off-screen and update the remaining projectiles
+        projectiles.removeIf(projectile -> {
+            boolean offScreen = projectile.getX() + projectile.getDisplayWidth() < 0 || projectile.getX() > screenWidth;
+            if (offScreen) {
+                projectile.removeFromRoot();
             }
-        }
+            return offScreen;
+        });
+
+        // Update the remaining projectiles
+        projectiles.forEach(projectile -> projectile.update(deltaTime));
     }
 
     // Method to draw projectiles
