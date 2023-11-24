@@ -28,7 +28,7 @@ public class GameScene extends Scene {
         backgroundManager = new BackgroundManager(root);
         heartManager = new HeartManager(root);
         foeManager = new FoeManager(root);
-        hero = new Hero(root);
+        hero = new Hero(camera, root);
 
         setOnMouseClicked(event -> handleClickPress(event.getButton()));
         setOnKeyPressed(event -> handleKeyPress(event.getCode()));
@@ -74,7 +74,7 @@ public class GameScene extends Scene {
     public void draw() {
         backgroundManager.draw(camera);
         heartManager.draw();
-        hero.draw(camera);
+        hero.draw();
         foeManager.draw(camera);
     }
 }

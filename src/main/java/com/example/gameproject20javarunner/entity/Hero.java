@@ -7,13 +7,12 @@ import com.example.gameproject20javarunner.view.Camera;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Hero extends MovingThing {
     // Screen variables
+    private final Camera camera;
     private final Pane root;
-    private final double screenWidth;
 
     // Variables
     private double directionX;
@@ -38,7 +37,7 @@ public class Hero extends MovingThing {
     private static final String SPRITE_SHEET_PATH = "/img/SecretHideout_Gunner/Blue/Gunner_Blue_Run.png";
 
     // Constants (MovingThing)
-    private static final double MOVEMENT_SPEED = 250;
+    private static final double MOVEMENT_SPEED = 2500;
 
     // Constants (Hero)
     private static final double INITIAL_JUMP_SPEED = -600;
@@ -48,11 +47,11 @@ public class Hero extends MovingThing {
     private static final double MAX_JUMP_HEIGHT = 100;
     private static final double PROJECTILE_DIRECTION = 1;
 
-    public Hero(Pane root) {
+    public Hero(Camera camera, Pane root) {
         super(INITIAL_X, INITIAL_Y, WIDTH, HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, SPRITE_SHEET_PATH);
         setDisplaySize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+        this.camera = camera;
         this.root = root;
-        this.screenWidth = root.getWidth();
         this.directionX = 0;
         this.jumpSpeed = 0;
         this.jumpTopTime = 0;
@@ -159,7 +158,9 @@ public class Hero extends MovingThing {
     private void updateProjectiles(double deltaTime) {
         // Remove projectiles that go off-screen and update the remaining projectiles
         projectiles.removeIf(projectile -> {
-            boolean offScreen = projectile.getX() + projectile.getDisplayWidth() < 0 || projectile.getX() > screenWidth;
+            double leftX = projectile.getX() - camera.getX() + projectile.getDisplayWidth();
+            double rightX = projectile.getX() - camera.getX();
+            boolean offScreen = leftX < 0 || rightX > root.getWidth();
             if (offScreen) {
                 projectile.removeFromRoot();
             }
@@ -171,7 +172,7 @@ public class Hero extends MovingThing {
     }
 
     // Method to draw projectiles
-    private void drawProjectiles(Camera camera) {
+    private void drawProjectiles() {
         for (Projectile projectile : projectiles) {
             projectile.draw(camera);
         }
@@ -186,8 +187,8 @@ public class Hero extends MovingThing {
     }
 
     // Method to handle the hero's rendering logic
-    public void draw(Camera camera) {
+    public void draw() {
         super.draw(camera);
-        drawProjectiles(camera);
+        drawProjectiles();
     }
 }
