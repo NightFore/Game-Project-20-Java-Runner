@@ -48,6 +48,9 @@ public class Hero extends MovingThing {
     public Hero(Camera camera, Pane root) {
         super(INITIAL_X, INITIAL_Y, WIDTH, HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, SPRITE_SHEET_PATH);
         setDisplaySize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+        root.getChildren().add(getImageView());
+        root.getChildren().add(getHitboxRectangle());
+
         this.camera = camera;
         this.root = root;
         this.directionX = 0;
@@ -56,14 +59,12 @@ public class Hero extends MovingThing {
         this.isJumping = false;
         this.invincibilityTime = 0;
         projectiles = new ArrayList<>();
-        root.getChildren().add(getImageView());
-        root.getChildren().add(getHitboxRectangle());
     }
 
     // Method to set the hero's speed
     public void setMove(double direction) {
         directionX = direction;
-        setSpeedX(direction * MOVEMENT_SPEED);
+        setSpeedX(MOVEMENT_SPEED);
         setDirectionX(directionX);
     }
 

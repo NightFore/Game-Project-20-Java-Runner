@@ -25,7 +25,7 @@ public class GameScene extends Scene {
         super(root, width, height);
         this.camera = camera;
 
-        backgroundManager = new BackgroundManager(root);
+        backgroundManager = new BackgroundManager(camera, root);
         heartManager = new HeartManager(root);
         foeManager = new FoeManager(root);
         hero = new Hero(camera, root);
@@ -72,7 +72,7 @@ public class GameScene extends Scene {
 
     // Method to draw the scene elements
     public void draw() {
-        backgroundManager.draw(camera);
+        backgroundManager.draw();
         heartManager.draw();
         hero.draw();
         foeManager.draw(camera);

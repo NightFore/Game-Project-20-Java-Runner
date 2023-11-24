@@ -8,16 +8,30 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 public class BackgroundManager {
-    private final Background backgroundLeft;
-    private final Background backgroundRight;
-    private static final String IMAGE_PATH = "/img/desert.png";
+    // Game Attributes
+    private final Camera camera;
+    private final Pane root;
+
+    // StaticThing Attributes
     private static final double WIDTH = 800;
     private static final double HEIGHT = 600;
+    private static final String IMAGE_PATH = "/img/desert.png";
 
-    public BackgroundManager(Pane root) {
+    // BackgroundManager Attributes
+    private final Background backgroundLeft;
+    private final Background backgroundRight;
+    private static final double LOOP_THRESHOLD = WIDTH / 2;
+
+    public BackgroundManager(Camera camera, Pane root) {
         backgroundLeft = new Background(0, 0, WIDTH, HEIGHT, IMAGE_PATH);
         backgroundRight = new Background(0, 0, WIDTH, HEIGHT, IMAGE_PATH);
         root.getChildren().addAll(getBackgroundLeft(), getBackgroundRight());
+
+        this.camera = camera;
+        this.root = root;
+
+        backgroundLeft.setX(-WIDTH / 2);
+        backgroundRight.setX(WIDTH / 2);
     }
 
     public ImageView getBackgroundLeft() {
@@ -29,16 +43,26 @@ public class BackgroundManager {
     }
 
     public void update() {
+        // Check if the camera is near the left edge of the backgroundLeft
+        if (backgroundLeft.getX() > camera.getX()) {
+            // Move background to the left to create a looping effect
+            backgroundLeft.setX(backgroundLeft.getX() - backgroundLeft.getDisplayWidth());
+            backgroundRight.setX(backgroundRight.getX() - backgroundRight.getDisplayWidth());
+        }
+
+        // Check if the camera is near the right edge of the backgroundRight
+        if (backgroundRight.getX() < camera.getX()) {
+            // Move background to the right to create a looping effect
+            backgroundLeft.setX(backgroundLeft.getX() + backgroundLeft.getDisplayWidth());
+            backgroundRight.setX(backgroundRight.getX() + backgroundRight.getDisplayWidth());
+        }
     }
 
-    public void draw(Camera camera) {
-        double cameraX = camera.getX();
-        double cameraY = camera.getY();
+    public void draw() {
+        backgroundLeft.getImageView().setX(backgroundLeft.getX() - camera.getX());
+        backgroundLeft.getImageView().setY(camera.getY());
 
-        backgroundLeft.getImageView().setX(-WIDTH / 2 - cameraX);
-        backgroundLeft.getImageView().setY(cameraY);
-
-        backgroundRight.getImageView().setX(WIDTH / 2 - cameraX);
-        backgroundRight.getImageView().setY(cameraY);
+        backgroundRight.getImageView().setX(backgroundRight.getX() - camera.getX());
+        backgroundRight.getImageView().setY(camera.getY());
     }
 }
