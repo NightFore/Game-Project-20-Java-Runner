@@ -38,7 +38,7 @@ public class GameScene extends Scene {
     // Method to handle click events
     private void handleClickPress(MouseButton button) {
         switch (button) {
-            case PRIMARY -> hero.jump(); // Left-click
+            case PRIMARY -> hero.shootProjectile(); // Left-click
             case SECONDARY -> {} // Right-click
         }
     }
@@ -46,15 +46,16 @@ public class GameScene extends Scene {
     // Method to handle key press events
     private void handleKeyPress(KeyCode code) {
         switch (code) {
-            case LEFT -> hero.setMoveLeft();
-            case RIGHT -> hero.setMoveRight();
+            case LEFT, A -> hero.setMoveLeft();
+            case RIGHT, D -> hero.setMoveRight();
+            case UP, W, SPACE -> hero.jump();
         }
     }
 
     // Method to handle key release events
     private void handleKeyRelease(KeyCode code) {
         switch (code) {
-            case LEFT, RIGHT -> hero.setMoveStop();
+            case LEFT, RIGHT, A, D -> hero.setMoveStop();
         }
     }
 
