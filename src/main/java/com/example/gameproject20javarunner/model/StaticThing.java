@@ -120,7 +120,13 @@ public class StaticThing {
      */
     public void setY(double y) {
         this.y = y;
-        imageView.setY(y);
+        imageView.setX(y);
+    }
+
+    public void test(double x, double y) {
+        this.x = x;
+        this.y = y;
+
     }
 
     /**

@@ -25,7 +25,7 @@ public class HeartManager {
         hearts = new Heart[NUMBER_OF_LIVES];
 
         for (int i = 0; i < NUMBER_OF_LIVES; i++) {
-            hearts[i] = new Heart(camera, root,0, 0, 0);
+            hearts[i] = new Heart(camera, root, 0, 0, 0);
             hearts[i].setPosition(HEART_START_X + i * hearts[i].getDisplayWidth(), HEART_START_Y);
         }
 
@@ -37,11 +37,5 @@ public class HeartManager {
 
     // Method to decrease the number of hearts
     public void decreaseHearts() {
-    }
-
-    public void update() {
-    }
-
-    public void draw() {
     }
 }

@@ -106,7 +106,8 @@ public abstract class MovingThing extends AnimatedThing {
         double newY = getY() + speedY * directionY * deltaTime;
 
         // Set the new position
-        setPosition(newX, newY);
+        test(newX, newY);
+        // setPosition(newX, newY);
     }
 
     /**

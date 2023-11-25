@@ -65,7 +65,6 @@ public class GameScene extends Scene {
         camera.update(deltaTime, hero.getX());
 
         backgroundManager.update();
-        heartManager.update();
         hero.update(deltaTime);
         foeManager.update(deltaTime);
 
@@ -76,7 +75,6 @@ public class GameScene extends Scene {
     // Method to draw the scene elements
     public void draw() {
         backgroundManager.draw();
-        heartManager.draw();
         hero.draw();
         foeManager.draw();
     }
