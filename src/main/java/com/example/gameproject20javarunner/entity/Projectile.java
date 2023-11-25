@@ -6,10 +6,10 @@ import com.example.gameproject20javarunner.model.MovingThing;
 import javafx.scene.layout.Pane;
 
 public class Projectile extends MovingThing {
-    // Screen variables
+    // Game Attributes
     private final Pane root;
 
-    // Constants (AnimatedThing)
+    // Animated Attributes
     private static final double INITIAL_X = 0;
     private static final double INITIAL_Y = 0;
     private static final double WIDTH = 128;
@@ -23,7 +23,7 @@ public class Projectile extends MovingThing {
     private static final double FRAME_OFFSET_Y = 0;
     private static final String SPRITE_SHEET_PATH = "/img/effect_Pimen_Energy_Ball_128x128.png";
 
-    // Constants (MovingThing)
+    // Projectile Attributes
     private static final double MOVEMENT_SPEED = 1000;
 
     public Projectile(Pane root) {

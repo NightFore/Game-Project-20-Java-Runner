@@ -15,8 +15,6 @@ public class Hero extends MovingThing {
     private final Pane root;
 
     // AnimatedThing Attributes
-    private static final double INITIAL_X = 0;
-    private static final double INITIAL_Y = 425;
     private static final double WIDTH = 48;
     private static final double HEIGHT = 48;
     private static final double DISPLAY_WIDTH = 144;
@@ -28,9 +26,6 @@ public class Hero extends MovingThing {
     private static final double FRAME_OFFSET_Y = 0;
     private static final String SPRITE_SHEET_PATH = "/img/SecretHideout_Gunner/Blue/Gunner_Blue_Run.png";
 
-    // Constants (MovingThing)
-    private static final double MOVEMENT_SPEED = 2500;
-
     // Hero Attributes
     private double directionX;
     private double jumpSpeed;
@@ -38,6 +33,9 @@ public class Hero extends MovingThing {
     private boolean isJumping;
     private long invincibilityTime;  // in nanoseconds
     private final List<Projectile> projectiles;
+    private static final double INITIAL_X = 0;
+    private static final double INITIAL_Y = 425;
+    private static final double MOVEMENT_SPEED = 250;
     private static final double INITIAL_JUMP_SPEED = -600;
     private static final double JUMP_ACCELERATION_UP = 1800;
     private static final double JUMP_ACCELERATION_DOWN = 1200;

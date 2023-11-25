@@ -11,46 +11,41 @@ import java.util.List;
 import java.util.Random;
 
 public class FoeManager {
+    // Game Attributes
+    private final Camera camera;
+    private final Pane root;
     private final List<Foe> foes;
 
     // Constants (Foe)
-    private static final int MIN_FOES = 2;
-    private static final int MAX_FOES = 10;
-    private static final float FOE_MIN_X = 500;
-    private static final float FOE_MAX_X = 1000;
+    private static final int MIN_FOES = 50;
+    private static final int MAX_FOES = 100;
+    private static final float FOE_MIN_X = 800;
+    private static final float FOE_MAX_X = 1600;
     private static final float FOE_MIN_Y = 400;
     private static final float FOE_MAX_Y = 450;
 
-    public FoeManager(Pane root) {
+    public FoeManager(Camera camera, Pane root) {
+        this.camera = camera;
+        this.root = root;
         foes = new ArrayList<>();
-        initializeFoes(root);
+        addRandomFoes();
     }
 
-    private void initializeFoes(Pane root) {
-        // Add a single Foe
-        Random random = new Random();
-        double x = random.nextDouble() * (FOE_MAX_X - FOE_MIN_X) + FOE_MIN_X;
-        double y = random.nextDouble() * (FOE_MAX_Y - FOE_MIN_Y) + FOE_MIN_Y;
-        foes.add(new Foe(x, y));
-
-        // Add the ImageViews of Foes to the main container
-        for (Foe foe : foes) {
-            root.getChildren().add(foe.getImageView());
-        }
+    public void addSingleFoe(double x, double y) {
+        Foe foe = new Foe(x, y);
+        foes.add(foe);
+        root.getChildren().add(foe.getImageView());
     }
 
     // Add a random number of Foes to the list
-    public void addRandomFoes(Pane root) {
+    public void addRandomFoes() {
         Random random = new Random();
         int numberOfFoes = random.nextInt(MAX_FOES - MIN_FOES + 1) + MIN_FOES;
 
         for (int i = 0; i < numberOfFoes; i++) {
             double x = random.nextDouble() * (FOE_MAX_X - FOE_MIN_X) + FOE_MIN_X;
             double y = random.nextDouble() * (FOE_MAX_Y - FOE_MIN_Y) + FOE_MIN_Y;
-
-            Foe foe = new Foe(x, y);
-            foes.add(foe);
-            root.getChildren().add(foe.getImageView());
+            addSingleFoe(x, y);
         }
     }
 
@@ -60,7 +55,7 @@ public class FoeManager {
         }
     }
 
-    public void draw(Camera camera) {
+    public void draw() {
         for (Foe foe : foes) {
             foe.draw(camera);
         }

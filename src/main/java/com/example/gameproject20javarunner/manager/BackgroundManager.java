@@ -20,18 +20,14 @@ public class BackgroundManager {
     // BackgroundManager Attributes
     private final Background backgroundLeft;
     private final Background backgroundRight;
-    private static final double LOOP_THRESHOLD = WIDTH / 2;
 
     public BackgroundManager(Camera camera, Pane root) {
-        backgroundLeft = new Background(0, 0, WIDTH, HEIGHT, IMAGE_PATH);
-        backgroundRight = new Background(0, 0, WIDTH, HEIGHT, IMAGE_PATH);
+        backgroundLeft = new Background(-WIDTH / 2, 0, WIDTH, HEIGHT, IMAGE_PATH);
+        backgroundRight = new Background(WIDTH / 2, 0, WIDTH, HEIGHT, IMAGE_PATH);
         root.getChildren().addAll(getBackgroundLeft(), getBackgroundRight());
 
         this.camera = camera;
         this.root = root;
-
-        backgroundLeft.setX(-WIDTH / 2);
-        backgroundRight.setX(WIDTH / 2);
     }
 
     public ImageView getBackgroundLeft() {
