@@ -110,6 +110,7 @@ public class StaticThing {
      */
     public void setX(double x) {
         this.x = x;
+        imageView.setX(x);
     }
 
     /**
@@ -119,6 +120,7 @@ public class StaticThing {
      */
     public void setY(double y) {
         this.y = y;
+        imageView.setY(y);
     }
 
     /**

@@ -26,7 +26,7 @@ public class GameScene extends Scene {
         this.camera = camera;
 
         backgroundManager = new BackgroundManager(camera, root);
-        heartManager = new HeartManager(root);
+        heartManager = new HeartManager(camera, root);
         foeManager = new FoeManager(camera, root);
         hero = new Hero(camera, root);
 

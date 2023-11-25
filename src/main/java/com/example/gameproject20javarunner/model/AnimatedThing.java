@@ -46,17 +46,7 @@ public abstract class AnimatedThing extends SpriteThing {
         this.duration = duration;
 
         // Set the initial viewport of the ImageView to the first sprite
-        updateViewport();
-    }
-
-    /**
-     * Method to update the viewport based on the current index.
-     */
-    private void updateViewport() {
-        double spriteX = index * spriteWidth + spriteOffsetX;
-        double spriteY = attitude * spriteHeight + spriteOffsetY;
-        Rectangle2D viewport = new Rectangle2D(spriteX, spriteY, spriteWidth, spriteHeight);
-        imageView.setViewport(viewport);
+        updateViewport(index, attitude);
     }
 
     /**
@@ -81,7 +71,7 @@ public abstract class AnimatedThing extends SpriteThing {
             }
 
             // Update the viewport based on the new index
-            updateViewport();
+            updateViewport(index, attitude);
         }
     }
 }

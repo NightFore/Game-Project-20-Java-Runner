@@ -1,10 +1,13 @@
-// SpriteThing.java
-
 package com.example.gameproject20javarunner.model;
 
 import com.example.gameproject20javarunner.view.Camera;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.Pane;
 
+/**
+ * A class representing a game element with sprite animations.
+ * Extends the abstract class StaticThing.
+ */
 public abstract class SpriteThing extends StaticThing {
     // Sprite Attributes
     protected final double spriteWidth;
@@ -36,5 +39,19 @@ public abstract class SpriteThing extends StaticThing {
         this.spriteHeight = spriteHeight;
         this.spriteOffsetX = spriteOffsetX;
         this.spriteOffsetY = spriteOffsetY;
+
+        // Set the initial viewport of the ImageView to the first sprite
+        updateViewport(0, 0);
+    }
+
+    /**
+     * Method to update the viewport based on the current index.
+     */
+    protected void updateViewport(int indexX, int indexY) {
+        double spriteX = indexX * spriteWidth + spriteOffsetX;
+        double spriteY = indexY * spriteHeight + spriteOffsetY;
+
+        Rectangle2D viewport = new Rectangle2D(spriteX, spriteY, spriteWidth, spriteHeight);
+        imageView.setViewport(viewport);
     }
 }
