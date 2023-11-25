@@ -48,7 +48,7 @@ public class Hero extends MovingThing {
         super(INITIAL_X, INITIAL_Y, WIDTH, HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, SPRITE_SHEET_PATH);
         setDisplaySize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
         root.getChildren().add(getImageView());
-        root.getChildren().add(getHitboxRectangle());
+        root.getChildren().add(getDisplayRectangle());
 
         this.camera = camera;
         this.root = root;

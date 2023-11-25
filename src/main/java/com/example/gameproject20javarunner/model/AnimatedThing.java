@@ -9,6 +9,10 @@ import javafx.scene.shape.Rectangle;
 
 // A class representing an animated element in the game
 public abstract class AnimatedThing extends Thing {
+    protected double frameWidth;
+    protected double frameHeight;
+    protected double frameOffsetX;
+    protected double frameOffsetY;
     private int index; // Index of the current image in the animation
     private int frameDuration; // Duration of the current frame
     private final int attitude; // The attitude of the element (e.g., running)
