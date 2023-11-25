@@ -13,13 +13,13 @@ import javafx.scene.layout.Pane;
 public abstract class AnimatedThing extends SpriteThing {
     // Animation Attributes
     private int index = 0;
-    private int frameDuration = 0;
+    private int spriteDuration = 0;
     private final int attitude;
     private final int maxIndex;
     private final int duration;
 
     /**
-     * Constructs an AnimatedThing with the specified initial position, display size, frame dimensions, frame offsets, attitude, max index, duration, and image file.
+     * Constructs an AnimatedThing with the specified initial position, display size, sprite dimensions, sprite offsets, attitude, max index, duration, and image file.
      *
      * @param camera         The camera used for positioning.
      * @param root           The root pane where the elements are added.
@@ -27,25 +27,25 @@ public abstract class AnimatedThing extends SpriteThing {
      * @param y              The initial y position.
      * @param displayWidth   The width of the displayed image.
      * @param displayHeight  The height of the displayed image.
-     * @param frameWidth     The width of each frame in the animation.
-     * @param frameHeight    The height of each frame in the animation.
-     * @param frameOffsetX   The x offset of the first frame in the animation.
-     * @param frameOffsetY   The y offset of the first frame in the animation.
+     * @param spriteWidth    The width of each sprite in the sprite sheet.
+     * @param spriteHeight   The height of each sprite in the sprite sheet.
+     * @param spriteOffsetX  The x offset of the first sprite in the sprite sheet.
+     * @param spriteOffsetY  The y offset of the first sprite in the sprite sheet.
      * @param attitude       The attitude of the element (e.g., running).
-     * @param maxIndex       The maximum index of frames in the animation.
+     * @param maxIndex       The maximum index of sprites in the animation.
      * @param duration       The total duration of the animation.
      * @param fileName       The file name of the image resource.
      */
-    public AnimatedThing(Camera camera, Pane root, double x, double y, double displayWidth, double displayHeight, double frameWidth, double frameHeight, double frameOffsetX, double frameOffsetY, int attitude, int maxIndex, int duration, String fileName) {
+    public AnimatedThing(Camera camera, Pane root, double x, double y, double displayWidth, double displayHeight, double spriteWidth, double spriteHeight, double spriteOffsetX, double spriteOffsetY, int maxIndex, int attitude, int duration, String fileName) {
         // Call to the constructor of the parent class StaticThing
-        super(camera, root, x, y, displayWidth, displayHeight, frameWidth, frameHeight, frameOffsetX, frameOffsetY, fileName);
+        super(camera, root, x, y, displayWidth, displayHeight, spriteWidth, spriteHeight, spriteOffsetX, spriteOffsetY, fileName);
 
         // Set animation attributes
         this.attitude = attitude;
         this.maxIndex = maxIndex;
         this.duration = duration;
 
-        // Set the initial viewport of the ImageView to the first frame
+        // Set the initial viewport of the ImageView to the first sprite
         updateViewport();
     }
 
@@ -53,9 +53,9 @@ public abstract class AnimatedThing extends SpriteThing {
      * Method to update the viewport based on the current index.
      */
     private void updateViewport() {
-        double frameX = index * frameWidth + frameOffsetX;
-        double frameY = attitude * frameHeight + frameOffsetY;
-        Rectangle2D viewport = new Rectangle2D(frameX, frameY, frameWidth, frameHeight);
+        double spriteX = index * spriteWidth + spriteOffsetX;
+        double spriteY = attitude * spriteHeight + spriteOffsetY;
+        Rectangle2D viewport = new Rectangle2D(spriteX, spriteY, spriteWidth, spriteHeight);
         imageView.setViewport(viewport);
     }
 
@@ -63,20 +63,20 @@ public abstract class AnimatedThing extends SpriteThing {
      * Update method to handle animation logic.
      */
     public void update() {
-        // Increment the frame duration
-        frameDuration++;
+        // Increment the sprite duration
+        spriteDuration++;
 
-        // Check if it's time to change frames
-        if (frameDuration >= duration) {
+        // Check if it's time to change sprites
+        if (spriteDuration >= duration) {
             // Reset the duration
-            frameDuration = 0;
+            spriteDuration = 0;
 
-            // Move to the next frame
+            // Move to the next sprite
             index++;
 
             // Check if we reached the maximum index
             if (index > maxIndex) {
-                // Reset to the first frame
+                // Reset to the first sprite
                 index = 0;
             }
 

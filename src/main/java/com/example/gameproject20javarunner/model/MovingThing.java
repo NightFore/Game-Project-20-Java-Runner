@@ -15,26 +15,26 @@ public abstract class MovingThing extends AnimatedThing {
     private double directionY = 0;
 
     /**
-     * Constructs a MovingThing with the specified camera, root, initial position, display size, frame dimensions, frame offsets, attitude, max index, duration, and image file.
+     * Constructs a MovingThing with the specified camera, root, initial position, display size, sprite dimensions, sprite offsets, attitude, max index, duration, and image file.
      *
-     * @param camera        The camera used for positioning.
-     * @param root          The root pane where the elements are added.
+     * @param camera         The camera used for positioning.
+     * @param root           The root pane where the elements are added.
      * @param x              The initial x position.
      * @param y              The initial y position.
      * @param displayWidth   The width of the displayed image.
      * @param displayHeight  The height of the displayed image.
-     * @param frameWidth     The width of each frame in the animation.
-     * @param frameHeight    The height of each frame in the animation.
-     * @param frameOffsetX   The x offset of the first frame in the animation.
-     * @param frameOffsetY   The y offset of the first frame in the animation.
+     * @param spriteWidth    The width of each sprite in the sprite sheet.
+     * @param spriteHeight   The height of each sprite in the sprite sheet.
+     * @param spriteOffsetX  The x offset of the first sprite in the sprite sheet.
+     * @param spriteOffsetY  The y offset of the first sprite in the sprite sheet.
      * @param attitude       The attitude of the element (e.g., running).
-     * @param maxIndex       The maximum index of frames in the animation.
+     * @param maxIndex       The maximum index of sprites in the animation.
      * @param duration       The total duration of the animation.
      * @param fileName       The file name of the image resource.
      */
-    public MovingThing(Camera camera, Pane root, double x, double y, double displayWidth, double displayHeight, double frameWidth, double frameHeight, double frameOffsetX, double frameOffsetY, int attitude, int maxIndex, int duration, String fileName) {
+    public MovingThing(Camera camera, Pane root, double x, double y, double displayWidth, double displayHeight, double spriteWidth, double spriteHeight, double spriteOffsetX, double spriteOffsetY, int attitude, int maxIndex, int duration, String fileName) {
         // Call to the constructor of the parent class AnimatedThing
-        super(camera, root, x, y, displayWidth, displayHeight, frameWidth, frameHeight, frameOffsetX, frameOffsetY, attitude, maxIndex, duration, fileName);
+        super(camera, root, x, y, displayWidth, displayHeight, spriteWidth, spriteHeight, spriteOffsetX, spriteOffsetY, maxIndex, attitude, duration, fileName);
     }
 
     /**
