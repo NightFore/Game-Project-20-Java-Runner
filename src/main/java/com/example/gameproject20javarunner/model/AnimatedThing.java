@@ -8,9 +8,9 @@ import javafx.scene.layout.Pane;
 
 /**
  * A class representing an animated element in the game.
- * Extends the abstract class Thing.
+ * Extends the abstract class StaticThing.
  */
-public abstract class AnimatedThing extends Thing {
+public abstract class AnimatedThing extends StaticThing {
     protected double frameWidth;
     protected double frameHeight;
     protected double frameOffsetX;
@@ -36,12 +36,8 @@ public abstract class AnimatedThing extends Thing {
      * @param fileName       The file name of the image resource.
      */
     public AnimatedThing(Camera camera, Pane root, double x, double y, double frameWidth, double frameHeight, double frameOffsetX, double frameOffsetY, int attitude, int maxIndex, int duration, String fileName) {
-        // Call to the constructor of the parent class Thing
-        super(camera, root, x, y, fileName);
-
-        // Set Thing attributes
-        this.displayWidth = frameWidth;
-        this.displayHeight = frameHeight;
+        // Call to the constructor of the parent class StaticThing
+        super(camera, root, x, y, frameWidth, frameHeight, fileName);
 
         // Set AnimatedThing attributes
         this.frameWidth = frameWidth;
