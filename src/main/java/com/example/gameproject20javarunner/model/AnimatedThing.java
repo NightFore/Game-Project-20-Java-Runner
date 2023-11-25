@@ -18,11 +18,11 @@ public abstract class AnimatedThing extends StaticThing {
     protected double frameOffsetY;
 
     // Animation Attributes
+    private int index = 0;
+    private int frameDuration = 0;
     private final int attitude;
     private final int maxIndex;
     private final int duration;
-    private int index = 0;
-    private int frameDuration = 0;
 
     /**
      * Constructs an AnimatedThing with the specified initial position, frame dimensions, frame offsets, attitude, max index, duration, and image file.
