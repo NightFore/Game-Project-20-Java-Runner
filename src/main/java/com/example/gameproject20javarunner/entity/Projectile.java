@@ -7,7 +7,7 @@ import com.example.gameproject20javarunner.view.Camera;
 import javafx.scene.layout.Pane;
 
 public class Projectile extends MovingThing {
-    // AnimatedThing Attributes
+    // MovingThing Attributes
     private static final double INITIAL_X = 0;
     private static final double INITIAL_Y = 0;
     private static final double DISPLAY_WIDTH = 128;

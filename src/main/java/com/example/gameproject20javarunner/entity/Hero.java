@@ -19,7 +19,7 @@ public class Hero extends MovingThing {
     private final Camera camera;
     private final Pane root;
 
-    // AnimatedThing Attributes
+    // MovingThing Attributes
     private static final double INITIAL_X = 0;
     private static final double INITIAL_Y = 425;
     private static final double DISPLAY_WIDTH = 144;
