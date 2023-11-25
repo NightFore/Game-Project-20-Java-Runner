@@ -4,27 +4,46 @@ package com.example.gameproject20javarunner.model;
 
 import com.example.gameproject20javarunner.view.Camera;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.layout.Pane;
 
-// A class representing an animated element in the game
+/**
+ * A class representing an animated element in the game.
+ * Extends the abstract class Thing.
+ */
 public abstract class AnimatedThing extends Thing {
     protected double frameWidth;
     protected double frameHeight;
     protected double frameOffsetX;
     protected double frameOffsetY;
-    private int index; // Index of the current image in the animation
-    private int frameDuration; // Duration of the current frame
-    private final int attitude; // The attitude of the element (e.g., running)
-    private final int maxIndex; // Maximum index of frames in the animation
-    private final int duration; // Total duration of the animation
+    private final int attitude;
+    private final int maxIndex;
+    private final int duration;
+    private int index;
+    private int frameDuration;
 
-    // Constructor to initialize properties of the animated element
-    public AnimatedThing(double x, double y, double frameWidth, double frameHeight, double frameOffsetX, double frameOffsetY, int attitude, int maxIndex, int duration, String fileName) {
+    /**
+     * Constructs an AnimatedThing with the specified initial position, frame dimensions, frame offsets, attitude, max index, duration, and image file.
+     *
+     * @param x              The initial x position.
+     * @param y              The initial y position.
+     * @param frameWidth     The width of each frame in the animation.
+     * @param frameHeight    The height of each frame in the animation.
+     * @param frameOffsetX   The x offset of the first frame in the animation.
+     * @param frameOffsetY   The y offset of the first frame in the animation.
+     * @param attitude       The attitude of the element (e.g., running).
+     * @param maxIndex       The maximum index of frames in the animation.
+     * @param duration       The total duration of the animation.
+     * @param fileName       The file name of the image resource.
+     */
+    public AnimatedThing(Camera camera, Pane root, double x, double y, double frameWidth, double frameHeight, double frameOffsetX, double frameOffsetY, int attitude, int maxIndex, int duration, String fileName) {
         // Call to the constructor of the parent class Thing
-        super(x, y, fileName);
+        super(camera, root, x, y, fileName);
 
-        // Initialization of properties specific to AnimatedThing
+        // Set Thing attributes
+        this.displayWidth = frameWidth;
+        this.displayHeight = frameHeight;
+
+        // Set AnimatedThing attributes
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
         this.frameOffsetX = frameOffsetX;
@@ -33,9 +52,7 @@ public abstract class AnimatedThing extends Thing {
         this.maxIndex = maxIndex;
         this.duration = duration;
 
-        // Default values
-        this.displayWidth = frameWidth;
-        this.displayHeight = frameHeight;
+        // Set default values for animation
         this.index = 0;
         this.frameDuration = 0;
 
@@ -43,7 +60,9 @@ public abstract class AnimatedThing extends Thing {
         updateViewport();
     }
 
-    // Method to update the viewport based on the current index
+    /**
+     * Method to update the viewport based on the current index.
+     */
     private void updateViewport() {
         double frameX = index * frameWidth + frameOffsetX;
         double frameY = attitude * frameHeight + frameOffsetY;
@@ -51,9 +70,11 @@ public abstract class AnimatedThing extends Thing {
         imageView.setViewport(viewport);
     }
 
-    // Update method to handle animation logic
+    /**
+     * Update method to handle animation logic.
+     */
     public void update() {
-        // Update the duration
+        // Increment the frame duration
         frameDuration++;
 
         // Check if it's time to change frames
@@ -73,9 +94,5 @@ public abstract class AnimatedThing extends Thing {
             // Update the viewport based on the new index
             updateViewport();
         }
-    }
-
-    public void draw(Camera camera) {
-        super.draw(camera);
     }
 }
