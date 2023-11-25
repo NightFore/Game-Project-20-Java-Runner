@@ -20,20 +20,20 @@ public class StaticThing {
     private final Pane root;
 
     // ImageView Attributes
+    private double x;
+    private double y;
     protected final ImageView imageView;
-    protected double x;
-    protected double y;
 
     // Display Attributes
+    private double displayWidth;
+    private double displayHeight;
     private final Rectangle displayRectangle;
-    protected double displayWidth;
-    protected double displayHeight;
     private static final Color DISPLAY_RECTANGLE_COLOR = Color.CYAN;
 
     // Hitbox Attributes
-    private final Rectangle hitboxRectangle;
     private double hitboxWidth;
     private double hitboxHeight;
+    private final Rectangle hitboxRectangle;
     private static final Color HITBOX_RECTANGLE_COLOR = Color.RED;
 
     /**
@@ -52,23 +52,23 @@ public class StaticThing {
         this.camera = camera;
         this.root = root;
 
-        // Initialize the imageView
-        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(fileName)));
-        imageView = new ImageView(image);
-        setPosition(x, y);
-
         // Initialize the display rectangle
         displayRectangle = new Rectangle();
         displayRectangle.setStroke(DISPLAY_RECTANGLE_COLOR);
         displayRectangle.setFill(Color.TRANSPARENT);
         displayRectangle.setVisible(false);
-        setDisplaySize(displayWidth, displayHeight);
 
         // Initialize the hitbox rectangle
         hitboxRectangle = new Rectangle();
         hitboxRectangle.setStroke(HITBOX_RECTANGLE_COLOR);
         hitboxRectangle.setFill(Color.TRANSPARENT);
         hitboxRectangle.setVisible(false);
+
+        // Initialize the imageView
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(fileName)));
+        imageView = new ImageView(image);
+        setPosition(x, y);
+        setDisplaySize(displayWidth, displayHeight);
 
         // Add visual elements to the root pane
         root.getChildren().add(imageView);

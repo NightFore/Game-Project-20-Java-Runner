@@ -10,13 +10,7 @@ import javafx.scene.layout.Pane;
  * A class representing an animated element in the game.
  * Extends the abstract class StaticThing.
  */
-public abstract class AnimatedThing extends StaticThing {
-    // Frame Attributes
-    protected double frameWidth;
-    protected double frameHeight;
-    protected double frameOffsetX;
-    protected double frameOffsetY;
-
+public abstract class AnimatedThing extends SpriteThing {
     // Animation Attributes
     private int index = 0;
     private int frameDuration = 0;
@@ -25,7 +19,7 @@ public abstract class AnimatedThing extends StaticThing {
     private final int duration;
 
     /**
-     * Constructs an AnimatedThing with the specified initial position, frame dimensions, frame offsets, attitude, max index, duration, and image file.
+     * Constructs an AnimatedThing with the specified initial position, display size, frame dimensions, frame offsets, attitude, max index, duration, and image file.
      *
      * @param camera         The camera used for positioning.
      * @param root           The root pane where the elements are added.
@@ -44,13 +38,7 @@ public abstract class AnimatedThing extends StaticThing {
      */
     public AnimatedThing(Camera camera, Pane root, double x, double y, double displayWidth, double displayHeight, double frameWidth, double frameHeight, double frameOffsetX, double frameOffsetY, int attitude, int maxIndex, int duration, String fileName) {
         // Call to the constructor of the parent class StaticThing
-        super(camera, root, x, y, displayWidth, displayHeight, fileName);
-
-        // Set frame attributes
-        this.frameWidth = frameWidth;
-        this.frameHeight = frameHeight;
-        this.frameOffsetX = frameOffsetX;
-        this.frameOffsetY = frameOffsetY;
+        super(camera, root, x, y, displayWidth, displayHeight, frameWidth, frameHeight, frameOffsetX, frameOffsetY, fileName);
 
         // Set animation attributes
         this.attitude = attitude;

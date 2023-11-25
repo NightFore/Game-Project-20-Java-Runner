@@ -17,7 +17,7 @@ public class HeartManager {
         hearts = new Heart[NUMBER_OF_LIVES];
 
         for (int i = 0; i < NUMBER_OF_LIVES; i++) {
-            hearts[i] = new Heart(HEART_START_X + i * Heart.getWidth(), HEART_START_Y, 0);
+            hearts[i] = new Heart(HEART_START_X + i * Heart.getDisplayWidth(), HEART_START_Y, 0);
             root.getChildren().addAll(hearts[i].getFullHeart(), hearts[i].getHalfHeart(), hearts[i].getEmptyHeart());
         }
 

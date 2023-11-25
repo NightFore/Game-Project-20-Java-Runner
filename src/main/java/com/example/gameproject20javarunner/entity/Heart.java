@@ -7,14 +7,14 @@ import javafx.scene.image.ImageView;
 import java.util.Objects;
 
 public class Heart {
-    // Instances
+    // Instance Attributes
     private final ImageView fullHeart;
     private final ImageView halfHeart;
     private final ImageView emptyHeart;
 
     // Constants
-    private static final double WIDTH = 32.0;
-    private static final double HEIGHT = 32.0;
+    private static final double DISPLAY_WIDTH = 32.0;
+    private static final double DISPLAY_HEIGHT = 32.0;
     private static final String HEART_SPRITE_SHEET_PATH = "/img/NicoleMarieT_Heart_Sprite_Sheet_32x32.png";
 
     // Constructor taking the position and the initial heart state
@@ -33,14 +33,14 @@ public class Heart {
 
     // Method to create an ImageView for a specific heart state
     private ImageView createHeartImageView(Image spriteSheet, int state, double x, double y) {
-        double frameX = state * WIDTH;
+        double frameX = state * DISPLAY_WIDTH;
         double frameY = 0;
 
         // Create ImageView with the specified state
         ImageView imageView = new ImageView(spriteSheet);
-        imageView.setFitWidth(WIDTH);
-        imageView.setFitHeight(HEIGHT);
-        Rectangle2D frameRectangle = new Rectangle2D(frameX, frameY, WIDTH, HEIGHT);
+        imageView.setFitWidth(DISPLAY_WIDTH);
+        imageView.setFitHeight(DISPLAY_HEIGHT);
+        Rectangle2D frameRectangle = new Rectangle2D(frameX, frameY, DISPLAY_WIDTH, DISPLAY_HEIGHT);
         imageView.setViewport(frameRectangle);
 
         // Set the position of the heart
@@ -60,13 +60,13 @@ public class Heart {
     }
 
     // Getter for the width
-    public static double getWidth() {
-        return WIDTH;
+    public static double getDisplayWidth() {
+        return DISPLAY_WIDTH;
     }
 
     // Getter for the height
-    public static double getHeight() {
-        return HEIGHT;
+    public static double getDisplayHeight() {
+        return DISPLAY_HEIGHT;
     }
 
     // Getter for the full heart ImageView

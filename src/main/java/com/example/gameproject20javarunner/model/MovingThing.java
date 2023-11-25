@@ -15,7 +15,7 @@ public abstract class MovingThing extends AnimatedThing {
     private double directionY = 0;
 
     /**
-     * Constructs a MovingThing with the specified camera, root, initial position, frame dimensions, frame offsets, attitude, max index, duration, and image file.
+     * Constructs a MovingThing with the specified camera, root, initial position, display size, frame dimensions, frame offsets, attitude, max index, duration, and image file.
      *
      * @param camera        The camera used for positioning.
      * @param root          The root pane where the elements are added.
