@@ -48,7 +48,7 @@ public class StaticThing {
      * @param fileName  The file name of the image resource.
      */
     public StaticThing(Camera camera, Pane root, double x, double y, double displayWidth, double displayHeight, String fileName) {
-        // Set Main attributes
+        // Set Game attributes
         this.camera = camera;
         this.root = root;
 
