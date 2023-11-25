@@ -11,7 +11,9 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.Objects;
 
-// An abstract class representing a game element
+/**
+ * An abstract class representing a game element.
+ */
 public abstract class Thing {
     // Game Attributes
     private final Camera camera;
