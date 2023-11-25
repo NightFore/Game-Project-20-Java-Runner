@@ -14,7 +14,7 @@ import java.util.Objects;
 /**
  * An abstract class representing a game element.
  */
-public abstract class StaticThing {
+public class StaticThing {
     // Game Attributes
     private final Camera camera;
     private final Pane root;
@@ -56,13 +56,13 @@ public abstract class StaticThing {
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(fileName)));
         imageView = new ImageView(image);
         setPosition(x, y);
-        setDisplaySize(displayWidth, displayHeight);
 
         // Initialize the display rectangle
         displayRectangle = new Rectangle();
         displayRectangle.setStroke(DISPLAY_RECTANGLE_COLOR);
         displayRectangle.setFill(Color.TRANSPARENT);
         displayRectangle.setVisible(false);
+        setDisplaySize(displayWidth, displayHeight);
 
         // Initialize the hitbox rectangle
         hitboxRectangle = new Rectangle();

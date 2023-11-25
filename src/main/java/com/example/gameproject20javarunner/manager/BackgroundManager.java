@@ -24,9 +24,8 @@ public class BackgroundManager {
     private final Background backgroundRight;
 
     public BackgroundManager(Camera camera, Pane root) {
-        backgroundLeft = new Background(-WIDTH / 2, 0, WIDTH, HEIGHT, IMAGE_PATH);
-        backgroundRight = new Background(WIDTH / 2, 0, WIDTH, HEIGHT, IMAGE_PATH);
-        root.getChildren().addAll(getBackgroundLeft(), getBackgroundRight());
+        backgroundLeft = new Background(camera, root,-WIDTH / 2, 0, WIDTH, HEIGHT, IMAGE_PATH);
+        backgroundRight = new Background(camera, root,WIDTH / 2, 0, WIDTH, HEIGHT, IMAGE_PATH);
 
         this.camera = camera;
         this.root = root;

@@ -45,10 +45,8 @@ public class Hero extends MovingThing {
     private static final double PROJECTILE_DIRECTION = 1;
 
     public Hero(Camera camera, Pane root) {
-        super(INITIAL_X, INITIAL_Y, WIDTH, HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, SPRITE_SHEET_PATH);
+        super(camera, root, INITIAL_X, INITIAL_Y, WIDTH, HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, SPRITE_SHEET_PATH);
         setDisplaySize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
-        root.getChildren().add(getImageView());
-        root.getChildren().add(getDisplayRectangle());
 
         this.camera = camera;
         this.root = root;
@@ -130,7 +128,7 @@ public class Hero extends MovingThing {
 
     // Method to create and add a projectile
     public void shootProjectile() {
-        Projectile projectile = new Projectile(root);
+        Projectile projectile = new Projectile(camera, root);
         double projectileX = getX() + getDisplayWidth();
         double projectileY = getY() + (getDisplayHeight() - projectile.getDisplayHeight()) / 2;
         projectile.setPosition(projectileX, projectileY);
@@ -158,7 +156,7 @@ public class Hero extends MovingThing {
     // Method to draw projectiles
     private void drawProjectiles() {
         for (Projectile projectile : projectiles) {
-            projectile.draw(camera);
+            projectile.draw();
         }
     }
 
@@ -187,7 +185,7 @@ public class Hero extends MovingThing {
 
     // Method to handle the hero's rendering logic
     public void draw() {
-        super.draw(camera);
+        super.draw();
         drawProjectiles();
     }
 }

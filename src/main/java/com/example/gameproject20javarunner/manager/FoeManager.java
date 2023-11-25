@@ -45,10 +45,8 @@ public class FoeManager {
     }
 
     public void addSingleFoe(double x, double y) {
-        Foe foe = new Foe(x, y);
+        Foe foe = new Foe(camera, root, x, y);
         foes.add(foe);
-        root.getChildren().add(foe.getImageView());
-        root.getChildren().add(foe.getHitboxRectangle());
     }
 
     public void checkHeroCollisions(Hero hero) {
@@ -71,7 +69,7 @@ public class FoeManager {
 
     public void draw() {
         for (Foe foe : foes) {
-            foe.draw(camera);
+            foe.draw();
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.gameproject20javarunner.entity;
 
 import com.example.gameproject20javarunner.model.MovingThing;
+import com.example.gameproject20javarunner.view.Camera;
+import javafx.scene.layout.Pane;
 
 public class Foe extends MovingThing {
     // AnimatedThing Attributes
@@ -20,8 +22,8 @@ public class Foe extends MovingThing {
     private double directionX = -1;
     private static final double MOVEMENT_SPEED = 100.0;
 
-    public Foe(double x, double y) {
-        super(x, y, WIDTH, HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, SPRITE_SHEET_PATH);
+    public Foe(Camera camera, Pane root, double x, double y) {
+        super(camera, root, x, y, WIDTH, HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, SPRITE_SHEET_PATH);
         setDisplaySize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
         setSpeed(MOVEMENT_SPEED, 0);
         setDirectionX(directionX);

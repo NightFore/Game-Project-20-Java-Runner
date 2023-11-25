@@ -3,11 +3,10 @@
 package com.example.gameproject20javarunner.entity;
 
 import com.example.gameproject20javarunner.model.MovingThing;
+import com.example.gameproject20javarunner.view.Camera;
 import javafx.scene.layout.Pane;
 
 public class Projectile extends MovingThing {
-    // Game Attributes
-    private final Pane root;
 
     // Animated Attributes
     private static final double INITIAL_X = 0;
@@ -26,20 +25,10 @@ public class Projectile extends MovingThing {
     // Projectile Attributes
     private static final double MOVEMENT_SPEED = 1000;
 
-    public Projectile(Pane root) {
-        super(INITIAL_X, INITIAL_Y, WIDTH, HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, SPRITE_SHEET_PATH);
+    public Projectile(Camera camera, Pane root) {
+        super(camera, root, INITIAL_X, INITIAL_Y, WIDTH, HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, SPRITE_SHEET_PATH);
         setDisplaySize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
-        this.root = root;
         setSpeedX(MOVEMENT_SPEED);
-        root.getChildren().add(getImageView());
-        root.getChildren().add(getHitboxRectangle());
-    }
-
-    public void removeFromRoot() {
-        if (root.getChildren().contains(getImageView())) {
-            root.getChildren().remove(getImageView());
-            root.getChildren().remove(getHitboxRectangle());
-        }
     }
 
     public boolean collidesWithEnemy(Foe enemy) {
