@@ -68,6 +68,9 @@ public class GameScene extends Scene {
         heartManager.update();
         hero.update(deltaTime);
         foeManager.update(deltaTime);
+
+        foeManager.checkHeroCollisions(hero);
+        hero.checkProjectileCollisions(foeManager);
     }
 
     // Method to draw the scene elements

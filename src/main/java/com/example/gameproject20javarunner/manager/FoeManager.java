@@ -4,6 +4,7 @@ package com.example.gameproject20javarunner.manager;
 
 import com.example.gameproject20javarunner.view.Camera;
 import com.example.gameproject20javarunner.entity.Foe;
+import com.example.gameproject20javarunner.entity.Hero;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
@@ -31,12 +32,6 @@ public class FoeManager {
         addRandomFoes();
     }
 
-    public void addSingleFoe(double x, double y) {
-        Foe foe = new Foe(x, y);
-        foes.add(foe);
-        root.getChildren().add(foe.getImageView());
-    }
-
     // Add a random number of Foes to the list
     public void addRandomFoes() {
         Random random = new Random();
@@ -47,6 +42,25 @@ public class FoeManager {
             double y = random.nextDouble() * (FOE_MAX_Y - FOE_MIN_Y) + FOE_MIN_Y;
             addSingleFoe(x, y);
         }
+    }
+
+    public void addSingleFoe(double x, double y) {
+        Foe foe = new Foe(x, y);
+        foes.add(foe);
+        root.getChildren().add(foe.getImageView());
+        root.getChildren().add(foe.getHitboxRectangle());
+    }
+
+    public void checkHeroCollisions(Hero hero) {
+        for (Foe foe : foes) {
+            if (hero.collidesWithEnemy(foe)) {
+                System.out.println("Test");
+            }
+        }
+    }
+
+    public List<Foe> getFoes() {
+        return foes;
     }
 
     public void update(double deltaTime) {

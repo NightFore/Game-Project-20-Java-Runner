@@ -13,9 +13,9 @@ public class Heart {
     private final ImageView emptyHeart;
 
     // Constants
-    private static final String HEART_SPRITE_SHEET_PATH = "/img/NicoleMarieT_Heart_Sprite_Sheet_32x32.png";
     private static final double WIDTH = 32.0;
     private static final double HEIGHT = 32.0;
+    private static final String HEART_SPRITE_SHEET_PATH = "/img/NicoleMarieT_Heart_Sprite_Sheet_32x32.png";
 
     // Constructor taking the position and the initial heart state
     public Heart(double x, double y, int initialState) {

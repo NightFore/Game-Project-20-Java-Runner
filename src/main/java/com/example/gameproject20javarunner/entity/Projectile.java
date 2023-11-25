@@ -42,6 +42,10 @@ public class Projectile extends MovingThing {
         }
     }
 
+    public boolean collidesWithEnemy(Foe enemy) {
+        return this.getHitboxRectangle().getBoundsInParent().intersects(enemy.getHitboxRectangle().getBoundsInParent());
+    }
+
     // Method to handle the hero's rendering logic
     public void update(double deltaTime) {
         super.update(deltaTime);

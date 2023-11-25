@@ -6,6 +6,8 @@ import com.example.gameproject20javarunner.view.Camera;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 import java.util.Objects;
 
@@ -28,6 +30,9 @@ public abstract class Thing {
     // ImageView for rendering the image
     protected final ImageView imageView;
 
+    // Attribute for the hitbox rectangle
+    private final Rectangle hitboxRectangle;
+
     // Constructor taking initial position and image file
     public Thing(double x, double y, String fileName) {
         this.x = x;
@@ -38,6 +43,12 @@ public abstract class Thing {
 
         // Create an ImageView with the loaded image
         imageView = new ImageView(image);
+
+        // Initialize the hitbox rectangle
+        hitboxRectangle = new Rectangle();
+        hitboxRectangle.setStroke(Color.CYAN);
+        hitboxRectangle.setFill(Color.TRANSPARENT);
+        updateHitboxRectangle();
     }
 
     // Getter for the x position
@@ -85,12 +96,14 @@ public abstract class Thing {
     public void setDisplayWidth(double displayWidth) {
         this.displayWidth = displayWidth;
         imageView.setFitWidth(displayWidth);
+        updateHitboxRectangle();
     }
 
     // Set the display height
     public void setDisplayHeight(double displayHeight) {
         this.displayHeight = displayHeight;
         imageView.setFitHeight(displayHeight);
+        updateHitboxRectangle();
     }
 
     // Set the display size
@@ -104,9 +117,29 @@ public abstract class Thing {
         return new Rectangle2D(x, y, displayWidth, displayHeight);
     }
 
+    /* public void removeFromRoot() {
+        if (root.getChildren().contains(getImageView())) {
+            root.getChildren().remove(getImageView());
+            root.getChildren().remove(getHitboxRectangle());
+        }
+    } */
+
+    // Method to get the hitbox rectangle
+    public Rectangle getHitboxRectangle() {
+        return hitboxRectangle;
+    }
+
+    // Method to update the hitbox rectangle
+    private void updateHitboxRectangle() {
+        hitboxRectangle.setWidth(getDisplayWidth());
+        hitboxRectangle.setHeight(getDisplayHeight());
+    }
+
     // Draw method to update the position based on the camera
     public void draw(Camera camera) {
         imageView.setX(getX() - camera.getX());
         imageView.setY(getY() - camera.getY());
+        hitboxRectangle.setX(getX() - camera.getX());
+        hitboxRectangle.setY(getY() - camera.getY());
     }
 }

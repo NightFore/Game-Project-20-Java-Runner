@@ -16,6 +16,7 @@ public class Foe extends MovingThing {
     private static final String SPRITE_SHEET_PATH = "/img/SecretHideout_Gunner/Red/Gunner_Red_Run.png";
 
     // Foe Attributes
+    private int health = 1;
     private double directionX = -1;
     private static final double MOVEMENT_SPEED = 100.0;
 
@@ -24,5 +25,18 @@ public class Foe extends MovingThing {
         setDisplaySize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
         setSpeed(MOVEMENT_SPEED, 0);
         setDirectionX(directionX);
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void takeDamage(int damage) {
+        health -= damage;
+
+        if (health <= 0) {
+            health = 0;
+            // removeFromRoot();
+        }
     }
 }

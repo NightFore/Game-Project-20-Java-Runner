@@ -7,6 +7,8 @@ import com.example.gameproject20javarunner.view.Camera;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
+import java.util.List;
+
 public class BackgroundManager {
     // Game Attributes
     private final Camera camera;
@@ -55,10 +57,9 @@ public class BackgroundManager {
     }
 
     public void draw() {
-        backgroundLeft.getImageView().setX(backgroundLeft.getX() - camera.getX());
-        backgroundLeft.getImageView().setY(camera.getY());
-
-        backgroundRight.getImageView().setX(backgroundRight.getX() - camera.getX());
-        backgroundRight.getImageView().setY(camera.getY());
+        for (Background background : List.of(backgroundLeft, backgroundRight)) {
+            background.getImageView().setX(background.getX() - camera.getX());
+            background.getImageView().setY(camera.getY());
+        }
     }
 }

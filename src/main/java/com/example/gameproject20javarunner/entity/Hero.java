@@ -2,6 +2,7 @@
 
 package com.example.gameproject20javarunner.entity;
 
+import com.example.gameproject20javarunner.manager.FoeManager;
 import com.example.gameproject20javarunner.model.MovingThing;
 import com.example.gameproject20javarunner.view.Camera;
 import javafx.scene.layout.Pane;
@@ -158,6 +159,21 @@ public class Hero extends MovingThing {
     private void drawProjectiles() {
         for (Projectile projectile : projectiles) {
             projectile.draw(camera);
+        }
+    }
+
+    public boolean collidesWithEnemy(Foe enemy) {
+        return this.getHitboxRectangle().getBoundsInParent().intersects(enemy.getHitboxRectangle().getBoundsInParent());
+    }
+
+    public void checkProjectileCollisions(FoeManager foeManager) {
+        for (Projectile projectile : projectiles) {
+            for (Foe foe : foeManager.getFoes()) {
+                if (projectile.collidesWithEnemy(foe)) {
+                    // foe.takeDamage();
+                    projectile.removeFromRoot();
+                }
+            }
         }
     }
 
