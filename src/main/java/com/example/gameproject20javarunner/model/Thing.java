@@ -5,6 +5,7 @@ package com.example.gameproject20javarunner.model;
 import com.example.gameproject20javarunner.view.Camera;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -12,41 +13,64 @@ import java.util.Objects;
 
 // An abstract class representing a game element
 public abstract class Thing {
+    // Game Attributes
+    private final Camera camera;
+    private final Pane root;
+
     // ImageView Attributes
     protected final ImageView imageView;
     protected double x;
     protected double y;
+
+    // Display Attributes
+    private final Rectangle displayRectangle;
     protected double displayWidth;
     protected double displayHeight;
+    private static final Color DISPLAY_RECTANGLE_COLOR = Color.CYAN;
 
-    // Rectangle Attributes
+    // Hitbox Attributes
     private final Rectangle hitboxRectangle;
-    private final Rectangle displayRectangle;
     private double hitboxWidth;
     private double hitboxHeight;
+    private static final Color HITBOX_RECTANGLE_COLOR = Color.RED;
 
-    // Constructor taking initial position and image file
-    public Thing(double x, double y, String fileName) {
-        this.x = x;
-        this.y = y;
+    /**
+     * Constructs a Thing with the specified camera, root, initial position, and image file.
+     *
+     * @param camera    The camera used for positioning.
+     * @param root      The root pane where the elements are added.
+     * @param x         The initial x position.
+     * @param y         The initial y position.
+     * @param fileName  The file name of the image resource.
+     */
+    public Thing(Camera camera, Pane root, double x, double y, String fileName) {
+        // Initialize the game attributes
+        this.camera = camera;
+        this.root = root;
 
-        // Load the image from resources
+        // Initialize the imageView
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(fileName)));
-
-        // Create an ImageView with the loaded image
         imageView = new ImageView(image);
+        setPosition(x, y);
 
         // Initialize the display rectangle
         displayRectangle = new Rectangle();
-        displayRectangle.setStroke(Color.CYAN);
+        displayRectangle.setStroke(DISPLAY_RECTANGLE_COLOR);
         displayRectangle.setFill(Color.TRANSPARENT);
+        displayRectangle.setVisible(false);
         setDisplaySize(image.getWidth(), image.getHeight());
 
         // Initialize the hitbox rectangle
         hitboxRectangle = new Rectangle();
-        hitboxRectangle.setStroke(Color.RED);
+        hitboxRectangle.setStroke(HITBOX_RECTANGLE_COLOR);
         hitboxRectangle.setFill(Color.TRANSPARENT);
+        hitboxRectangle.setVisible(false);
         setHitboxSize(0, 0);
+
+        // Add visual elements to the root pane
+        root.getChildren().add(imageView);
+        root.getChildren().add(displayRectangle);
+        root.getChildren().add(hitboxRectangle);
     }
 
     // Getter for the ImageView
@@ -158,18 +182,17 @@ public abstract class Thing {
     private void updateHitboxRectangle() {
         hitboxRectangle.setWidth(hitboxWidth);
         hitboxRectangle.setHeight(hitboxHeight);
-        hitboxRectangle.setVisible(hitboxHeight != 0 & hitboxHeight != 0);
     }
 
-    /* public void removeFromRoot() {
-        if (root.getChildren().contains(getImageView())) {
-            root.getChildren().remove(getImageView());
-            root.getChildren().remove(getHitboxRectangle());
-        }
-    } */
+    // Removes the visual elements from the root pane.
+    public void removeFromRoot() {
+        root.getChildren().remove(imageView);
+        root.getChildren().remove(displayRectangle);
+        root.getChildren().remove(hitboxRectangle);
+    }
 
     // Draw method to update the position based on the camera
-    public void draw(Camera camera) {
+    public void draw() {
         imageView.setX(x - camera.getX());
         imageView.setY(y - camera.getY());
         displayRectangle.setX(x - camera.getX());
