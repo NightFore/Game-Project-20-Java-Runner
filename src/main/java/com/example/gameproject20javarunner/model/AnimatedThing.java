@@ -11,15 +11,18 @@ import javafx.scene.layout.Pane;
  * Extends the abstract class StaticThing.
  */
 public abstract class AnimatedThing extends StaticThing {
+    // Frame Attributes
     protected double frameWidth;
     protected double frameHeight;
     protected double frameOffsetX;
     protected double frameOffsetY;
+
+    // Animation Attributes
     private final int attitude;
     private final int maxIndex;
     private final int duration;
-    private int index;
-    private int frameDuration;
+    private int index = 0;
+    private int frameDuration = 0;
 
     /**
      * Constructs an AnimatedThing with the specified initial position, frame dimensions, frame offsets, attitude, max index, duration, and image file.
@@ -39,18 +42,16 @@ public abstract class AnimatedThing extends StaticThing {
         // Call to the constructor of the parent class StaticThing
         super(camera, root, x, y, frameWidth, frameHeight, fileName);
 
-        // Set AnimatedThing attributes
+        // Set frame attributes
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
         this.frameOffsetX = frameOffsetX;
         this.frameOffsetY = frameOffsetY;
+
+        // Set animation attributes
         this.attitude = attitude;
         this.maxIndex = maxIndex;
         this.duration = duration;
-
-        // Set default values for animation
-        this.index = 0;
-        this.frameDuration = 0;
 
         // Set the initial viewport of the ImageView to the first frame
         updateViewport();
