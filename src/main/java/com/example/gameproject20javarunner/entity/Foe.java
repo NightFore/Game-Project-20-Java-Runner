@@ -23,7 +23,7 @@ public class Foe extends MovingThing {
     private static final double MOVEMENT_SPEED = 100.0;
 
     public Foe(Camera camera, Pane root, double x, double y) {
-        super(camera, root, x, y, WIDTH, HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, SPRITE_SHEET_PATH);
+        super(camera, root, x, y, DISPLAY_WIDTH, DISPLAY_HEIGHT, WIDTH, HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, SPRITE_SHEET_PATH);
         setDisplaySize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
         setSpeed(MOVEMENT_SPEED, 0);
         setDirectionX(directionX);

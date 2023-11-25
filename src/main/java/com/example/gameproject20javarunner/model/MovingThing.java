@@ -21,6 +21,8 @@ public abstract class MovingThing extends AnimatedThing {
      * @param root          The root pane where the elements are added.
      * @param x              The initial x position.
      * @param y              The initial y position.
+     * @param displayWidth   The width of the displayed image.
+     * @param displayHeight  The height of the displayed image.
      * @param frameWidth     The width of each frame in the animation.
      * @param frameHeight    The height of each frame in the animation.
      * @param frameOffsetX   The x offset of the first frame in the animation.
@@ -30,9 +32,9 @@ public abstract class MovingThing extends AnimatedThing {
      * @param duration       The total duration of the animation.
      * @param fileName       The file name of the image resource.
      */
-    public MovingThing(Camera camera, Pane root, double x, double y, double frameWidth, double frameHeight, double frameOffsetX, double frameOffsetY, int attitude, int maxIndex, int duration, String fileName) {
+    public MovingThing(Camera camera, Pane root, double x, double y, double displayWidth, double displayHeight, double frameWidth, double frameHeight, double frameOffsetX, double frameOffsetY, int attitude, int maxIndex, int duration, String fileName) {
         // Call to the constructor of the parent class AnimatedThing
-        super(camera, root, x, y, frameWidth, frameHeight, frameOffsetX, frameOffsetY, attitude, maxIndex, duration, fileName);
+        super(camera, root, x, y, displayWidth, displayHeight, frameWidth, frameHeight, frameOffsetX, frameOffsetY, attitude, maxIndex, duration, fileName);
     }
 
     /**

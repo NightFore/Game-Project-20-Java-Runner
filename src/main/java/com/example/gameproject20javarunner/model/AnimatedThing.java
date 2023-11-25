@@ -27,8 +27,12 @@ public abstract class AnimatedThing extends StaticThing {
     /**
      * Constructs an AnimatedThing with the specified initial position, frame dimensions, frame offsets, attitude, max index, duration, and image file.
      *
+     * @param camera         The camera used for positioning.
+     * @param root           The root pane where the elements are added.
      * @param x              The initial x position.
      * @param y              The initial y position.
+     * @param displayWidth   The width of the displayed image.
+     * @param displayHeight  The height of the displayed image.
      * @param frameWidth     The width of each frame in the animation.
      * @param frameHeight    The height of each frame in the animation.
      * @param frameOffsetX   The x offset of the first frame in the animation.
@@ -38,9 +42,9 @@ public abstract class AnimatedThing extends StaticThing {
      * @param duration       The total duration of the animation.
      * @param fileName       The file name of the image resource.
      */
-    public AnimatedThing(Camera camera, Pane root, double x, double y, double frameWidth, double frameHeight, double frameOffsetX, double frameOffsetY, int attitude, int maxIndex, int duration, String fileName) {
+    public AnimatedThing(Camera camera, Pane root, double x, double y, double displayWidth, double displayHeight, double frameWidth, double frameHeight, double frameOffsetX, double frameOffsetY, int attitude, int maxIndex, int duration, String fileName) {
         // Call to the constructor of the parent class StaticThing
-        super(camera, root, x, y, frameWidth, frameHeight, fileName);
+        super(camera, root, x, y, displayWidth, displayHeight, fileName);
 
         // Set frame attributes
         this.frameWidth = frameWidth;

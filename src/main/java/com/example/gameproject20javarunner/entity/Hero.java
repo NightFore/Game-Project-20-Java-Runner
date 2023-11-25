@@ -20,10 +20,10 @@ public class Hero extends MovingThing {
     private final Pane root;
 
     // AnimatedThing Attributes
-    private static final double DISPLAY_WIDTH = 144;
-    private static final double DISPLAY_HEIGHT = 144;
     private static final double INITIAL_X = 0;
     private static final double INITIAL_Y = 425;
+    private static final double DISPLAY_WIDTH = 144;
+    private static final double DISPLAY_HEIGHT = 144;
     private static final double FRAME_WIDTH = 48;
     private static final double FRAME_HEIGHT = 48;
     private static final double FRAME_OFFSET_X = 0;
@@ -61,10 +61,7 @@ public class Hero extends MovingThing {
      */
     public Hero(Camera camera, Pane root) {
         // Call the constructor of the parent class MovingThing with initial parameters
-        super(camera, root, INITIAL_X, INITIAL_Y, FRAME_WIDTH, FRAME_HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, SPRITE_SHEET_PATH);
-
-        // Set the display size of the hero
-        setDisplaySize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+        super(camera, root, INITIAL_X, INITIAL_Y, DISPLAY_WIDTH, DISPLAY_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, SPRITE_SHEET_PATH);
 
         // Initialize game attributes
         this.camera = camera;
