@@ -4,18 +4,25 @@ package com.example.gameproject20javarunner.manager;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
+/**
+ * Manages audio resources, including background music and sound effects.
+ */
 public class AudioManager {
-    private Map<String, MediaPlayer> resources;
+    private final Map<String, MediaPlayer> resources; // Map to store audio resources
     private String currentMusicName;
     private double musicVolume;
     private int loop;
 
+    /**
+     * Constructor for the AudioManager class.
+     * Initializes data structures and default settings.
+     */
     public AudioManager() {
         this.resources = new HashMap<>();
         this.currentMusicName = null;
@@ -23,29 +30,42 @@ public class AudioManager {
         this.loop = -1;
     }
 
-    // Settings
-
+    /**
+     * Sets the volume level for background music.
+     *
+     * @param volume The volume level (between 0.0 and 1.0).
+     */
     public void setMusicVolume(double volume) {
-        validateVolume(volume);
-        this.musicVolume = volume;
+        musicVolume = Math.min(1.0, Math.max(0.0, volume));
         MediaPlayer mediaPlayer = resources.get(currentMusicName);
         if (mediaPlayer != null) {
-            mediaPlayer.setVolume(volume);
+            mediaPlayer.setVolume(musicVolume);
         }
     }
 
+    /**
+     * Increments the volume level for background music.
+     *
+     * @param increment The amount by which to increment the volume.
+     */
     public void incrementMusicVolume(double increment) {
-        validateIncrement(increment);
-        setMusicVolume(Math.min(1.0, Math.max(0.0, musicVolume + increment)));
+        setMusicVolume(musicVolume + increment);
     }
 
+    /**
+     * Sets the number of loops for background music.
+     *
+     * @param loop The number of loops (-1 for indefinite looping).
+     */
     public void setMusicLoop(int loop) {
-        validateMusicLoop(loop);
         this.loop = loop;
     }
 
-    // Management
-
+    /**
+     * Plays the specified background music.
+     *
+     * @param audioName The name of the background music resource.
+     */
     public void playMusic(String audioName) {
         validateAudioResource(audioName);
         if (!audioName.equals(currentMusicName)) {
@@ -56,25 +76,42 @@ public class AudioManager {
         }
     }
 
+    /**
+     * Plays the specified sound effect.
+     *
+     * @param audioName The name of the sound effect resource.
+     */
     public void playSound(String audioName) {
         validateAudioResource(audioName);
         MediaPlayer mediaPlayer = resources.get(audioName);
         playMedia(mediaPlayer, 1);
     }
 
+    /**
+     * Stops the currently playing background music.
+     */
     public void stopMusic() {
         MediaPlayer mediaPlayer = resources.get(currentMusicName);
         stopMedia(mediaPlayer);
     }
 
+    /**
+     * Pauses the currently playing background music.
+     */
     public void pauseMusic() {
         pauseMedia(currentMusicName);
     }
 
+    /**
+     * Unpauses the currently paused background music.
+     */
     public void unpauseMusic() {
         playMedia(resources.get(currentMusicName), loop);
     }
 
+    /**
+     * Toggles between playing and pausing the background music.
+     */
     public void toggleMusic() {
         MediaPlayer mediaPlayer = resources.get(currentMusicName);
         if (mediaPlayer != null) {
@@ -86,51 +123,46 @@ public class AudioManager {
         }
     }
 
-    // Validation
-
-    private void validateVolume(double volume) {
-        if (volume < 0.0 || volume > 1.0) {
-            throw new IllegalArgumentException("Volume must be between 0.0 and 1.0.");
-        }
-    }
-
-    private void validateIncrement(double increment) {
-        // Add validation for increment if necessary
-    }
-
-    private void validateMusicLoop(int loop) {
-        // Add validation for loop if necessary
-    }
-
+    /**
+     * Validates the existence of the specified audio resource.
+     *
+     * @param audioName The name of the audio resource to validate.
+     * @throws IllegalArgumentException if the audio resource does not exist.
+     */
     private void validateAudioResource(String audioName) {
         if (!resources.containsKey(audioName)) {
             throw new IllegalArgumentException("Audio resource '" + audioName + "' does not exist.");
         }
     }
 
-    // Load audio resource
-    public void loadAudio(String audioName, String filePath) {
-        // Get an input stream from the audio file
-        InputStream inputStream = getClass().getResourceAsStream(filePath);
-        if (inputStream == null) {
-            throw new IllegalArgumentException("Audio file not found: " + filePath);
-        }
 
+    /**
+     * Loads an audio resource into the AudioManager.
+     *
+     * @param audioName The name to associate with the audio resource.
+     * @param filePath  The file path to the audio resource.
+     * @throws IllegalArgumentException if the audio file is not found.
+     */
+    public void loadAudio(String audioName, String filePath) {
         try {
             // Convert the input stream URL to URI
-            URI uri = getClass().getResource(filePath).toURI();
+            URI uri = Objects.requireNonNull(getClass().getResource(filePath)).toURI();
 
             // Use Media and MediaPlayer to load and store the audio file
             Media media = new Media(uri.toString());
             MediaPlayer mediaPlayer = new MediaPlayer(media);
             resources.put(audioName, mediaPlayer);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+        } catch (URISyntaxException | NullPointerException e) {
+            throw new IllegalArgumentException("Error loading audio file: " + filePath, e);
         }
     }
 
-    // Helper methods
-
+    /**
+     * Plays the specified media with the given loop count.
+     *
+     * @param mediaPlayer The MediaPlayer to play.
+     * @param loopCount   The number of loops for playback.
+     */
     private void playMedia(MediaPlayer mediaPlayer, int loopCount) {
         if (mediaPlayer != null) {
             mediaPlayer.setCycleCount(loopCount);
@@ -138,12 +170,22 @@ public class AudioManager {
         }
     }
 
+    /**
+     * Stops the specified media playback.
+     *
+     * @param mediaPlayer The MediaPlayer to stop.
+     */
     private void stopMedia(MediaPlayer mediaPlayer) {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
         }
     }
 
+    /**
+     * Pauses the specified media playback.
+     *
+     * @param audioName The name of the audio resource to pause.
+     */
     private void pauseMedia(String audioName) {
         MediaPlayer mediaPlayer = resources.get(audioName);
         if (mediaPlayer != null) {
