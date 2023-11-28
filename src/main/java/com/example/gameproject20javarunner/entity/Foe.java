@@ -6,16 +6,16 @@ import javafx.scene.layout.Pane;
 
 public class Foe extends MovingThing {
     // MovingThing Attributes
-    private static final double DISPLAY_WIDTH = 144;
-    private static final double DISPLAY_HEIGHT = 144;
-    private static final double FRAME_WIDTH = 48;
-    private static final double FRAME_HEIGHT = 48;
+    private static final double DISPLAY_WIDTH = 120;
+    private static final double DISPLAY_HEIGHT = 120;
+    private static final double FRAME_WIDTH = 498;
+    private static final double FRAME_HEIGHT = 498;
     private static final double FRAME_OFFSET_X = 0;
     private static final double FRAME_OFFSET_Y = 0;
     private static final int ATTITUDE = 0;
     private static final int MAX_INDEX = 5;
-    private static final int DURATION = 8;
-    private static final String SPRITE_SHEET_PATH = "/img/SecretHideout_Gunner/Red/Gunner_Red_Run.png";
+    private static final int DURATION = 2;
+    private static final String SPRITE_SHEET_PATH = "/img/HonkaiStarRail_Herta_Kuru_Kuru_Kururin_498x498.png";
 
     // Health Attributes
     private int health = 1;

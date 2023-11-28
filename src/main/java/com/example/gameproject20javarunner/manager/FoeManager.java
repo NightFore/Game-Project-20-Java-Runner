@@ -18,11 +18,11 @@ public class FoeManager {
     private final List<Foe> foes;
 
     // Constants (Foe)
-    private static final int MIN_FOES = 50;
-    private static final int MAX_FOES = 100;
+    private static final int MIN_FOES = 10;
+    private static final int MAX_FOES = 25;
     private static final float FOE_MIN_X = 800;
     private static final float FOE_MAX_X = 1600;
-    private static final float FOE_MIN_Y = 400;
+    private static final float FOE_MIN_Y = 350;
     private static final float FOE_MAX_Y = 450;
 
     public FoeManager(Camera camera, Pane root) {

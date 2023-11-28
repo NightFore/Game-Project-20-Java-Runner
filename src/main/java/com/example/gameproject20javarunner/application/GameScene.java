@@ -2,6 +2,7 @@
 
 package com.example.gameproject20javarunner.application;
 
+import com.example.gameproject20javarunner.manager.AudioManager;
 import com.example.gameproject20javarunner.manager.BackgroundManager;
 import com.example.gameproject20javarunner.manager.FoeManager;
 import com.example.gameproject20javarunner.manager.HeartManager;
@@ -12,6 +13,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 
+import java.util.Objects;
+
 public class GameScene extends Scene {
     // Instances
     private final Camera camera;
@@ -19,11 +22,17 @@ public class GameScene extends Scene {
     private final HeartManager heartManager;
     private final FoeManager foeManager;
     private final Hero hero;
+    private final AudioManager audioManager;
 
     // Constructor taking the camera, the main container, and the dimensions of the scene
     public GameScene(Camera camera, Pane root, double width, double height) {
         super(root, width, height);
         this.camera = camera;
+
+        audioManager = new AudioManager();
+        audioManager.loadAudio("Kuru_Kuru_Kururin", "/music/Raphiiel_Herta_Kuru_Kuru_Kururin.mp3");
+        audioManager.loadAudio("Field_of_Memories", "/music/Waterflame_music_Field_of_Memories.mp3");
+        audioManager.loadAudio("Glorious_Morning", "/music/Waterflame_music_Glorious_Morning.mp3");
 
         backgroundManager = new BackgroundManager(camera, root);
         heartManager = new HeartManager(camera, root);
@@ -49,6 +58,9 @@ public class GameScene extends Scene {
             case LEFT, A -> hero.setDirectionX(-1);
             case RIGHT, D -> hero.setDirectionX(1);
             case UP, W, SPACE -> hero.setJump();
+            case I -> audioManager.playMusic("Kuru_Kuru_Kururin");
+            case O -> audioManager.playMusic("Field_of_Memories");
+            case P -> audioManager.playMusic("Glorious_Morning");
         }
     }
 

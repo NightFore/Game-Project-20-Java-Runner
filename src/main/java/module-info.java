@@ -1,6 +1,7 @@
 module com.example.gameproject20javarunner {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.media;
 
 
     opens com.example.gameproject20javarunner to javafx.fxml;
