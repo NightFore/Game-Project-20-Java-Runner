@@ -3,7 +3,6 @@
 package com.example.gameproject20javarunner.model;
 
 import com.example.gameproject20javarunner.view.Camera;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.Pane;
 
 /**
@@ -23,8 +22,8 @@ public abstract class AnimatedThing extends SpriteThing {
      *
      * @param camera         The camera used for positioning.
      * @param root           The root pane where the elements are added.
-     * @param x              The initial x position.
-     * @param y              The initial y position.
+     * @param initialX       The initial x position.
+     * @param initialY       The initial y position.
      * @param displayWidth   The width of the displayed image.
      * @param displayHeight  The height of the displayed image.
      * @param spriteWidth    The width of each sprite in the sprite sheet.
@@ -36,9 +35,9 @@ public abstract class AnimatedThing extends SpriteThing {
      * @param duration       The total duration of the animation.
      * @param fileName       The file name of the image resource.
      */
-    public AnimatedThing(Camera camera, Pane root, double x, double y, double displayWidth, double displayHeight, double spriteWidth, double spriteHeight, double spriteOffsetX, double spriteOffsetY, int maxIndex, int attitude, int duration, String fileName) {
+    public AnimatedThing(Camera camera, Pane root, double initialX, double initialY, double displayWidth, double displayHeight, double spriteWidth, double spriteHeight, double spriteOffsetX, double spriteOffsetY, int maxIndex, int attitude, int duration, String fileName) {
         // Call to the constructor of the parent class StaticThing
-        super(camera, root, x, y, displayWidth, displayHeight, spriteWidth, spriteHeight, spriteOffsetX, spriteOffsetY, fileName);
+        super(camera, root, initialX, initialY, displayWidth, displayHeight, spriteWidth, spriteHeight, spriteOffsetX, spriteOffsetY, fileName);
 
         // Set animation attributes
         this.attitude = attitude;

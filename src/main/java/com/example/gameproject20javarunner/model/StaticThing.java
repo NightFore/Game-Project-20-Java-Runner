@@ -39,15 +39,15 @@ public class StaticThing {
     /**
      * Constructs a StaticThing with the specified camera, root, initial position, display size and image file.
      *
-     * @param camera    The camera used for positioning.
-     * @param root      The root pane where the elements are added.
-     * @param x         The initial x position.
-     * @param y         The initial y position.
+     * @param camera        The camera used for positioning.
+     * @param root          The root pane where the elements are added.
+     * @param initialX      The initial x position.
+     * @param initialY      The initial y position.
      * @param displayWidth  The initial display width.
      * @param displayHeight The initial display height.
-     * @param fileName  The file name of the image resource.
+     * @param fileName      The file name of the image resource.
      */
-    public StaticThing(Camera camera, Pane root, double x, double y, double displayWidth, double displayHeight, String fileName) {
+    public StaticThing(Camera camera, Pane root, double initialX, double initialY, double displayWidth, double displayHeight, String fileName) {
         // Set Game attributes
         this.camera = camera;
         this.root = root;
@@ -67,13 +67,26 @@ public class StaticThing {
         // Initialize the imageView
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(fileName)));
         imageView = new ImageView(image);
-        setPosition(x, y);
+        setInitialPosition(initialX, initialY);
         setDisplaySize(displayWidth, displayHeight);
 
         // Add visual elements to the root pane
         root.getChildren().add(imageView);
         root.getChildren().add(displayRectangle);
         root.getChildren().add(hitboxRectangle);
+    }
+
+    /**
+     * Sets the initial position of the StaticThing.
+     *
+     * @param initialX The initial x position.
+     * @param initialY The initial y position.
+     */
+    public void setInitialPosition(double initialX, double initialY) {
+        this.x = initialX;
+        this.y = initialY;
+        imageView.setX(initialX);
+        imageView.setY(initialY);
     }
 
     /**
@@ -110,7 +123,6 @@ public class StaticThing {
      */
     public void setX(double x) {
         this.x = x;
-        imageView.setX(x);
     }
 
     /**
@@ -120,13 +132,6 @@ public class StaticThing {
      */
     public void setY(double y) {
         this.y = y;
-        imageView.setX(y);
-    }
-
-    public void test(double x, double y) {
-        this.x = x;
-        this.y = y;
-
     }
 
     /**
