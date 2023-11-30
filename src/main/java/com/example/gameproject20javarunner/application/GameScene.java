@@ -7,13 +7,12 @@ import com.example.gameproject20javarunner.manager.BackgroundManager;
 import com.example.gameproject20javarunner.manager.FoeManager;
 import com.example.gameproject20javarunner.manager.HeartManager;
 import com.example.gameproject20javarunner.entity.Hero;
+import com.example.gameproject20javarunner.map.TileMap;
 import com.example.gameproject20javarunner.view.Camera;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
-
-import java.util.Objects;
 
 public class GameScene extends Scene {
     // Instances
@@ -23,16 +22,12 @@ public class GameScene extends Scene {
     private final FoeManager foeManager;
     private final Hero hero;
     private final AudioManager audioManager;
+    private TileMap tileMap;
 
     // Constructor taking the camera, the main container, and the dimensions of the scene
     public GameScene(Camera camera, Pane root, double width, double height) {
         super(root, width, height);
         this.camera = camera;
-
-        audioManager = new AudioManager();
-        audioManager.loadAudio("Kuru_Kuru_Kururin", "/music/Raphiiel_Herta_Kuru_Kuru_Kururin.mp3");
-        audioManager.loadAudio("Field_of_Memories", "/music/Waterflame_music_Field_of_Memories.mp3");
-        audioManager.loadAudio("Glorious_Morning", "/music/Waterflame_music_Glorious_Morning.mp3");
 
         backgroundManager = new BackgroundManager(camera, root);
         heartManager = new HeartManager(camera, root);
@@ -42,6 +37,28 @@ public class GameScene extends Scene {
         setOnMouseClicked(event -> handleClickPress(event.getButton()));
         setOnKeyPressed(event -> handleKeyPress(event.getCode()));
         setOnKeyReleased(event -> handleKeyRelease(event.getCode()));
+
+        // AudioManager (Test)
+        audioManager = new AudioManager();
+        audioManager.loadAudio("Kuru_Kuru_Kururin", "/music/Raphiiel_Herta_Kuru_Kuru_Kururin.mp3");
+        audioManager.loadAudio("Field_of_Memories", "/music/Waterflame_music_Field_of_Memories.mp3");
+        audioManager.loadAudio("Glorious_Morning", "/music/Waterflame_music_Glorious_Morning.mp3");
+
+        // TileMap (Test)
+        String[][] map = {
+                {"0,0", "1,0", "1,0", "1,0", "1,0", "1,0", "2,0"},
+                {"0,1", "1,1", "1,1", "1,1", "1,1", "1,1", "2,1"},
+                {"0,0", "1,0", "2,0", "3,0", "4,0", "5,0", "6,0"},
+                {"0,1", "1,1", "2,1", "3,1", "4,1", "5,1", "6,1"},
+                {"0,2", "1,2", "2,2", "3,2", "4,2", "5,2", "6,2"},
+                {"0,3", "1,3", "2,3", "3,3", "4,3", "5,3", "6,3"},
+                {"0,4", "1,4", "2,4", "3,4", "4,4", "5,4", "6,4"},
+                {"0,5", "1,5", "2,5", "3,5", "4,5", "5,5", "6,5"},
+                {"0,6", "1,6", "2,6", "3,6", "4,6", "5,6", "6,6"}
+        };
+
+        tileMap = new TileMap("/img/Tileset_Maaot_Mossy.png", map, 512, 512, 32, 32);
+        tileMap.addToPane(root);
     }
 
     // Method to handle click events
