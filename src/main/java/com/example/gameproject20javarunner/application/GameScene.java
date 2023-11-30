@@ -57,8 +57,8 @@ public class GameScene extends Scene {
                 {"0,6", "1,6", "2,6", "3,6", "4,6", "5,6", "6,6"}
         };
 
-        tileMap = new TileMap("/img/Tileset_Maaot_Mossy.png", map, 512, 512, 32, 32);
-        tileMap.addToPane(root);
+        tileMap = new TileMap(camera, root,"/img/Tileset_Maaot_Mossy.png", map, 512, 512, 32, 32);
+        tileMap.addToPane();
     }
 
     // Method to handle click events
@@ -106,5 +106,6 @@ public class GameScene extends Scene {
         backgroundManager.draw();
         hero.draw();
         foeManager.draw();
+        tileMap.draw();
     }
 }

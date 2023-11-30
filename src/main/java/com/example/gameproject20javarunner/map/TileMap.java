@@ -1,5 +1,7 @@
 package com.example.gameproject20javarunner.map;
 
+import com.example.gameproject20javarunner.model.Thing;
+import com.example.gameproject20javarunner.view.Camera;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -9,15 +11,22 @@ import java.util.List;
 import java.util.Objects;
 
 public class TileMap {
+    // Game Attributes
+    private final Camera camera;
+    private final Pane root;
     private final Image tileSheet;
     private final int originalTileWidth;
     private final int originalTileHeight;
     private final int displayTileWidth;
     private final int displayTileHeight;
-    private List<ImageView> tileList;
-    private ImageView[][] tiles;
+    private List<Thing> tileList;
+    private Thing[][] tiles;
 
-    public TileMap(String tileSheetFileName, String[][] map, int originalTileWidth, int originalTileHeight, int displayTileWidth, int displayTileHeight) {
+    public TileMap(Camera camera, Pane root, String tileSheetFileName, String[][] map, int originalTileWidth, int originalTileHeight, int displayTileWidth, int displayTileHeight) {
+        // Set Game attributes
+        this.camera = camera;
+        this.root = root;
+
         this.tileSheet = new Image(Objects.requireNonNull(getClass().getResourceAsStream(tileSheetFileName)));
         this.originalTileWidth = originalTileWidth;
         this.originalTileHeight = originalTileHeight;
@@ -39,12 +48,9 @@ public class TileMap {
                 double tileX = col * originalTileWidth;
                 double tileY = row * originalTileHeight;
 
-                ImageView tileView = new ImageView(tileSheet);
-                tileView.setViewport(new javafx.geometry.Rectangle2D(tileX, tileY, originalTileWidth, originalTileHeight));
-                tileView.setFitWidth(displayTileWidth);
-                tileView.setFitHeight(displayTileHeight);
-
-                tileList.add(tileView);
+                Thing tileThing = new Thing(camera, root, 0, 0, displayTileWidth, displayTileHeight, tileSheet);
+                tileThing.setViewport(tileX, tileY, originalTileWidth, originalTileHeight);
+                tileList.add(tileThing);
             }
         }
     }
@@ -53,7 +59,7 @@ public class TileMap {
         int numRows = map.length;
         int numCols = map[0].length;
 
-        tiles = new ImageView[numRows][numCols];
+        tiles = new Thing[numRows][numCols];
 
         int numColsInTileList = (int) (tileSheet.getWidth() / originalTileWidth);
 
@@ -65,25 +71,25 @@ public class TileMap {
                 int tileIndexY = Integer.parseInt(indices[1]);
                 int tileIndex = tileIndexY * numColsInTileList + tileIndexX;
 
-                ImageView tileView = copyImageView(tileList.get(tileIndex));
-                tileView.relocate(col * displayTileWidth, row * displayTileHeight);
-                tiles[row][col] = tileView;
+                Thing tileThing = tileList.get(tileIndex).copy();
+                tileThing.setInitialPosition(col * displayTileWidth, row * displayTileHeight);
+                tiles[row][col] = tileThing;
             }
         }
     }
 
-    private ImageView copyImageView(ImageView original) {
-        ImageView copy = new ImageView(original.getImage());
-        copy.setViewport(original.getViewport());
-        copy.setFitWidth(original.getFitWidth());
-        copy.setFitHeight(original.getFitHeight());
-        return copy;
+    public void addToPane() {
+        for (Thing[] row : tiles) {
+            for (Thing tile : row) {
+                root.getChildren().add(tile.getImageView());
+            }
+        }
     }
 
-    public void addToPane(Pane pane) {
-        for (ImageView[] row : tiles) {
-            for (ImageView tile : row) {
-                pane.getChildren().add(tile);
+    public void draw() {
+        for (Thing[] row : tiles) {
+            for (Thing tile : row) {
+                tile.draw();
             }
         }
     }
