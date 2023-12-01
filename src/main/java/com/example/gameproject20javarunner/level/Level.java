@@ -1,4 +1,4 @@
-// LevelLoader.java
+// Level.java
 
 package com.example.gameproject20javarunner.level;
 
@@ -7,13 +7,17 @@ import com.example.gameproject20javarunner.view.Camera;
 import com.example.gameproject20javarunner.manager.BackgroundManager;
 import javafx.scene.layout.Pane;
 
-public class LevelLoader {
+public class Level {
+    // Level Attributes
+    private TileMap tileMap;
+
     /**
      * Loads a level from a JSON file and constructs the corresponding TileMap.
      *
-     * @param camera   The camera used for positioning.
-     * @param root     The root pane where elements are added.
-     * @param filePath The path to the JSON file.
+     * @param camera             The camera used for positioning.
+     * @param root               The root pane where elements are added.
+     * @param backgroundManager  The background manager.
+     * @param filePath           The path to the JSON file.
      */
     public void loadLevel(Camera camera, Pane root, BackgroundManager backgroundManager, String filePath) {
         // Attempt to load level details from the provided JSON file path.
@@ -21,8 +25,8 @@ public class LevelLoader {
 
         // Check if level details were successfully loaded.
         if (levelDetails != null) {
-            // Construct the TileMap
-            constructTileMap(levelDetails, root, camera);
+            // Construct the TileMap and store the reference
+            tileMap = constructTileMap(levelDetails, root, camera);
 
             // Load and set the background image
             String backgroundImagePath = levelDetails.getBackgroundImagePath();
@@ -38,11 +42,12 @@ public class LevelLoader {
     /**
      * Constructs a TileMap based on the provided level details and adds it to the specified root pane.
      *
-     * @param levelDetails       The details of the loaded level, including tile sheet, dimensions, and map.
-     * @param root               The root pane where TileMap elements will be added.
-     * @param camera             The camera used for positioning within the level.
+     * @param levelDetails  The details of the loaded level, including tile sheet, dimensions, and map.
+     * @param root          The root pane where TileMap elements will be added.
+     * @param camera        The camera used for positioning within the level.
+     * @return The constructed TileMap instance.
      */
-    private void constructTileMap(LevelDetails levelDetails, Pane root, Camera camera) {
+    private TileMap constructTileMap(LevelDetails levelDetails, Pane root, Camera camera) {
         // Extracting necessary details from the loaded level.
         String tileSheetPath = levelDetails.getTileSheetPath();
         int originalTileWidth = levelDetails.getOriginalTileWidth();
@@ -56,5 +61,15 @@ public class LevelLoader {
 
         // Adding the constructed TileMap to the specified root pane.
         tileMap.addToRoot();
+
+        // Return the TileMap instance
+        return tileMap;
+    }
+
+    /**
+     * Draws the level elements, including the TileMap.
+     */
+    public void draw() {
+        tileMap.draw();
     }
 }

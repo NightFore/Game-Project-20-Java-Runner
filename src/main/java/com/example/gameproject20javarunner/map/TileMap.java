@@ -147,7 +147,10 @@ public class TileMap {
     public void draw() {
         for (Thing[] row : tiles) {
             for (Thing tile : row) {
-                tile.draw();
+                // Check if the tile is not null before updating its position
+                if (tile != null) {
+                    tile.draw();
+                }
             }
         }
     }
