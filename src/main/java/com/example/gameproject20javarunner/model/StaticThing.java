@@ -20,6 +20,7 @@ public class StaticThing extends Thing {
      * @param fileName      The file name of the image.
      */
     public StaticThing(Camera camera, Pane root, double initialX, double initialY, double displayWidth, double displayHeight, String fileName) {
+        // Call to the constructor of the parent class Thing
         super(camera, root, initialX, initialY, displayWidth, displayHeight, new javafx.scene.image.Image(Objects.requireNonNull(StaticThing.class.getResourceAsStream(fileName))));
 
         // Add visual elements to the root pane
