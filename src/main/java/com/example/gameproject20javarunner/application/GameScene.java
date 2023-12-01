@@ -26,11 +26,11 @@ public class GameScene extends Scene {
     private TileMap tileMap;
 
     // Constructor taking the camera, the main container, and the dimensions of the scene
-    public GameScene(Camera camera, Pane root, double width, double height) {
-        super(root, width, height);
+    public GameScene(Camera camera, Pane root, double sceneWidth, double sceneHeight) {
+        super(root, sceneWidth, sceneHeight);
         this.camera = camera;
 
-        backgroundManager = new BackgroundManager(camera, root);
+        backgroundManager = new BackgroundManager(camera, root, sceneWidth, sceneHeight);
         heartManager = new HeartManager(camera, root);
         foeManager = new FoeManager(camera, root);
         hero = new Hero(camera, root);

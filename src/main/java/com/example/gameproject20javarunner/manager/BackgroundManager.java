@@ -4,7 +4,6 @@ package com.example.gameproject20javarunner.manager;
 
 import com.example.gameproject20javarunner.model.StaticThing;
 import com.example.gameproject20javarunner.view.Camera;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 import java.util.List;
@@ -17,27 +16,32 @@ public class BackgroundManager {
     private final Camera camera;
 
     // StaticThing Attributes
-    private static final double WIDTH = 800;
-    private static final double HEIGHT = 600;
-    private static final String IMAGE_PATH = "/img/desert.png";
+    private final double sceneWidth;
+    private final double sceneHeight;
 
     // BackgroundManager Attributes
     private final StaticThing backgroundLeft;
     private final StaticThing backgroundRight;
 
     /**
-     * Constructs a BackgroundManager with the specified camera and root pane.
+     * Constructs a BackgroundManager with the specified camera, root pane, scene width, and scene height.
      *
-     * @param camera The camera used for positioning.
-     * @param root   The root pane where the elements are added.
+     * @param camera      The camera used for positioning.
+     * @param root        The root pane where the elements are added.
+     * @param sceneWidth  The width of the game scene.
+     * @param sceneHeight The height of the game scene.
      */
-    public BackgroundManager(Camera camera, Pane root) {
-        // Set Game attributes
+    public BackgroundManager(Camera camera, Pane root, double sceneWidth, double sceneHeight) {
+        // Set Game Attributes
         this.camera = camera;
 
-        // Initialize backgrounds
-        backgroundLeft = new StaticThing(camera, root, -WIDTH / 2, 0, WIDTH, HEIGHT, IMAGE_PATH);
-        backgroundRight = new StaticThing(camera, root, WIDTH / 2, 0, WIDTH, HEIGHT, IMAGE_PATH);
+        // Set StaticThing Attributes
+        this.sceneWidth = sceneWidth;
+        this.sceneHeight = sceneHeight;
+
+        // Initialize Background Attributes
+        backgroundLeft = new StaticThing(camera, root, -sceneWidth / 2, 0, sceneWidth, sceneHeight, "");
+        backgroundRight = new StaticThing(camera, root, sceneWidth / 2, 0, sceneWidth, sceneHeight, "");
     }
 
     /**
@@ -65,8 +69,41 @@ public class BackgroundManager {
      * @param imagePath The path to the new background image.
      */
     public void setBackgroundImage(String imagePath) {
+        // Set backgrounds
         backgroundLeft.setImage(imagePath);
         backgroundRight.setImage(imagePath);
+
+        // Update the dimensions of the background images
+        updateBackgroundSize();
+    }
+
+    /**
+     * Updates the dimensions of the background images to fit the current scene dimensions while maintaining aspect ratio.
+     */
+    public void updateBackgroundSize() {
+        // Get the dimensions of the current background image
+        double imageWidth = backgroundLeft.getDisplayWidth();
+        double imageHeight = backgroundLeft.getDisplayHeight();
+
+        // Calculate the scaling factors for width and height
+        double widthScale = sceneWidth / imageWidth;
+        double heightScale = sceneHeight / imageHeight;
+
+        // Calculate the new dimensions while maintaining aspect ratio
+        double newWidth, newHeight;
+        if (widthScale > heightScale) {
+            // If the width scale is larger, adjust the width and calculate the corresponding height
+            newWidth = sceneWidth;
+            newHeight = imageHeight * widthScale;
+        } else {
+            // If the height scale is larger or equal, adjust the height and calculate the corresponding width
+            newWidth = imageWidth * heightScale;
+            newHeight = sceneHeight;
+        }
+
+        // Set the new dimensions for the background images
+        backgroundLeft.setDisplaySize(newWidth, newHeight);
+        backgroundRight.setDisplaySize(newWidth, newHeight);
     }
 
     /**
