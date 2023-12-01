@@ -92,18 +92,26 @@ public class TileMap {
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
                 String tileCode = map[row][col];
-                String[] indices = tileCode.split(",");
-                int tileIndexX = Integer.parseInt(indices[0]);
-                int tileIndexY = Integer.parseInt(indices[1]);
-                int tileIndex = tileIndexY * numColsInTileList + tileIndexX;
 
-                // Create a copy of the Thing from tileList and set its position
-                Thing tileThing = tileList.get(tileIndex).copy();
-                tileThing.setInitialPosition(col * displayTileWidth, row * displayTileHeight);
-                tiles[row][col] = tileThing;
+                // Check if the tile is not empty
+                if (!tileCode.equals("-1")) {
+                    String[] indices = tileCode.split(",");
+                    int tileIndexX = Integer.parseInt(indices[0]);
+                    int tileIndexY = Integer.parseInt(indices[1]);
+                    int tileIndex = tileIndexY * numColsInTileList + tileIndexX;
+
+                    // Create a copy of the Thing from tileList and set its position
+                    Thing tileThing = tileList.get(tileIndex).copy();
+                    tileThing.setInitialPosition(col * displayTileWidth, row * displayTileHeight);
+                    tiles[row][col] = tileThing;
+                } else {
+                    // Empty tile logic, set the tile as null
+                    tiles[row][col] = null;
+                }
             }
         }
     }
+
 
     /**
      * Add all Thing objects to the root.
@@ -111,7 +119,10 @@ public class TileMap {
     public void addToRoot() {
         for (Thing[] row : tiles) {
             for (Thing tile : row) {
-                root.getChildren().add(tile.getImageView());
+                // Check if the tile is not null before adding it to the root
+                if (tile != null) {
+                    root.getChildren().add(tile.getImageView());
+                }
             }
         }
     }
@@ -122,7 +133,10 @@ public class TileMap {
     public void removeFromRoot() {
         for (Thing[] row : tiles) {
             for (Thing tile : row) {
-                tile.removeFromRoot();
+                // Check if the tile is not null before removing it from the root
+                if (tile != null) {
+                    tile.removeFromRoot();
+                }
             }
         }
     }
