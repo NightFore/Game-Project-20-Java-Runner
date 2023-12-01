@@ -61,10 +61,9 @@ public class GameScene extends Scene {
         tileMap = new TileMap(camera, root,"/img/Tileset_Maaot_Mossy.png", map, 512, 512, 32, 32);
         tileMap.addToRoot();
 
-        // Load level using LevelLoader
+        // Load level using LevelLoader (Test)
         LevelLoader levelLoader = new LevelLoader();
         levelLoader.loadLevel("/leveldata/level1.json", root, camera);
-
     }
 
     // Method to handle click events
