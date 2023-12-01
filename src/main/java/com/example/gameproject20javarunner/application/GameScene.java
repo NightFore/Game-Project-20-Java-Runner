@@ -63,7 +63,7 @@ public class GameScene extends Scene {
 
         // Load level using LevelLoader (Test)
         LevelLoader levelLoader = new LevelLoader();
-        levelLoader.loadLevel("/leveldata/level1.json", root, camera);
+        levelLoader.loadLevel(camera, root, backgroundManager, "/leveldata/level1.json");
     }
 
     // Method to handle click events

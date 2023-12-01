@@ -11,21 +11,18 @@ import java.io.InputStream;
 public class LevelDetails {
     @JsonProperty("tileSheetPath")
     private String tileSheetPath;
-
     @JsonProperty("originalTileWidth")
     private int originalTileWidth;
-
     @JsonProperty("originalTileHeight")
     private int originalTileHeight;
-
     @JsonProperty("displayTileWidth")
     private int displayTileWidth;
-
     @JsonProperty("displayTileHeight")
     private int displayTileHeight;
-
     @JsonProperty("map")
     private String[][] map;
+    @JsonProperty("backgroundImagePath")
+    private String backgroundImagePath;
 
     /**
      * Loads level details from a JSON file using Jackson ObjectMapper.
@@ -108,5 +105,9 @@ public class LevelDetails {
      */
     public String[][] getMap() {
         return map;
+    }
+
+    public String getBackgroundImagePath() {
+        return backgroundImagePath;
     }
 }

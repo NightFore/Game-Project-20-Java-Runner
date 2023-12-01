@@ -41,24 +41,6 @@ public class BackgroundManager {
     }
 
     /**
-     * Getter for the left background ImageView.
-     *
-     * @return The ImageView associated with the left background.
-     */
-    public ImageView getBackgroundLeft() {
-        return backgroundLeft.getImageView();
-    }
-
-    /**
-     * Getter for the right background ImageView.
-     *
-     * @return The ImageView associated with the right background.
-     */
-    public ImageView getBackgroundRight() {
-        return backgroundRight.getImageView();
-    }
-
-    /**
      * Update method to handle background movement and looping effect.
      */
     public void update() {
@@ -75,6 +57,16 @@ public class BackgroundManager {
             backgroundLeft.setX(backgroundLeft.getX() + backgroundLeft.getDisplayWidth());
             backgroundRight.setX(backgroundRight.getX() + backgroundRight.getDisplayWidth());
         }
+    }
+
+    /**
+     * Set the background image dynamically.
+     *
+     * @param imagePath The path to the new background image.
+     */
+    public void setBackgroundImage(String imagePath) {
+        backgroundLeft.setImage(imagePath);
+        backgroundRight.setImage(imagePath);
     }
 
     /**

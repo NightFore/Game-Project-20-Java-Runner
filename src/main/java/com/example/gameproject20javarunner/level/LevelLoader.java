@@ -4,24 +4,31 @@ package com.example.gameproject20javarunner.level;
 
 import com.example.gameproject20javarunner.map.TileMap;
 import com.example.gameproject20javarunner.view.Camera;
+import com.example.gameproject20javarunner.manager.BackgroundManager;
 import javafx.scene.layout.Pane;
 
 public class LevelLoader {
     /**
      * Loads a level from a JSON file and constructs the corresponding TileMap.
      *
-     * @param filePath The path to the JSON file.
-     * @param root     The root pane where elements are added.
      * @param camera   The camera used for positioning.
+     * @param root     The root pane where elements are added.
+     * @param filePath The path to the JSON file.
      */
-    public void loadLevel(String filePath, Pane root, Camera camera) {
+    public void loadLevel(Camera camera, Pane root, BackgroundManager backgroundManager, String filePath) {
         // Attempt to load level details from the provided JSON file path.
         LevelDetails levelDetails = LevelDetails.loadFromJson(filePath);
 
         // Check if level details were successfully loaded.
         if (levelDetails != null) {
-            // If successful, construct the TileMap using the loaded details.
+            // Construct the TileMap
             constructTileMap(levelDetails, root, camera);
+
+            // Load and set the background image
+            String backgroundImagePath = levelDetails.getBackgroundImagePath();
+            if (backgroundImagePath != null) {
+                backgroundManager.setBackgroundImage(backgroundImagePath);
+            }
         } else {
             // If unsuccessful, print an error message.
             System.out.println("Failed to load level. Please check the JSON file: " + filePath);
