@@ -55,7 +55,7 @@ public class TileMap {
     }
 
     /**
-     * Create the list of Thing objects representing individual tiles
+     * Create the list of Thing objects representing individual tiles.
      */
     private void createTileList() {
         tileList = new ArrayList<>();
@@ -106,9 +106,9 @@ public class TileMap {
     }
 
     /**
-     * Add all Thing objects to the root pane
+     * Add all Thing objects to the root.
      */
-    public void addToPane() {
+    public void addToRoot() {
         for (Thing[] row : tiles) {
             for (Thing tile : row) {
                 root.getChildren().add(tile.getImageView());
@@ -117,9 +117,9 @@ public class TileMap {
     }
 
     /**
-     *
+     * Remove all Thing objects from the root.
      */
-    public void removeFromPane() {
+    public void removeFromRoot() {
         for (Thing[] row : tiles) {
             for (Thing tile : row) {
                 tile.removeFromRoot();
@@ -128,7 +128,7 @@ public class TileMap {
     }
 
     /**
-     * Update the positions of all Thing objects based on the camera
+     * Update the positions of all Thing objects based on the camera.
      */
     public void draw() {
         for (Thing[] row : tiles) {

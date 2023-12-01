@@ -1,8 +1,13 @@
 module com.example.gameproject20javarunner {
     requires javafx.controls;
     requires javafx.fxml;
+
+    // AudioManager
     requires javafx.media;
 
+    // JSON
+    requires com.fasterxml.jackson.databind;
+    opens com.example.gameproject20javarunner.level to com.fasterxml.jackson.databind;
 
     opens com.example.gameproject20javarunner to javafx.fxml;
     exports com.example.gameproject20javarunner;
