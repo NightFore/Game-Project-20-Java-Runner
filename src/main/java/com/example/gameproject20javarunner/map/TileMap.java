@@ -94,7 +94,7 @@ public class TileMap {
                 String tileCode = map[row][col];
 
                 // Check if the tile is not empty
-                if (!tileCode.equals("-1")) {
+                if (!tileCode.equals("000")) {
                     String[] indices = tileCode.split(",");
                     int tileIndexX = Integer.parseInt(indices[0]);
                     int tileIndexY = Integer.parseInt(indices[1]);
