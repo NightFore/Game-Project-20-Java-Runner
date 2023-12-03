@@ -10,7 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 /**
- * A class representing the hero character in the game.
+ * A class representing the player in the game.
  * Extends the abstract class MovingThing.
  */
 public class Player extends MovingThing {
@@ -35,40 +35,29 @@ public class Player extends MovingThing {
     private static final int DURATION = 8;
     private static final String SPRITE_SHEET_PATH = "/img/SecretHideout_Gunner/Blue/Gunner_Blue_Run.png";
 
-    // Test
-
+    // Running Attributes
     private final double runAcceleleration = 1000;
     private final double runDeceleration = 400;
     private final double runMax = 90;
+
+    // Jump Attributes
     private final double jumpSpeed = -260;
     private final double gravity = 900;
     private final double maxFall = 160;
     private boolean isJumping = true;
     private boolean isOnGround = false;
-    private boolean canVariableJump = true;
 
-    private static final double jumpHeight = 64;
-    private static final double timeToJumpApex = 0.3;
-    private double jumpTime = 0;
-
-
-    // Dash
+    // Dash Attributes
     private boolean isDashing = false;
+    private boolean canDash = true;
     private double dashTimer = 0.0;
     private double dashCooldownTimer = 0.0;
-    private double dashRefillCooldownTimer = 0.0;
     private double dashSpeedX = 0.0;
     private double dashSpeedY = 0.0;
     private double DashSpeed = 240;
-    private double EndDashSpeed = 160;
     private double EndDashUpMult = 0.75;
     private double DashTime = 0.15;
     private double DashCooldown = 0.2;
-    private double DashRefillCooldown = 0.1;
-    private int DashHJumpThruNudge = 6;
-    private int DashCornerCorrection = 4;
-    private int DashVFloorSnapDist = 3;
-    private double DashAttackTime = 0.3;
 
 
     /**
@@ -82,39 +71,43 @@ public class Player extends MovingThing {
         super(camera, root, INITIAL_X, INITIAL_Y, DISPLAY_WIDTH, DISPLAY_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, SPRITE_SHEET_PATH);
         setHitboxSize(HITBOX_WIDTH, HITBOX_HEIGHT);
 
-        // Initialize game attributes
+        // Set Game Attributes
         this.camera = camera;
         this.root = root;
         this.tileMap = tileMap;
     }
 
+
+
+    // --- Horizontal Movement Logic ---
     /**
-     * Updates the horizontal movement logic of the player.
+     * Updates the player's horizontal speed based on input.
      *
      * @param deltaTime The time elapsed since the last update.
      */
     private void updateRunning(double deltaTime) {
         double currentSpeedX = Math.abs(getSpeedX());
 
-        // Check horizontal movement
+        // Check if the player is trying to move horizontally
         if (getDirectionX() != 0) {
-            // Acceleration
+            // Apply acceleration
             if (currentSpeedX < runMax) {
                 setSpeedX(getSpeedX() + runAcceleleration * getDirectionX() * deltaTime);
             }
-            // Maximum speed
+            // Maximum speed value
             else {
                 setSpeedX(runMax * getDirectionX());
             }
         }
+
+        // Decelerate if the player is not actively moving
         else {
-            // Check for deceleration
             if (currentSpeedX != 0) {
-                // Decelerate
+                // Decelerate in the opposite direction
                 int direction = (int) Math.signum(getSpeedX());
                 double newSpeedX = getSpeedX() - runDeceleration * direction * deltaTime;
 
-                // Apply the new speed after deceleration
+                // Ensure deceleration doesn't reverse the direction
                 if (Math.signum(newSpeedX) == direction) {
                     setSpeedX(newSpeedX);
                 }
@@ -126,16 +119,19 @@ public class Player extends MovingThing {
         }
     }
 
+
+
+    // ----- Vertical Movement Logic -----
     /**
-     * Updates the gravity logic of the player.
+     * Updates the player's vertical speed based on gravity.
      *
      * @param deltaTime The time elapsed since the last update.
      */
     private void updateGravity(double deltaTime) {
-        // Update the vertical speed based on gravity
+        // Apply gravity
         double newSpeedY = getSpeedY() + gravity * deltaTime;
 
-        // Limit the fall speed to the maximum allowed
+        // Limit the fall speed
         if (newSpeedY > maxFall) {
             newSpeedY = maxFall;
         }
@@ -144,6 +140,9 @@ public class Player extends MovingThing {
         setSpeedY(newSpeedY);
     }
 
+    /**
+     * Initiates a jump if the player is on the ground and not currently jumping.
+     */
     public void jump() {
         if (!isJumping && isOnGround) {
             isJumping = true;
@@ -151,58 +150,65 @@ public class Player extends MovingThing {
         }
     }
 
-    public void dash() {
-        isDashing = true;
-        dashTimer = DashTime;
 
-        // Calculate dash speed in both X and Y directions
-        dashSpeedX = DashSpeed * getDirectionX();
-        dashSpeedY = DashSpeed * getDirectionY();
+
+
+    // ----- Dash Logic -----
+    /**
+     * Initiates a dash if the player is not currently dashing.
+     * Sets the dash timer, dash speed, and updates cooldown timers.
+     */
+    public void dash() {
+        // Check dash cooldown and direction input
+        if (canDash && (getDirectionX() != 0 || getDirectionY() != 0)) {
+            canDash = false;
+            isDashing = true;
+            dashTimer = DashTime;
+            dashSpeedX = DashSpeed * getDirectionX();
+            dashSpeedY = DashSpeed * getDirectionY();
+            setSpeedX(dashSpeedX);
+            setSpeedY(dashSpeedY);
+        }
     }
 
+    /**
+     * Updates the dash logic, including checking for the end of the dash.
+     * Manages dash cooldown timers when not dashing.
+     *
+     * @param deltaTime The time elapsed since the last update.
+     */
     private void updateDash(double deltaTime) {
         if (isDashing) {
             dashTimer -= deltaTime;
 
-            // Check for end of dash
+            // Check for end of dash and ground contact
             if (dashTimer <= 0) {
                 endDash();
             }
         } else {
             // Update dash cooldown timers
-            dashCooldownTimer = Math.max(0, dashCooldownTimer - deltaTime);
-            dashRefillCooldownTimer = Math.max(0, dashRefillCooldownTimer - deltaTime);
+            dashCooldownTimer -= deltaTime;
+
+            // Enable dash when on ground and cooldown is complete
+            if (isOnGround && dashCooldownTimer <= 0) {
+                canDash = true;
+            }
         }
     }
+
+    /**
+     * Ends the dash and adjusts the player's speed and cooldown timers.
+     */
     private void endDash() {
         isDashing = false;
-        setSpeedX(EndDashSpeed * getDirectionX());
-        setSpeedY(EndDashUpMult * EndDashSpeed * getDirectionY());
         dashCooldownTimer = DashCooldown;
-        dashRefillCooldownTimer = DashRefillCooldown;
+        setSpeedX(dashSpeedX * EndDashUpMult);
+        setSpeedY(dashSpeedY * EndDashUpMult);
     }
 
-    private void applyMovement(double deltaTime) {
-        // Calculate new position based on speed, direction, and time
-        double newX = getX() + getSpeedX() * deltaTime;
-        double newY = getY() + getSpeedY() * deltaTime;
 
-        if (!checkCollisionX(deltaTime)) {
-            setX(newX);
-        } else {
-            setSpeedX(0);
-        }
-        if (!checkCollisionY(deltaTime)) {
-            setY(newY);
-        } else {
-            if (getSpeedY() > 0) {
-                isJumping = false;
-                isOnGround = true;
-            }
-            setSpeedY(0);
-        }
-    }
 
+    // ----- Collision Logic -----
     /**
      * Checks for potential horizontal collision with tiles using future position.
      *
@@ -271,8 +277,36 @@ public class Player extends MovingThing {
         return collision;
     }
 
+
+
+    // ----- Player Movement Logic -----
+    private void applyMovement(double deltaTime) {
+        if (checkCollisionX(deltaTime)) {
+            setSpeedX(0);
+        }
+        if (checkCollisionY(deltaTime)) {
+            if (getSpeedY() > 0) {
+                isJumping = false;
+                isOnGround = true;
+            }
+            setSpeedY(0);
+        } else {
+            isOnGround = false;
+        }
+
+        // Calculate new position based on speed, direction, and time
+        double newX = getX() + getSpeedX() * deltaTime;
+        double newY = getY() + getSpeedY() * deltaTime;
+        setX(newX);
+        setY(newY);
+
+    }
+
+
+
+    // ----- Rendering Logic -----
     /**
-     * Updates the hero's rendering logic.
+     * Updates the rendering and movement logic of the player.
      *
      * @param deltaTime The time elapsed since the last update.
      */
@@ -280,22 +314,21 @@ public class Player extends MovingThing {
     public void update(double deltaTime) {
         super.update(deltaTime);
 
+        System.out.println(getSpeedY());
         if (!isDashing) {
-            // Horizontal Logic
             updateRunning(deltaTime);
-
-            // Vertical Logic
             updateGravity(deltaTime);
-        } else {
-            updateDash(deltaTime);
         }
+        updateDash(deltaTime);
+        System.out.println(getSpeedY());
 
         // Movement Logic
         applyMovement(deltaTime);
+        System.out.println("----");
     }
 
     /**
-     * Draws the hero and their projectiles.
+     * Draws the player and any associated visual elements.
      */
     @Override
     public void draw() {

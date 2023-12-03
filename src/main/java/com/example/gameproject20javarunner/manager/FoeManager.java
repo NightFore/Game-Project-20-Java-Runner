@@ -4,7 +4,6 @@ package com.example.gameproject20javarunner.manager;
 
 import com.example.gameproject20javarunner.view.Camera;
 import com.example.gameproject20javarunner.entity.Foe;
-import com.example.gameproject20javarunner.entity.Hero;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
