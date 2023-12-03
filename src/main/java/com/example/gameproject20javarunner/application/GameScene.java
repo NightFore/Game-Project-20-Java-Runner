@@ -66,7 +66,7 @@ public class GameScene extends Scene {
         switch (code) {
             case LEFT, A -> player.setDirectionX(-1);
             case RIGHT, D -> player.setDirectionX(1);
-            case UP, W, SPACE -> {}
+            case UP, W, SPACE -> player.jump();
             case I -> audioManager.playMusic("Kuru_Kuru_Kururin");
             case O -> audioManager.playMusic("Field_of_Memories");
             case P -> audioManager.playMusic("Glorious_Morning");

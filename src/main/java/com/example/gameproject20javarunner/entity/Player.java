@@ -37,9 +37,13 @@ public class Player extends MovingThing {
 
     // Test
 
-    private double accelerationX = 600;
-    private double decelerationX = 800;
-    private double maxSpeedX = 400;
+    private final double runAcceleleration = 1000;
+    private final double runDeceleration = 400;
+    private final double runMax = 90;
+    private final double jumpSpeed = -105;
+    private final double gravity = 900;
+    private final double maxFall = 160;
+    private boolean isJumping = false;
 
     /**
      * Constructs a Hero with the specified camera and root pane.
@@ -69,12 +73,12 @@ public class Player extends MovingThing {
         // Check horizontal movement
         if (getDirectionX() != 0) {
             // Acceleration
-            if (currentSpeedX < maxSpeedX) {
-                setSpeedX(getSpeedX() + accelerationX * getDirectionX() * deltaTime);
+            if (currentSpeedX < runMax) {
+                setSpeedX(getSpeedX() + runAcceleleration * getDirectionX() * deltaTime);
             }
             // Maximum speed
             else {
-                setSpeedX(maxSpeedX * getDirectionX());
+                setSpeedX(runMax * getDirectionX());
             }
         }
         else {
@@ -82,7 +86,7 @@ public class Player extends MovingThing {
             if (currentSpeedX != 0) {
                 // Decelerate
                 int direction = (int) Math.signum(getSpeedX());
-                double newSpeedX = getSpeedX() - decelerationX * direction * deltaTime;
+                double newSpeedX = getSpeedX() - runDeceleration * direction * deltaTime;
 
                 // Apply the new speed after deceleration
                 if (Math.signum(newSpeedX) == direction) {
@@ -102,8 +106,16 @@ public class Player extends MovingThing {
         double newY = getY();
         // double newY = getY() + getSpeedY() * deltaTime;
 
-        // Set the new position
-        setPosition(newX, newY);
+        if (!checkCollisionX(deltaTime)) {
+            setX(newX);
+        } else {
+            setSpeedX(0);
+        }
+        if (!checkCollisionY(deltaTime)) {
+            setY(newY);
+        } else {
+            setSpeedY(0);
+        }
     }
 
     /**
@@ -182,10 +194,6 @@ public class Player extends MovingThing {
     @Override
     public void update(double deltaTime) {
         super.update(deltaTime);
-        if (getDirectionX() != 0 && checkCollisionX(deltaTime)) {
-        }
-        if (getDirectionY() != 0 && checkCollisionX(deltaTime)) {
-        }
 
         updateRunning(deltaTime);
         applyMovement(deltaTime);
