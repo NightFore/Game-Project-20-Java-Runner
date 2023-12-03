@@ -52,6 +52,25 @@ public class Player extends MovingThing {
     private double jumpTime = 0;
 
 
+    // Dash
+    private boolean isDashing = false;
+    private double dashTimer = 0.0;
+    private double dashCooldownTimer = 0.0;
+    private double dashRefillCooldownTimer = 0.0;
+    private double dashSpeedX = 0.0;
+    private double dashSpeedY = 0.0;
+    private double DashSpeed = 240;
+    private double EndDashSpeed = 160;
+    private double EndDashUpMult = 0.75;
+    private double DashTime = 0.15;
+    private double DashCooldown = 0.2;
+    private double DashRefillCooldown = 0.1;
+    private int DashHJumpThruNudge = 6;
+    private int DashCornerCorrection = 4;
+    private int DashVFloorSnapDist = 3;
+    private double DashAttackTime = 0.3;
+
+
     /**
      * Constructs a Hero with the specified camera and root pane.
      *
@@ -130,6 +149,37 @@ public class Player extends MovingThing {
             isJumping = true;
             setSpeedY(jumpSpeed);
         }
+    }
+
+    public void dash() {
+        isDashing = true;
+        dashTimer = DashTime;
+
+        // Calculate dash speed in both X and Y directions
+        dashSpeedX = DashSpeed * getDirectionX();
+        dashSpeedY = DashSpeed * getDirectionY();
+    }
+
+    private void updateDash(double deltaTime) {
+        if (isDashing) {
+            dashTimer -= deltaTime;
+
+            // Check for end of dash
+            if (dashTimer <= 0) {
+                endDash();
+            }
+        } else {
+            // Update dash cooldown timers
+            dashCooldownTimer = Math.max(0, dashCooldownTimer - deltaTime);
+            dashRefillCooldownTimer = Math.max(0, dashRefillCooldownTimer - deltaTime);
+        }
+    }
+    private void endDash() {
+        isDashing = false;
+        setSpeedX(EndDashSpeed * getDirectionX());
+        setSpeedY(EndDashUpMult * EndDashSpeed * getDirectionY());
+        dashCooldownTimer = DashCooldown;
+        dashRefillCooldownTimer = DashRefillCooldown;
     }
 
     private void applyMovement(double deltaTime) {
@@ -230,11 +280,15 @@ public class Player extends MovingThing {
     public void update(double deltaTime) {
         super.update(deltaTime);
 
-        // Horizontal Logic
-        updateRunning(deltaTime);
+        if (!isDashing) {
+            // Horizontal Logic
+            updateRunning(deltaTime);
 
-        // Vertical Logic
-        updateGravity(deltaTime);
+            // Vertical Logic
+            updateGravity(deltaTime);
+        } else {
+            updateDash(deltaTime);
+        }
 
         // Movement Logic
         applyMovement(deltaTime);
