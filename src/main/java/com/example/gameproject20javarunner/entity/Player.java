@@ -22,8 +22,10 @@ public class Player extends MovingThing {
     // MovingThing Attributes
     private static final double INITIAL_X = 0;
     private static final double INITIAL_Y = 0;
-    private static final double DISPLAY_WIDTH = 144;
-    private static final double DISPLAY_HEIGHT = 144;
+    private static final double DISPLAY_WIDTH = 32;
+    private static final double DISPLAY_HEIGHT = 32;
+    private static final double HITBOX_WIDTH = 32;
+    private static final double HITBOX_HEIGHT = 32;
     private static final double FRAME_WIDTH = 48;
     private static final double FRAME_HEIGHT = 48;
     private static final double FRAME_OFFSET_X = 0;
@@ -32,8 +34,6 @@ public class Player extends MovingThing {
     private static final int MAX_INDEX = 5;
     private static final int DURATION = 8;
     private static final String SPRITE_SHEET_PATH = "/img/SecretHideout_Gunner/Blue/Gunner_Blue_Run.png";
-    private static final double HITBOX_WIDTH = 144;
-    private static final double HITBOX_HEIGHT = 144;
 
     // Test
 
@@ -100,11 +100,31 @@ public class Player extends MovingThing {
         }
     }
 
+    /**
+     * Updates the gravity logic of the player.
+     *
+     * @param deltaTime The time elapsed since the last update.
+     */
+    private void updateGravity(double deltaTime) {
+        // Update the vertical speed based on gravity
+        double newSpeedY = getSpeedY() + gravity * deltaTime;
+
+        // Limit the fall speed to the maximum allowed
+        if (newSpeedY > maxFall) {
+            newSpeedY = maxFall;
+        }
+
+        // Set the new vertical speed
+        setSpeedY(newSpeedY);
+    }
+
+    public void jump() {
+    }
+
     private void applyMovement(double deltaTime) {
         // Calculate new position based on speed, direction, and time
         double newX = getX() + getSpeedX() * deltaTime;
-        double newY = getY();
-        // double newY = getY() + getSpeedY() * deltaTime;
+        double newY = getY() + getSpeedY() * deltaTime;
 
         if (!checkCollisionX(deltaTime)) {
             setX(newX);
@@ -125,12 +145,12 @@ public class Player extends MovingThing {
      * @return true if collision, false otherwise.
      */
     public boolean checkCollisionX(double deltaTime) {
-        // Calculate future position and hitbox
-        double futureX = getHitboxX() + getSpeedX() * getDirectionX() * deltaTime;
-        Rectangle futureHitbox = new Rectangle(futureX, getY(), getHitboxWidth(), getHitboxHeight());
+        // Calculate future X position and hitbox
+        double futureX = getHitboxX() + getSpeedX() * deltaTime;
+        Rectangle futureHitboxX = new Rectangle(futureX, getY(), getHitboxWidth(), getHitboxHeight());
 
         // Adjusted position for tile calculation
-        double adjustedX = futureX + getHitboxWidth() * (int) ((1 + Math.signum(getDirectionX())) / 2);
+        double adjustedX = futureX + getHitboxWidth() * (int) ((1 + Math.signum(getSpeedX())) / 2);
         int tileIndexX = (int) (adjustedX / tileMap.getDisplayTileWidth());
 
         // Min and max Y indices for tile collision
@@ -142,7 +162,7 @@ public class Player extends MovingThing {
         for (int tileIndexY = tileIndexYMin; tileIndexY <= tileIndexYMax; tileIndexY++) {
             Thing tile = tileMap.getTile(tileIndexY, tileIndexX);
             if (tile != null) {
-                collision = futureHitbox.getBoundsInParent().intersects(tile.getHitboxRectangle().getBoundsInParent());
+                collision = futureHitboxX.getBoundsInParent().intersects(tile.getHitboxRectangle().getBoundsInParent());
                 if (collision) {
                     break;
                 }
@@ -159,12 +179,12 @@ public class Player extends MovingThing {
      * @return true if collision, false otherwise.
      */
     public boolean checkCollisionY(double deltaTime) {
-        // Calculate future position and hitbox
-        double futureY = getHitboxY() + getSpeedY() * getDirectionY() * deltaTime;
-        Rectangle futureHitbox = new Rectangle(getX(), futureY, getHitboxWidth(), getHitboxHeight());
+        // Calculate future Y position and hitbox
+        double futureY = getHitboxY() + getSpeedY() * deltaTime;
+        Rectangle futureHitboxY = new Rectangle(getX(), futureY, getHitboxWidth(), getHitboxHeight());
 
         // Adjusted position for tile calculation
-        double adjustedY = futureY + getHitboxHeight() * (int) ((1 + Math.signum(getDirectionY())) / 2);
+        double adjustedY = futureY + getHitboxHeight() * (int) ((1 + Math.signum(getSpeedY())) / 2);
         int tileIndexY = (int) (adjustedY / tileMap.getDisplayTileHeight());
 
         // Min and max X indices for tile collision
@@ -176,7 +196,7 @@ public class Player extends MovingThing {
         for (int tileIndexX = tileIndexXMin; tileIndexX <= tileIndexXMax; tileIndexX++) {
             Thing tile = tileMap.getTile(tileIndexY, tileIndexX);
             if (tile != null) {
-                collision = futureHitbox.getBoundsInParent().intersects(tile.getHitboxRectangle().getBoundsInParent());
+                collision = futureHitboxY.getBoundsInParent().intersects(tile.getHitboxRectangle().getBoundsInParent());
                 if (collision) {
                     break;
                 }
@@ -195,7 +215,13 @@ public class Player extends MovingThing {
     public void update(double deltaTime) {
         super.update(deltaTime);
 
+        // Horizontal Logic
         updateRunning(deltaTime);
+
+        // Vertical Logic
+        updateGravity(deltaTime);
+
+        // Movement Logic
         applyMovement(deltaTime);
     }
 
