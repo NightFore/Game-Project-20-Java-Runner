@@ -40,10 +40,17 @@ public class Player extends MovingThing {
     private final double runAcceleleration = 1000;
     private final double runDeceleration = 400;
     private final double runMax = 90;
-    private final double jumpSpeed = -105;
+    private final double jumpSpeed = -260;
     private final double gravity = 900;
     private final double maxFall = 160;
-    private boolean isJumping = false;
+    private boolean isJumping = true;
+    private boolean isOnGround = false;
+    private boolean canVariableJump = true;
+
+    private static final double jumpHeight = 64;
+    private static final double timeToJumpApex = 0.3;
+    private double jumpTime = 0;
+
 
     /**
      * Constructs a Hero with the specified camera and root pane.
@@ -119,6 +126,10 @@ public class Player extends MovingThing {
     }
 
     public void jump() {
+        if (!isJumping && isOnGround) {
+            isJumping = true;
+            setSpeedY(jumpSpeed);
+        }
     }
 
     private void applyMovement(double deltaTime) {
@@ -134,6 +145,10 @@ public class Player extends MovingThing {
         if (!checkCollisionY(deltaTime)) {
             setY(newY);
         } else {
+            if (getSpeedY() > 0) {
+                isJumping = false;
+                isOnGround = true;
+            }
             setSpeedY(0);
         }
     }
