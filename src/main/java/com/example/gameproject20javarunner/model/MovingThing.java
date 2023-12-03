@@ -138,7 +138,7 @@ public abstract class MovingThing extends AnimatedThing {
      *
      * @param deltaTime The time elapsed since the last update.
      */
-    private void move(double deltaTime) {
+    public void move(double deltaTime) {
         // Calculate new position based on speed, direction, and time
         double newX = getX() + speedX * directionX * deltaTime;
         double newY = getY() + speedY * directionY * deltaTime;
@@ -157,6 +157,6 @@ public abstract class MovingThing extends AnimatedThing {
         super.update();
 
         // Move the element based on speed and direction
-        move(deltaTime);
+        // move(deltaTime);
     }
 }
