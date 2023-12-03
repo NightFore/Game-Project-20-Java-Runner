@@ -66,6 +66,10 @@ public class Level {
         return tileMap;
     }
 
+    public TileMap getTileMap() {
+        return tileMap;
+    }
+
     /**
      * Draws the level elements, including the TileMap.
      */

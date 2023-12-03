@@ -54,7 +54,7 @@ public class Thing {
         displayRectangle = new Rectangle();
         displayRectangle.setStroke(DISPLAY_RECTANGLE_COLOR);
         displayRectangle.setFill(Color.TRANSPARENT);
-        displayRectangle.setVisible(false);
+        displayRectangle.setVisible(true);
 
         // Initialize the hitbox rectangle
         hitboxRectangle = new Rectangle();
@@ -66,6 +66,11 @@ public class Thing {
         imageView = new ImageView(image);
         setInitialPosition(initialX, initialY);
         setDisplaySize(displayWidth, displayHeight);
+        setHitboxSize(displayWidth, displayHeight);
+
+        // Add visual elements to the root pane;
+        root.getChildren().add(displayRectangle);
+        root.getChildren().add(hitboxRectangle);
     }
 
     /**
@@ -79,6 +84,10 @@ public class Thing {
         this.y = initialY;
         imageView.setX(initialX);
         imageView.setY(initialY);
+        displayRectangle.setX(initialX);
+        displayRectangle.setY(initialY);
+        hitboxRectangle.setX(initialX);
+        hitboxRectangle.setY(initialY);
     }
 
     /**
@@ -115,6 +124,7 @@ public class Thing {
      */
     public void setX(double x) {
         this.x = x;
+        updateRectangle();
     }
 
     /**
@@ -124,6 +134,7 @@ public class Thing {
      */
     public void setY(double y) {
         this.y = y;
+        updateRectangle();
     }
 
     /**
@@ -135,6 +146,16 @@ public class Thing {
     public void setPosition(double x, double y) {
         setX(x);
         setY(y);
+        updateRectangle();
+    }
+
+    public void updateRectangle() {
+        imageView.setX(x);
+        imageView.setY(y);
+        displayRectangle.setX(x);
+        displayRectangle.setY(y);
+        hitboxRectangle.setX(x);
+        hitboxRectangle.setY(y);
     }
 
     /**
@@ -212,6 +233,14 @@ public class Thing {
      */
     public Rectangle getHitboxRectangle() {
         return hitboxRectangle;
+    }
+
+    public double getHitboxX() {
+        return hitboxRectangle.getX();
+    }
+
+    public double getHitboxY() {
+        return hitboxRectangle.getY();
     }
 
     /**
@@ -308,11 +337,9 @@ public class Thing {
      * Draw method to update the position based on the camera.
      */
     public void draw() {
-        imageView.setX(x - camera.getX());
-        imageView.setY(y - camera.getY());
-        displayRectangle.setX(x - camera.getX());
-        displayRectangle.setY(y - camera.getY());
-        hitboxRectangle.setX(x - camera.getX() + (displayWidth - hitboxWidth) / 2);
-        hitboxRectangle.setY(y - camera.getY() + (displayHeight - hitboxHeight) / 2);
+        imageView.setTranslateX(-camera.getX());
+        imageView.setTranslateY(-camera.getY());
+        displayRectangle.setTranslateX(-camera.getX());
+        displayRectangle.setTranslateY(-camera.getY());
     }
 }

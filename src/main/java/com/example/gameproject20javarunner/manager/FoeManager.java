@@ -49,14 +49,6 @@ public class FoeManager {
         foes.add(foe);
     }
 
-    public void checkHeroCollisions(Hero hero) {
-        for (Foe foe : foes) {
-            if (hero.collidesWithEnemy(foe)) {
-                System.out.println("Test");
-            }
-        }
-    }
-
     public List<Foe> getFoes() {
         return foes;
     }

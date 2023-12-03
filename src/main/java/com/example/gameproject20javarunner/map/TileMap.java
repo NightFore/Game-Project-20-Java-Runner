@@ -1,3 +1,5 @@
+// TileMap.java
+
 package com.example.gameproject20javarunner.map;
 
 import com.example.gameproject20javarunner.model.Thing;
@@ -23,6 +25,8 @@ public class TileMap {
     private List<Thing> tileList;
 
     // Map Attributes
+    private int numRows;
+    private int numCols;
     private Thing[][] tiles;
 
     /**
@@ -82,9 +86,8 @@ public class TileMap {
      * @param map The 2D array of tile codes.
      */
     private void createTiles(String[][] map) {
-        int numRows = map.length;
-        int numCols = map[0].length;
-
+        numRows = map.length;
+        numCols = map[0].length;
         tiles = new Thing[numRows][numCols];
 
         int numColsInTileList = (int) (tileSheet.getWidth() / originalTileWidth);
@@ -138,6 +141,57 @@ public class TileMap {
                     tile.removeFromRoot();
                 }
             }
+        }
+    }
+
+    /**
+     * Get the number of rows in the TileMap.
+     *
+     * @return The number of rows.
+     */
+    public int getNumRows() {
+        return numRows;
+    }
+
+    /**
+     * Get the number of columns in the TileMap.
+     *
+     * @return The number of columns.
+     */
+    public int getNumCols() {
+        return numCols;
+    }
+
+    /**
+     * Get the display width of a tile in the TileMap.
+     *
+     * @return The display width of a tile.
+     */
+    public double getDisplayTileWidth() {
+        return displayTileWidth;
+    }
+
+    /**
+     * Get the display height of a tile in the TileMap.
+     *
+     * @return The display height of a tile.
+     */
+    public double getDisplayTileHeight() {
+        return displayTileHeight;
+    }
+
+    /**
+     * Get the tile at the specified row and column in the TileMap.
+     *
+     * @param row    The row index.
+     * @param column The column index.
+     * @return The Thing representing the tile at the specified position.
+     */
+    public Thing getTile(int row, int column) {
+        if (row >= 0 && row < numRows && column >= 0 && column < numCols) {
+            return tiles[row][column];
+        } else {
+            return null;
         }
     }
 

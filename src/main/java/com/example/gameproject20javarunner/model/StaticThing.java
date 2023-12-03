@@ -1,4 +1,5 @@
 // StaticThing.java
+
 package com.example.gameproject20javarunner.model;
 
 import com.example.gameproject20javarunner.view.Camera;
@@ -26,8 +27,6 @@ public class StaticThing extends Thing {
 
         // Add visual elements to the root pane
         root.getChildren().add(imageView);
-        root.getChildren().add(displayRectangle);
-        root.getChildren().add(hitboxRectangle);
     }
 
     /**

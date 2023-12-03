@@ -1,3 +1,5 @@
+// MovingThing.java
+
 package com.example.gameproject20javarunner.model;
 
 import com.example.gameproject20javarunner.view.Camera;
@@ -35,6 +37,42 @@ public abstract class MovingThing extends AnimatedThing {
     public MovingThing(Camera camera, Pane root, double initialX, double initialY, double displayWidth, double displayHeight, double spriteWidth, double spriteHeight, double spriteOffsetX, double spriteOffsetY, int attitude, int maxIndex, int duration, String fileName) {
         // Call to the constructor of the parent class AnimatedThing
         super(camera, root, initialX, initialY, displayWidth, displayHeight, spriteWidth, spriteHeight, spriteOffsetX, spriteOffsetY, maxIndex, attitude, duration, fileName);
+    }
+
+    /**
+     * Getter for the speed in the x-direction.
+     *
+     * @return The speed in the x-direction.
+     */
+    public double getSpeedX() {
+        return speedX;
+    }
+
+    /**
+     * Getter for the speed in the y-direction.
+     *
+     * @return The speed in the y-direction.
+     */
+    public double getSpeedY() {
+        return speedY;
+    }
+
+    /**
+     * Getter for the direction in the x-direction.
+     *
+     * @return The direction in the x-direction.
+     */
+    public double getDirectionX() {
+        return directionX;
+    }
+
+    /**
+     * Getter for the direction in the y-direction.
+     *
+     * @return The direction in the y-direction.
+     */
+    public double getDirectionY() {
+        return directionY;
     }
 
     /**

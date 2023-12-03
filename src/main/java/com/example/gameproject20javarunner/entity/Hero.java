@@ -2,7 +2,7 @@
 
 package com.example.gameproject20javarunner.entity;
 
-import com.example.gameproject20javarunner.manager.FoeManager;
+import com.example.gameproject20javarunner.map.TileMap;
 import com.example.gameproject20javarunner.model.MovingThing;
 import com.example.gameproject20javarunner.view.Camera;
 import javafx.scene.layout.Pane;
@@ -46,12 +46,11 @@ public class Hero extends MovingThing {
     private static final double JUMP_TOP_DURATION = 0.10;
     private static final double MAX_JUMP_HEIGHT = 100;
 
-    // Invincibility Attributes
-    private long invincibilityTime;  // in nanoseconds
-
     // Projectile Attributes
     private final List<Projectile> projectiles;
     private static final double PROJECTILE_DIRECTION = 1;
+
+    private final TileMap tileMap;
 
     /**
      * Constructs a Hero with the specified camera and root pane.
@@ -59,13 +58,14 @@ public class Hero extends MovingThing {
      * @param camera The camera used for positioning.
      * @param root   The root pane where the elements are added.
      */
-    public Hero(Camera camera, Pane root) {
+    public Hero(Camera camera, Pane root, TileMap tileMap) {
         // Call the constructor of the parent class MovingThing with initial parameters
         super(camera, root, INITIAL_X, INITIAL_Y, DISPLAY_WIDTH, DISPLAY_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, SPRITE_SHEET_PATH);
 
         // Initialize game attributes
         this.camera = camera;
         this.root = root;
+        this.tileMap = tileMap;
 
         // Initialize movement attributes
         setSpeedX(MOVEMENT_SPEED);
@@ -74,9 +74,6 @@ public class Hero extends MovingThing {
         this.jumpSpeed = 0;
         this.jumpTopTime = 0;
         this.isJumping = false;
-
-        // Initialize invincibility attributes
-        this.invincibilityTime = 0;
 
         // Initialize projectile attributes
         this.projectiles = new ArrayList<>();
@@ -128,43 +125,6 @@ public class Hero extends MovingThing {
     }
 
     /**
-     * Checks if the hero is currently invincible.
-     *
-     * @return True if the hero is invincible, false otherwise.
-     */
-    public boolean isInvincible() {
-        return invincibilityTime > 0;
-    }
-
-    /**
-     * Sets the hero's invincibility status.
-     *
-     * @param invincible True to make the hero invincible, false otherwise.
-     */
-    public void setInvincible(boolean invincible) {
-        if (invincible) {
-            invincibilityTime = 1000000000L;  // Set invincibility time to 1 second
-        } else {
-            invincibilityTime = 0;
-        }
-    }
-
-    /**
-     * Updates the remaining time of hero's invincibility.
-     *
-     * @param deltaTime The time elapsed since the last update.
-     */
-    private void updateInvincibility(double deltaTime) {
-        // Subtract the time passed from invincibility time
-        if (invincibilityTime > 0) {
-            invincibilityTime -= deltaTime * 1_000_000_000L;  // Convert deltaTime to nanoseconds
-            if (invincibilityTime <= 0) {
-                setInvincible(false);  // Reset invincibility once time is up
-            }
-        }
-    }
-
-    /**
      * Method to create and add a projectile to the hero's list of projectiles.
      */
     public void shootProjectile() {
@@ -206,31 +166,6 @@ public class Hero extends MovingThing {
         }
     }
 
-    /**
-     * Checks if the hero collides with a foe.
-     *
-     * @param enemy The foe to check for collision.
-     * @return True if the hero collides with the foe, false otherwise.
-     */
-    public boolean collidesWithEnemy(Foe enemy) {
-        return this.getHitboxRectangle().getBoundsInParent().intersects(enemy.getHitboxRectangle().getBoundsInParent());
-    }
-
-    /**
-     * Checks for collisions between the hero's projectiles and foes.
-     *
-     * @param foeManager The manager responsible for handling foes.
-     */
-    public void checkProjectileCollisions(FoeManager foeManager) {
-        for (Projectile projectile : projectiles) {
-            for (Foe foe : foeManager.getFoes()) {
-                if (projectile.collidesWithEnemy(foe)) {
-                    // foe.takeDamage();
-                    projectile.removeFromRoot();
-                }
-            }
-        }
-    }
 
     /**
      * Updates the hero's rendering logic.
@@ -241,7 +176,6 @@ public class Hero extends MovingThing {
     public void update(double deltaTime) {
         super.update(deltaTime);
         updateJump(deltaTime);
-        updateInvincibility(deltaTime);
         updateProjectiles(deltaTime);
     }
 
