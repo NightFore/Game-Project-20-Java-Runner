@@ -38,7 +38,7 @@ public class Player extends MovingThing {
     // Running Attributes
     private final double runAcceleleration = 1000;
     private final double runDeceleration = 400;
-    private final double runMax = 90;
+    private final double runMax = 160;
 
     // Jump Attributes
     private boolean isJumping = true;
@@ -48,6 +48,11 @@ public class Player extends MovingThing {
     // Fall Attributes
     private final double fallGravity = 900;
     private final double fallMax = 160;
+
+    // Fast Fall Attributes
+    private boolean isFastFalling = false;
+    private final double fastFallAccel = 300;
+    private final double fastFallMax = 320;
 
     // Dash Attributes
     private boolean isDashing = false;
@@ -125,17 +130,30 @@ public class Player extends MovingThing {
 
     // -------------------- Vertical Movement Logic -------------------- //
     /**
-     * Updates the player's vertical speed based on gravity.
+     * Updates the player's vertical speed based on gravity and fast falling state.
      *
      * @param deltaTime The time elapsed since the last update.
      */
     private void updateVerticalMovement(double deltaTime) {
-        // Apply gravity
-        double newSpeedY = getSpeedY() + fallGravity * deltaTime;
+        double newSpeedY = getSpeedY();
 
-        // Limit the fall speed
-        if (newSpeedY > fallMax) {
-            newSpeedY = fallMax;
+        // Check if the player is fast falling
+        if (!isFastFalling) {
+            // Apply regular gravity
+            newSpeedY += fallGravity * deltaTime;
+
+            // Limit the fall speed
+            if (newSpeedY > fallMax) {
+                newSpeedY = fallMax;
+            }
+        } else {
+            // Apply fast fall acceleration
+            newSpeedY += fastFallAccel * deltaTime;
+
+            // Limit the fast fall speed
+            if (newSpeedY > fastFallMax) {
+                newSpeedY = fastFallMax;
+            }
         }
 
         // Set the new vertical speed
@@ -149,6 +167,28 @@ public class Player extends MovingThing {
         if (!isJumping && isOnGround) {
             isJumping = true;
             setSpeedY(jumpSpeed);
+        }
+    }
+
+    /**
+     * Initiates the fast fall
+     */
+    public void startFastFall() {
+        // Check if the player is airborne
+        if (!isOnGround) {
+            // Set the player to fast falling state
+            isFastFalling = true;
+        }
+    }
+
+    /**
+     * Ends the fast fall
+     */
+    public void endFastFall() {
+        // Check if the player is airborne
+        if (!isOnGround) {
+            // Reset the player's fast falling state
+            isFastFalling = false;
         }
     }
 
@@ -296,8 +336,9 @@ public class Player extends MovingThing {
         if (checkCollisionY(deltaTime)) {
             // Reset ground flag if descending (collision with the ground)
             if (getSpeedY() > 0) {
-                isJumping = false;
                 isOnGround = true;
+                isJumping = false;
+                isFastFalling = false;
             }
             // Stop vertical movement
             setSpeedY(0);

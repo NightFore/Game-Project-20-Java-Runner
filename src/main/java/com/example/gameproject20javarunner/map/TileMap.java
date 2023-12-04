@@ -6,7 +6,6 @@ import com.example.gameproject20javarunner.model.Thing;
 import com.example.gameproject20javarunner.view.Camera;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
