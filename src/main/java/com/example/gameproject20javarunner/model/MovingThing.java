@@ -155,8 +155,5 @@ public abstract class MovingThing extends AnimatedThing {
     public void update(double deltaTime) {
         // Call the update method of the parent class AnimatedThing
         super.update();
-
-        // Move the element based on speed and direction
-        // move(deltaTime);
     }
 }

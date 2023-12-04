@@ -55,6 +55,7 @@ public class FoeManager {
     public void update(double deltaTime) {
         for (Foe foe : foes) {
             foe.update(deltaTime);
+            foe.move(deltaTime);
         }
     }
 

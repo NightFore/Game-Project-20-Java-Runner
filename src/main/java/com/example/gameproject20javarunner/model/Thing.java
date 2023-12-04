@@ -3,6 +3,7 @@
 package com.example.gameproject20javarunner.model;
 
 import com.example.gameproject20javarunner.view.Camera;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -20,18 +21,18 @@ public class Thing {
     // ImageView Attributes
     private double x;
     private double y;
-    protected final ImageView imageView;
+    private final ImageView imageView;
 
     // Display Attributes
     private double displayWidth;
     private double displayHeight;
-    protected final Rectangle displayRectangle;
+    private final Rectangle displayRectangle;
     private static final Color DISPLAY_RECTANGLE_COLOR = Color.CYAN;
 
     // Hitbox Attributes
     private double hitboxWidth;
     private double hitboxHeight;
-    protected final Rectangle hitboxRectangle;
+    private final Rectangle hitboxRectangle;
     private static final Color HITBOX_RECTANGLE_COLOR = Color.RED;
 
     /**
@@ -60,11 +61,11 @@ public class Thing {
         hitboxRectangle = new Rectangle();
         hitboxRectangle.setStroke(HITBOX_RECTANGLE_COLOR);
         hitboxRectangle.setFill(Color.TRANSPARENT);
-        hitboxRectangle.setVisible(false);
+        hitboxRectangle.setVisible(true);
 
-        // Initialize the imageView
+        // Initialize the imageView and rectangles
         imageView = new ImageView(image);
-        setInitialPosition(initialX, initialY);
+        setPosition(initialX, initialY);
         setDisplaySize(displayWidth, displayHeight);
         setHitboxSize(displayWidth, displayHeight);
 
@@ -73,23 +74,9 @@ public class Thing {
         root.getChildren().add(hitboxRectangle);
     }
 
-    /**
-     * Sets the initial position of the Thing.
-     *
-     * @param initialX The initial x position.
-     * @param initialY The initial y position.
-     */
-    public void setInitialPosition(double initialX, double initialY) {
-        this.x = initialX;
-        this.y = initialY;
-        imageView.setX(initialX);
-        imageView.setY(initialY);
-        displayRectangle.setX(initialX);
-        displayRectangle.setY(initialY);
-        hitboxRectangle.setX(initialX);
-        hitboxRectangle.setY(initialY);
-    }
 
+
+    // -------------------- ImageView -------------------- //
     /**
      * Getter for the ImageView.
      *
@@ -124,7 +111,9 @@ public class Thing {
      */
     public void setX(double x) {
         this.x = x;
-        updateRectangle();
+        imageView.setX(x);
+        displayRectangle.setX(x);
+        updateHitboxPositionX();
     }
 
     /**
@@ -134,7 +123,9 @@ public class Thing {
      */
     public void setY(double y) {
         this.y = y;
-        updateRectangle();
+        imageView.setY(y);
+        displayRectangle.setY(y);
+        updateHitboxPositionY();
     }
 
     /**
@@ -146,18 +137,11 @@ public class Thing {
     public void setPosition(double x, double y) {
         setX(x);
         setY(y);
-        updateRectangle();
     }
 
-    public void updateRectangle() {
-        imageView.setX(x);
-        imageView.setY(y);
-        displayRectangle.setX(x);
-        displayRectangle.setY(y);
-        hitboxRectangle.setX(x);
-        hitboxRectangle.setY(y);
-    }
 
+
+    // -------------------- Display Rectangle -------------------- //
     /**
      * Method to get the surface rectangle.
      *
@@ -166,12 +150,6 @@ public class Thing {
     public Rectangle getDisplayRectangle() {
         return displayRectangle;
     }
-
-    /**
-     * Getter for the display width.
-     *
-     * @return The display width of the Thing.
-     */
     public double getDisplayWidth() {
         return displayWidth;
     }
@@ -192,8 +170,9 @@ public class Thing {
      */
     public void setDisplayWidth(double displayWidth) {
         this.displayWidth = displayWidth;
+        displayRectangle.setWidth(displayWidth);
         imageView.setFitWidth(displayWidth);
-        updateDisplayRectangle();
+        updateHitboxPositionX();
     }
 
     /**
@@ -203,8 +182,9 @@ public class Thing {
      */
     public void setDisplayHeight(double displayHeight) {
         this.displayHeight = displayHeight;
+        displayRectangle.setHeight(displayHeight);
         imageView.setFitHeight(displayHeight);
-        updateDisplayRectangle();
+        updateHitboxPositionY();
     }
 
     /**
@@ -218,14 +198,9 @@ public class Thing {
         setDisplayHeight(displayHeight);
     }
 
-    /**
-     * Method to update the hitbox rectangle.
-     */
-    private void updateDisplayRectangle() {
-        displayRectangle.setWidth(displayWidth);
-        displayRectangle.setHeight(displayHeight);
-    }
 
+
+    // -------------------- Hitbox Rectangle -------------------- //
     /**
      * Method to get the hitbox rectangle.
      *
@@ -235,10 +210,20 @@ public class Thing {
         return hitboxRectangle;
     }
 
+    /**
+     * Getter for the hitbox x position.
+     *
+     * @return The hitbox x position of the Thing.
+     */
     public double getHitboxX() {
         return hitboxRectangle.getX();
     }
 
+    /**
+     * Getter for the hitbox y position.
+     *
+     * @return The hitbox y position of the Thing.
+     */
     public double getHitboxY() {
         return hitboxRectangle.getY();
     }
@@ -268,7 +253,8 @@ public class Thing {
      */
     public void setHitboxWidth(double hitboxWidth) {
         this.hitboxWidth = hitboxWidth;
-        updateHitboxRectangle();
+        hitboxRectangle.setWidth(hitboxWidth);
+        updateHitboxPositionX();
     }
 
     /**
@@ -278,7 +264,8 @@ public class Thing {
      */
     public void setHitboxHeight(double hitboxHeight) {
         this.hitboxHeight = hitboxHeight;
-        updateHitboxRectangle();
+        hitboxRectangle.setHeight(hitboxHeight);
+        updateHitboxPositionY();
     }
 
     /**
@@ -293,13 +280,22 @@ public class Thing {
     }
 
     /**
-     * Method to update the hitbox rectangle.
+     * Updates the x position of the hitbox based on the current x position, display width, and hitbox width.
      */
-    private void updateHitboxRectangle() {
-        hitboxRectangle.setWidth(hitboxWidth);
-        hitboxRectangle.setHeight(hitboxHeight);
+    private void updateHitboxPositionX() {
+        hitboxRectangle.setX(x + (displayWidth - hitboxWidth) / 2);
     }
 
+    /**
+     * Updates the y position of the hitbox based on the current y position, display height, and hitbox height.
+     */
+    private void updateHitboxPositionY() {
+        hitboxRectangle.setY(y + displayHeight - hitboxHeight);
+    }
+
+
+
+    // -------------------- Helper Functions -------------------- //
     /**
      * Sets the viewport of the ImageView.
      *
@@ -309,7 +305,8 @@ public class Thing {
      * @param viewportHeight The height of the viewport rectangle.
      */
     public void setViewport(double viewportX, double viewportY, double viewportWidth, double viewportHeight) {
-        imageView.setViewport(new javafx.geometry.Rectangle2D(viewportX, viewportY, viewportWidth, viewportHeight));
+        Rectangle2D viewport = new Rectangle2D(viewportX, viewportY, viewportWidth, viewportHeight);
+        imageView.setViewport(viewport);
     }
 
     /**
@@ -341,5 +338,7 @@ public class Thing {
         imageView.setTranslateY(-camera.getY());
         displayRectangle.setTranslateX(-camera.getX());
         displayRectangle.setTranslateY(-camera.getY());
+        hitboxRectangle.setTranslateX(-camera.getX());
+        hitboxRectangle.setTranslateY(-camera.getY());
     }
 }

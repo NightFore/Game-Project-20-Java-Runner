@@ -24,8 +24,8 @@ public class Player extends MovingThing {
     private static final double INITIAL_Y = 0;
     private static final double DISPLAY_WIDTH = 32;
     private static final double DISPLAY_HEIGHT = 32;
-    private static final double HITBOX_WIDTH = 32;
-    private static final double HITBOX_HEIGHT = 32;
+    private static final double HITBOX_WIDTH = 16;
+    private static final double HITBOX_HEIGHT = 16;
     private static final double FRAME_WIDTH = 48;
     private static final double FRAME_HEIGHT = 48;
     private static final double FRAME_OFFSET_X = 0;
@@ -41,11 +41,13 @@ public class Player extends MovingThing {
     private final double runMax = 90;
 
     // Jump Attributes
-    private final double jumpSpeed = -260;
-    private final double gravity = 900;
-    private final double maxFall = 160;
     private boolean isJumping = true;
     private boolean isOnGround = false;
+    private final double jumpSpeed = -260;
+
+    // Fall Attributes
+    private final double fallGravity = 900;
+    private final double fallMax = 160;
 
     // Dash Attributes
     private boolean isDashing = false;
@@ -54,10 +56,10 @@ public class Player extends MovingThing {
     private double dashCooldownTimer = 0.0;
     private double dashSpeedX = 0.0;
     private double dashSpeedY = 0.0;
-    private double DashSpeed = 240;
-    private double EndDashUpMult = 0.75;
-    private double DashTime = 0.15;
-    private double DashCooldown = 0.2;
+    private final double DashSpeed = 240;
+    private final double EndDashUpMult = 0.75;
+    private final double DashTime = 0.15;
+    private final double DashCooldown = 0.2;
 
 
     /**
@@ -79,13 +81,13 @@ public class Player extends MovingThing {
 
 
 
-    // --- Horizontal Movement Logic ---
+    // -------------------- Horizontal Movement Logic -------------------- //
     /**
      * Updates the player's horizontal speed based on input.
      *
      * @param deltaTime The time elapsed since the last update.
      */
-    private void updateRunning(double deltaTime) {
+    private void updateHorizontalMovement(double deltaTime) {
         double currentSpeedX = Math.abs(getSpeedX());
 
         // Check if the player is trying to move horizontally
@@ -121,19 +123,19 @@ public class Player extends MovingThing {
 
 
 
-    // ----- Vertical Movement Logic -----
+    // -------------------- Vertical Movement Logic -------------------- //
     /**
      * Updates the player's vertical speed based on gravity.
      *
      * @param deltaTime The time elapsed since the last update.
      */
-    private void updateGravity(double deltaTime) {
+    private void updateVerticalMovement(double deltaTime) {
         // Apply gravity
-        double newSpeedY = getSpeedY() + gravity * deltaTime;
+        double newSpeedY = getSpeedY() + fallGravity * deltaTime;
 
         // Limit the fall speed
-        if (newSpeedY > maxFall) {
-            newSpeedY = maxFall;
+        if (newSpeedY > fallMax) {
+            newSpeedY = fallMax;
         }
 
         // Set the new vertical speed
@@ -153,7 +155,7 @@ public class Player extends MovingThing {
 
 
 
-    // ----- Dash Logic -----
+    // -------------------- Dash Logic -------------------- //
     /**
      * Initiates a dash if the player is not currently dashing.
      * Sets the dash timer, dash speed, and updates cooldown timers.
@@ -166,8 +168,7 @@ public class Player extends MovingThing {
             dashTimer = DashTime;
             dashSpeedX = DashSpeed * getDirectionX();
             dashSpeedY = DashSpeed * getDirectionY();
-            setSpeedX(dashSpeedX);
-            setSpeedY(dashSpeedY);
+            setSpeed(dashSpeedX, dashSpeedY);
         }
     }
 
@@ -202,13 +203,12 @@ public class Player extends MovingThing {
     private void endDash() {
         isDashing = false;
         dashCooldownTimer = DashCooldown;
-        setSpeedX(dashSpeedX * EndDashUpMult);
-        setSpeedY(dashSpeedY * EndDashUpMult);
+        setSpeed(dashSpeedX * EndDashUpMult, dashSpeedY * EndDashUpMult);
     }
 
 
 
-    // ----- Collision Logic -----
+    // -------------------- Collision Logic -------------------- //
     /**
      * Checks for potential horizontal collision with tiles using future position.
      *
@@ -233,7 +233,7 @@ public class Player extends MovingThing {
         for (int tileIndexY = tileIndexYMin; tileIndexY <= tileIndexYMax; tileIndexY++) {
             Thing tile = tileMap.getTile(tileIndexY, tileIndexX);
             if (tile != null) {
-                collision = futureHitboxX.getBoundsInParent().intersects(tile.getHitboxRectangle().getBoundsInParent());
+                collision = futureHitboxX.getBoundsInLocal().intersects(tile.getHitboxRectangle().getBoundsInLocal());
                 if (collision) {
                     break;
                 }
@@ -267,7 +267,7 @@ public class Player extends MovingThing {
         for (int tileIndexX = tileIndexXMin; tileIndexX <= tileIndexXMax; tileIndexX++) {
             Thing tile = tileMap.getTile(tileIndexY, tileIndexX);
             if (tile != null) {
-                collision = futureHitboxY.getBoundsInParent().intersects(tile.getHitboxRectangle().getBoundsInParent());
+                collision = futureHitboxY.getBoundsInLocal().intersects(tile.getHitboxRectangle().getBoundsInLocal());
                 if (collision) {
                     break;
                 }
@@ -279,32 +279,43 @@ public class Player extends MovingThing {
 
 
 
-    // ----- Player Movement Logic -----
+    // -------------------- Movement Logic -------------------- //
+    /**
+     * Applies the player's movement based on current speed, collisions, and elapsed time.
+     *
+     * @param deltaTime The time elapsed since the last update.
+     */
     private void applyMovement(double deltaTime) {
+        // Check for horizontal collision
         if (checkCollisionX(deltaTime)) {
+            // Stop horizontal movement
             setSpeedX(0);
         }
+
+        // Check for vertical collisions
         if (checkCollisionY(deltaTime)) {
+            // Reset ground flag if descending (collision with the ground)
             if (getSpeedY() > 0) {
                 isJumping = false;
                 isOnGround = true;
             }
+            // Stop vertical movement
             setSpeedY(0);
-        } else {
+        }
+
+        // Check if airborne
+        else {
             isOnGround = false;
         }
 
-        // Calculate new position based on speed, direction, and time
-        double newX = getX() + getSpeedX() * deltaTime;
-        double newY = getY() + getSpeedY() * deltaTime;
-        setX(newX);
-        setY(newY);
-
+        // Set the new position based on current speed and time
+        setX(getX() + getSpeedX() * deltaTime);
+        setY(getY() + getSpeedY() * deltaTime);
     }
 
 
 
-    // ----- Rendering Logic -----
+    // -------------------- Rendering Logic --------------------//
     /**
      * Updates the rendering and movement logic of the player.
      *
@@ -312,19 +323,23 @@ public class Player extends MovingThing {
      */
     @Override
     public void update(double deltaTime) {
+        // Call the parent class's update method
         super.update(deltaTime);
 
-        System.out.println(getSpeedY());
+        // Execute movement logic only if not currently dashing
         if (!isDashing) {
-            updateRunning(deltaTime);
-            updateGravity(deltaTime);
-        }
-        updateDash(deltaTime);
-        System.out.println(getSpeedY());
+            // Update horizontal movement logic
+            updateHorizontalMovement(deltaTime);
 
-        // Movement Logic
+            // Update vertical movement logic
+            updateVerticalMovement(deltaTime);
+        }
+
+        // Update dash logic
+        updateDash(deltaTime);
+
+        // Apply overall movement logic, including collisions
         applyMovement(deltaTime);
-        System.out.println("----");
     }
 
     /**
@@ -332,6 +347,7 @@ public class Player extends MovingThing {
      */
     @Override
     public void draw() {
+        // Call the parent class's draw method
         super.draw();
     }
 }

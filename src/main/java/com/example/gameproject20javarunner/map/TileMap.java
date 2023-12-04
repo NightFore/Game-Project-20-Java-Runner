@@ -105,7 +105,7 @@ public class TileMap {
 
                     // Create a copy of the Thing from tileList and set its position
                     Thing tileThing = tileList.get(tileIndex).copy();
-                    tileThing.setInitialPosition(col * displayTileWidth, row * displayTileHeight);
+                    tileThing.setPosition(col * displayTileWidth, row * displayTileHeight);
                     tiles[row][col] = tileThing;
                 } else {
                     // Empty tile logic, set the tile as null

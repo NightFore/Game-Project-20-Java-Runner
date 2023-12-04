@@ -26,7 +26,7 @@ public class StaticThing extends Thing {
         super(camera, root, initialX, initialY, displayWidth, displayHeight, loadImage(fileName));
 
         // Add visual elements to the root pane
-        root.getChildren().add(imageView);
+        root.getChildren().add(getImageView());
     }
 
     /**
@@ -50,6 +50,6 @@ public class StaticThing extends Thing {
      * @param fileName The file name of the new image.
      */
     public void setImage(String fileName) {
-        imageView.setImage(loadImage(fileName));
+        getImageView().setImage(loadImage(fileName));
     }
 }

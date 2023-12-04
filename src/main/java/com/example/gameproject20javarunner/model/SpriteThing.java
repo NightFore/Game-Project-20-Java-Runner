@@ -1,7 +1,6 @@
 package com.example.gameproject20javarunner.model;
 
 import com.example.gameproject20javarunner.view.Camera;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.Pane;
 
 /**
@@ -50,8 +49,6 @@ public abstract class SpriteThing extends StaticThing {
     protected void updateViewport(int indexX, int indexY) {
         double spriteX = indexX * spriteWidth + spriteOffsetX;
         double spriteY = indexY * spriteHeight + spriteOffsetY;
-
-        Rectangle2D viewport = new Rectangle2D(spriteX, spriteY, spriteWidth, spriteHeight);
-        imageView.setViewport(viewport);
+        setViewport(spriteX, spriteY, spriteWidth, spriteHeight);
     }
 }
