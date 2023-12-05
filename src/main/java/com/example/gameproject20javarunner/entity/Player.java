@@ -18,6 +18,7 @@ public class Player extends MovingThing {
     private final Camera camera;
     private final Pane root;
     private final TileMap tileMap;
+    private double deltaTime = 0;
 
     // MovingThing Attributes
     private static final double INITIAL_X = 0;
@@ -35,10 +36,12 @@ public class Player extends MovingThing {
     private static final int DURATION = 8;
     private static final String SPRITE_SHEET_PATH = "/img/SecretHideout_Gunner/Blue/Gunner_Blue_Run.png";
 
-    // Running Attributes
+    // Run Attributes
     private final double runAcceleleration = 1000;
     private final double runDeceleration = 400;
-    private final double runMax = 160;
+    private final double runMax = 90;
+    private final double holdRunAcceleration = 35;
+    private final double holdRunMax = 270;
 
     // Jump Attributes
     private boolean isJumping = true;
@@ -89,21 +92,23 @@ public class Player extends MovingThing {
     // -------------------- Horizontal Movement Logic -------------------- //
     /**
      * Updates the player's horizontal speed based on input.
-     *
-     * @param deltaTime The time elapsed since the last update.
      */
-    private void updateHorizontalMovement(double deltaTime) {
+    private void updateHorizontalMovement() {
         double currentSpeedX = Math.abs(getSpeedX());
 
         // Check if the player is trying to move horizontally
         if (getDirectionX() != 0) {
-            // Apply acceleration
+            // Accelerate if the current speed is less than runMax
             if (currentSpeedX < runMax) {
                 setSpeedX(getSpeedX() + runAcceleleration * getDirectionX() * deltaTime);
             }
-            // Maximum speed value
+            // Accelerate (Hold) if the current speed is less than holdRunMax
+            else if (currentSpeedX < holdRunMax) {
+                setSpeedX(getSpeedX() + holdRunAcceleration * getDirectionX() * deltaTime);
+            }
+            // Set speed to holdRunMax if the current speed is at its maximum
             else {
-                setSpeedX(runMax * getDirectionX());
+                setSpeedX(holdRunMax * getDirectionX());
             }
         }
 
@@ -126,15 +131,11 @@ public class Player extends MovingThing {
         }
     }
 
-
-
     // -------------------- Vertical Movement Logic -------------------- //
     /**
      * Updates the player's vertical speed based on gravity and fast falling state.
-     *
-     * @param deltaTime The time elapsed since the last update.
      */
-    private void updateVerticalMovement(double deltaTime) {
+    private void updateVerticalMovement() {
         double newSpeedY = getSpeedY();
 
         // Check if the player is fast falling
@@ -215,10 +216,8 @@ public class Player extends MovingThing {
     /**
      * Updates the dash logic, including checking for the end of the dash.
      * Manages dash cooldown timers when not dashing.
-     *
-     * @param deltaTime The time elapsed since the last update.
      */
-    private void updateDash(double deltaTime) {
+    private void updateDash() {
         if (isDashing) {
             dashTimer -= deltaTime;
 
@@ -252,10 +251,9 @@ public class Player extends MovingThing {
     /**
      * Checks for potential horizontal collision with tiles using future position.
      *
-     * @param deltaTime Time since last update.
      * @return true if collision, false otherwise.
      */
-    public boolean checkCollisionX(double deltaTime) {
+    public boolean checkCollisionX() {
         // Calculate future X position and hitbox
         double futureX = getHitboxX() + getSpeedX() * deltaTime;
         Rectangle futureHitboxX = new Rectangle(futureX, getY(), getHitboxWidth(), getHitboxHeight());
@@ -286,10 +284,9 @@ public class Player extends MovingThing {
     /**
      * Checks for potential vertical collision with tiles using future position.
      *
-     * @param deltaTime Time since last update.
      * @return true if collision, false otherwise.
      */
-    public boolean checkCollisionY(double deltaTime) {
+    public boolean checkCollisionY() {
         // Calculate future Y position and hitbox
         double futureY = getHitboxY() + getSpeedY() * deltaTime;
         Rectangle futureHitboxY = new Rectangle(getX(), futureY, getHitboxWidth(), getHitboxHeight());
@@ -322,18 +319,16 @@ public class Player extends MovingThing {
     // -------------------- Movement Logic -------------------- //
     /**
      * Applies the player's movement based on current speed, collisions, and elapsed time.
-     *
-     * @param deltaTime The time elapsed since the last update.
      */
-    private void applyMovement(double deltaTime) {
+    private void applyMovement() {
         // Check for horizontal collision
-        if (checkCollisionX(deltaTime)) {
+        if (checkCollisionX()) {
             // Stop horizontal movement
             setSpeedX(0);
         }
 
         // Check for vertical collisions
-        if (checkCollisionY(deltaTime)) {
+        if (checkCollisionY()) {
             // Reset ground flag if descending (collision with the ground)
             if (getSpeedY() > 0) {
                 isOnGround = true;
@@ -366,21 +361,22 @@ public class Player extends MovingThing {
     public void update(double deltaTime) {
         // Call the parent class's update method
         super.update(deltaTime);
+        this.deltaTime = deltaTime;
 
         // Execute movement logic only if not currently dashing
         if (!isDashing) {
             // Update horizontal movement logic
-            updateHorizontalMovement(deltaTime);
+            updateHorizontalMovement();
 
             // Update vertical movement logic
-            updateVerticalMovement(deltaTime);
+            updateVerticalMovement();
         }
 
         // Update dash logic
-        updateDash(deltaTime);
+        updateDash();
 
         // Apply overall movement logic, including collisions
-        applyMovement(deltaTime);
+        applyMovement();
     }
 
     /**
