@@ -17,8 +17,8 @@ public class FoeManager {
     private final List<Foe> foes;
 
     // Constants (Foe)
-    private static final int MIN_FOES = 10;
-    private static final int MAX_FOES = 25;
+    private static final int MIN_FOES = 5;
+    private static final int MAX_FOES = 10;
     private static final float FOE_MIN_X = 800;
     private static final float FOE_MAX_X = 1600;
     private static final float FOE_MIN_Y = 350;
@@ -46,10 +46,6 @@ public class FoeManager {
     public void addSingleFoe(double x, double y) {
         Foe foe = new Foe(camera, root, x, y);
         foes.add(foe);
-    }
-
-    public List<Foe> getFoes() {
-        return foes;
     }
 
     public void update(double deltaTime) {

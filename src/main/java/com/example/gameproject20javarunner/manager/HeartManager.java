@@ -45,8 +45,4 @@ public class HeartManager {
         hearts[1].setHeartState(1); // Half heart
         hearts[2].setHeartState(2); // Empty heart
     }
-
-    // Method to decrease the number of hearts
-    public void decreaseHearts() {
-    }
 }

@@ -309,6 +309,12 @@ public class Thing {
         imageView.setViewport(viewport);
     }
 
+    public void setVisible(boolean imageVisible, boolean displayVisible, boolean hitboxVisible) {
+        imageView.setVisible(imageVisible);
+        displayRectangle.setVisible(displayVisible);
+        hitboxRectangle.setVisible(hitboxVisible);
+    }
+
     /**
      * Creates and returns a copy of the element.
      *

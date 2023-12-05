@@ -37,14 +37,4 @@ public class Projectile extends MovingThing {
         // Initialize movement attributes
         setSpeedX(MOVEMENT_SPEED);
     }
-
-    /**
-     * Checks if the projectile collides with an enemy.
-     *
-     * @param enemy The enemy to check for collision.
-     * @return True if the projectile collides with the enemy, false otherwise.
-     */
-    public boolean collidesWithEnemy(Foe enemy) {
-        return this.getHitboxRectangle().getBoundsInParent().intersects(enemy.getHitboxRectangle().getBoundsInParent());
-    }
 }

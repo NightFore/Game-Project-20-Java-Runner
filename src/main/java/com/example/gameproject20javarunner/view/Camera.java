@@ -36,7 +36,7 @@ public class Camera {
 
     // Update method to apply physics equations
     public void update(double deltaTime, double targetX) {
-        double springForce = k * (targetX - x - 400);
+        double springForce = k * (targetX - x - 100);
         double dampingForce = f * vx;
         double totalForce = springForce - dampingForce;
         double ax = totalForce / m;

@@ -13,35 +13,51 @@ import javafx.scene.shape.Rectangle;
  * A class representing the player in the game.
  * Extends the abstract class MovingThing.
  */
-public class Player extends MovingThing {
+public class Player {
     // Game Attributes
     private final Camera camera;
     private final Pane root;
     private final TileMap tileMap;
     private double deltaTime = 0;
 
-    // MovingThing Attributes
+    // Thing Attributes
     private static final double INITIAL_X = 0;
     private static final double INITIAL_Y = 0;
-    private static final double DISPLAY_WIDTH = 32;
-    private static final double DISPLAY_HEIGHT = 32;
+    private static final double DISPLAY_WIDTH = 48;
+    private static final double DISPLAY_HEIGHT = 48;
     private static final double HITBOX_WIDTH = 16;
     private static final double HITBOX_HEIGHT = 16;
-    private static final double FRAME_WIDTH = 48;
-    private static final double FRAME_HEIGHT = 48;
-    private static final double FRAME_OFFSET_X = 0;
-    private static final double FRAME_OFFSET_Y = 0;
+    private static final double SPRITE_WIDTH = 48;
+    private static final double SPRITE_HEIGHT = 48;
+    private static final double SPRITE_OFFSET_X = 0;
+    private static final double SPRITE_OFFSET_Y = 0;
+    private static final double SPRITE_DASH_WIDTH = 128;
+    private static final double SPRITE_DASH_HEIGHT = 128;
     private static final int ATTITUDE = 0;
-    private static final int MAX_INDEX = 5;
-    private static final int DURATION = 8;
-    private static final String SPRITE_SHEET_PATH = "/img/SecretHideout_Gunner/Blue/Gunner_Blue_Run.png";
+    private static final int MAX_INDEX_IDLE = 4;
+    private static final int MAX_INDEX_RUN = 5;
+    private static final int MAX_INDEX_JUMP = 1;
+    private static final int MAX_INDEX_DASH = 8;
+    private static final int DURATION_IDLE = 8;
+    private static final int DURATION_RUN = 8;
+    private static final int DURATION_JUMP = 0;
+    private static final int DURATION_DASH = 8;
+    private static final String SPRITE_SHEET_PATH_IDLE = "/img/sprite_SecretHideout_Gunner_Blue_Idle_48.png";
+    private static final String SPRITE_SHEET_PATH_RUN = "/img/sprite_SecretHideout_Gunner_Blue_Run_48.png";
+    private static final String SPRITE_SHEET_PATH_JUMP = "/img/sprite_SecretHideout_Gunner_Blue_Jump_48.png";
+    private static final String SPRITE_SHEET_PATH_DASH = "/img/effect_Pimen_Energy_Ball_128x128.png";
+    private MovingThing currentThing;
+    private final MovingThing idleThing;
+    private final MovingThing runThing;
+    private final MovingThing jumpThing;
+    private final MovingThing dashThing;
 
     // Run Attributes
     private final double runAcceleleration = 1000;
     private final double runDeceleration = 400;
     private final double runMax = 90;
-    private final double holdRunAcceleration = 35;
-    private final double holdRunMax = 270;
+    private final double holdRunAcceleration = 100;
+    private final double holdRunMax = 180;
 
     // Jump Attributes
     private boolean isJumping = true;
@@ -64,8 +80,8 @@ public class Player extends MovingThing {
     private double dashCooldownTimer = 0.0;
     private double dashSpeedX = 0.0;
     private double dashSpeedY = 0.0;
-    private final double DashSpeed = 240;
-    private final double EndDashUpMult = 0.75;
+    private final double DashSpeed = 600;
+    private final double EndDashMult = 0.75;
     private final double DashTime = 0.15;
     private final double DashCooldown = 0.2;
 
@@ -77,9 +93,22 @@ public class Player extends MovingThing {
      * @param root   The root pane where the elements are added.
      */
     public Player(Camera camera, Pane root, TileMap tileMap) {
-        // Call the constructor of the parent class MovingThing with initial parameters
-        super(camera, root, INITIAL_X, INITIAL_Y, DISPLAY_WIDTH, DISPLAY_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT, FRAME_OFFSET_X, FRAME_OFFSET_Y, ATTITUDE, MAX_INDEX, DURATION, SPRITE_SHEET_PATH);
-        setHitboxSize(HITBOX_WIDTH, HITBOX_HEIGHT);
+        idleThing = new MovingThing(camera, root, INITIAL_X, INITIAL_Y, DISPLAY_WIDTH, DISPLAY_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT, SPRITE_OFFSET_X, SPRITE_OFFSET_Y, ATTITUDE, MAX_INDEX_IDLE, DURATION_IDLE, SPRITE_SHEET_PATH_IDLE);
+        runThing = new MovingThing(camera, root, INITIAL_X, INITIAL_Y, DISPLAY_WIDTH, DISPLAY_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT, SPRITE_OFFSET_X, SPRITE_OFFSET_Y, ATTITUDE, MAX_INDEX_RUN, DURATION_RUN, SPRITE_SHEET_PATH_RUN);
+        jumpThing = new MovingThing(camera, root, INITIAL_X, INITIAL_Y, DISPLAY_WIDTH, DISPLAY_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT, SPRITE_OFFSET_X, SPRITE_OFFSET_Y, ATTITUDE, MAX_INDEX_JUMP, DURATION_JUMP, SPRITE_SHEET_PATH_JUMP);
+        dashThing = new MovingThing(camera, root, INITIAL_X, INITIAL_Y, DISPLAY_WIDTH, DISPLAY_HEIGHT, SPRITE_DASH_WIDTH, SPRITE_DASH_HEIGHT, SPRITE_OFFSET_X, SPRITE_OFFSET_Y, ATTITUDE, MAX_INDEX_DASH, DURATION_DASH, SPRITE_SHEET_PATH_DASH);
+
+        idleThing.setHitboxSize(HITBOX_WIDTH, HITBOX_HEIGHT);
+        runThing.setHitboxSize(HITBOX_WIDTH, HITBOX_HEIGHT);
+        jumpThing.setHitboxSize(HITBOX_WIDTH, HITBOX_HEIGHT);
+        dashThing.setHitboxSize(HITBOX_WIDTH, HITBOX_HEIGHT);
+
+        idleThing.setVisible(false, false, false);
+        runThing.setVisible(true, true, true);
+        jumpThing.setVisible(false, false, false);
+        dashThing.setVisible(false, false, false);
+        currentThing = runThing;
+
 
         // Set Game Attributes
         this.camera = camera;
@@ -88,6 +117,82 @@ public class Player extends MovingThing {
     }
 
 
+    public void setThing(MovingThing thing) {
+        thing.setPosition(getX(), getY());
+        thing.setSpeed(getSpeedX(), getSpeedY());
+        thing.setDirection(getDirectionX(), getDirectionY());
+        thing.setVisible(true, true, true);
+        currentThing.setVisible(false, false, false);
+        currentThing = thing;
+    }
+
+    public double getX() {
+        return currentThing.getX();
+    }
+
+    public double getY() {
+        return currentThing.getY();
+    }
+
+    public double getHitboxX() {
+        return currentThing.getHitboxX();
+    }
+
+    public double getHitboxY() {
+        return currentThing.getHitboxY();
+    }
+
+    public double getHitboxWidth() {
+        return currentThing.getHitboxWidth();
+    }
+
+    public double getHitboxHeight() {
+        return currentThing.getHitboxHeight();
+    }
+
+    public double getDirectionX() {
+        return currentThing.getDirectionX();
+    }
+
+    public double getDirectionY() {
+        return currentThing.getDirectionY();
+    }
+
+    public double getSpeedX() {
+        return currentThing.getSpeedX();
+    }
+
+    public double getSpeedY() {
+        return currentThing.getSpeedY();
+    }
+
+    public void setX(double x) {
+        currentThing.setX(x);
+    }
+
+    public void setY(double y) {
+        currentThing.setY(y);
+    }
+
+    public void setDirectionX(double directionX) {
+        currentThing.setDirectionX(directionX);
+    }
+
+    public void setDirectionY(double directionY) {
+        currentThing.setDirectionY(directionY);
+    }
+
+    public void setSpeedX(double speedX) {
+        currentThing.setSpeedX(speedX);
+    }
+
+    public void setSpeedY(double speedY) {
+        currentThing.setSpeedY(speedY);
+    }
+
+    public void setSpeed(double speedX, double speedY) {
+        currentThing.setSpeed(speedX, speedY);
+    }
 
     // -------------------- Horizontal Movement Logic -------------------- //
     /**
@@ -106,9 +211,8 @@ public class Player extends MovingThing {
             else if (currentSpeedX < holdRunMax) {
                 setSpeedX(getSpeedX() + holdRunAcceleration * getDirectionX() * deltaTime);
             }
-            // Set speed to holdRunMax if the current speed is at its maximum
             else {
-                setSpeedX(holdRunMax * getDirectionX());
+                setSpeedX(getSpeedX() - runDeceleration * getDirectionX() * deltaTime);
             }
         }
 
@@ -206,9 +310,21 @@ public class Player extends MovingThing {
         if (canDash && (getDirectionX() != 0 || getDirectionY() != 0)) {
             canDash = false;
             isDashing = true;
+            isJumping = true;
             dashTimer = DashTime;
-            dashSpeedX = DashSpeed * getDirectionX();
-            dashSpeedY = DashSpeed * getDirectionY();
+            setThing(dashThing);
+
+            // Calculate the magnitude of the direction vector
+            double dirMagnitude = Math.sqrt(getDirectionX() * getDirectionX() + getDirectionY() * getDirectionY());
+
+            // Normalize the direction vector
+            double normalizedDirX = getDirectionX() / dirMagnitude;
+            double normalizedDirY = getDirectionY() / dirMagnitude;
+
+            // Calculate the components of the dash speed vector using normalized direction
+            double dashSpeedX = DashSpeed * normalizedDirX;
+            double dashSpeedY = DashSpeed * normalizedDirY;
+
             setSpeed(dashSpeedX, dashSpeedY);
         }
     }
@@ -241,8 +357,9 @@ public class Player extends MovingThing {
      */
     private void endDash() {
         isDashing = false;
+        setThing(runThing);
         dashCooldownTimer = DashCooldown;
-        setSpeed(dashSpeedX * EndDashUpMult, dashSpeedY * EndDashUpMult);
+        setSpeed(dashSpeedX * EndDashMult, dashSpeedY * EndDashMult);
     }
 
 
@@ -357,10 +474,9 @@ public class Player extends MovingThing {
      *
      * @param deltaTime The time elapsed since the last update.
      */
-    @Override
     public void update(double deltaTime) {
         // Call the parent class's update method
-        super.update(deltaTime);
+        currentThing.update(deltaTime);
         this.deltaTime = deltaTime;
 
         // Execute movement logic only if not currently dashing
@@ -382,9 +498,8 @@ public class Player extends MovingThing {
     /**
      * Draws the player and any associated visual elements.
      */
-    @Override
     public void draw() {
         // Call the parent class's draw method
-        super.draw();
+        currentThing.draw();
     }
 }

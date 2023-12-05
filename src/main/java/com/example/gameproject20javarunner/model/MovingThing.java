@@ -9,7 +9,7 @@ import javafx.scene.layout.Pane;
  * A class representing a moving animated element in the game.
  * Extends the abstract class AnimatedThing.
  */
-public abstract class MovingThing extends AnimatedThing {
+public class MovingThing extends AnimatedThing {
     // Movement Attributes
     private double speedX = 0;
     private double speedY = 0;

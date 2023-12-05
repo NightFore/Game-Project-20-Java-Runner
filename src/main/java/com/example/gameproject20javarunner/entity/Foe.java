@@ -17,9 +17,6 @@ public class Foe extends MovingThing {
     private static final int DURATION = 2;
     private static final String SPRITE_SHEET_PATH = "/img/HonkaiStarRail_Herta_Kuru_Kuru_Kururin_498x498.png";
 
-    // Health Attributes
-    private int health = 1;
-
     // Movement Attributes
     private static final double MOVEMENT_SPEED = 100.0;
 
@@ -38,28 +35,5 @@ public class Foe extends MovingThing {
         // Initialize movement attributes
         setSpeedX(MOVEMENT_SPEED);
         setDirectionX(-1);
-    }
-
-    /**
-     * Gets the current health of the Foe.
-     *
-     * @return The health of the Foe.
-     */
-    public int getHealth() {
-        return health;
-    }
-
-    /**
-     * Reduces the health of the Foe by the specified amount.
-     *
-     * @param damage The amount of damage to be taken.
-     */
-    public void takeDamage(int damage) {
-        health -= damage;
-
-        if (health <= 0) {
-            health = 0;
-            removeFromRoot();
-        }
     }
 }
