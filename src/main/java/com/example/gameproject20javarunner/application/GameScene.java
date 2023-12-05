@@ -38,19 +38,20 @@ public class GameScene extends Scene {
 
         tileMap = currentLevel.getTileMap();
 
-        heartManager = new HeartManager(camera, root);
-        foeManager = new FoeManager(camera, root);
-        player = new Player(camera, root, tileMap);
-
-        setOnMouseClicked(event -> handleClickPress(event.getButton()));
-        setOnKeyPressed(event -> handleKeyPress(event.getCode()));
-        setOnKeyReleased(event -> handleKeyRelease(event.getCode()));
-
         // AudioManager (Test)
         audioManager = new AudioManager();
         audioManager.loadAudio("Kuru_Kuru_Kururin", "/music/Raphiiel_Herta_Kuru_Kuru_Kururin.mp3");
         audioManager.loadAudio("Field_of_Memories", "/music/Waterflame_music_Field_of_Memories.mp3");
         audioManager.loadAudio("Glorious_Morning", "/music/Waterflame_music_Glorious_Morning.mp3");
+        audioManager.loadAudio("dash_sound", "/sound/maou_se_magic_water08.mp3");
+
+        heartManager = new HeartManager(camera, root);
+        foeManager = new FoeManager(camera, root);
+        player = new Player(camera, root, tileMap, audioManager);
+
+        setOnMouseClicked(event -> handleClickPress(event.getButton()));
+        setOnKeyPressed(event -> handleKeyPress(event.getCode()));
+        setOnKeyReleased(event -> handleKeyRelease(event.getCode()));
     }
 
     // Method to handle click events

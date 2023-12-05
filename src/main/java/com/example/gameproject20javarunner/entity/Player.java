@@ -2,6 +2,7 @@
 
 package com.example.gameproject20javarunner.entity;
 
+import com.example.gameproject20javarunner.manager.AudioManager;
 import com.example.gameproject20javarunner.map.TileMap;
 import com.example.gameproject20javarunner.model.MovingThing;
 import com.example.gameproject20javarunner.model.Thing;
@@ -18,11 +19,12 @@ public class Player {
     private final Camera camera;
     private final Pane root;
     private final TileMap tileMap;
+    private final AudioManager audioManager;
     private double deltaTime = 0;
 
     // Thing Attributes
     private static final double INITIAL_X = 400;
-    private static final double INITIAL_Y = 1120;
+    private static final double INITIAL_Y = 1200;
     private static final double DISPLAY_WIDTH = 48;
     private static final double DISPLAY_HEIGHT = 48;
     private static final double HITBOX_WIDTH = 24;
@@ -70,8 +72,8 @@ public class Player {
 
     // Fast Fall Attributes
     private boolean isFastFalling = false;
-    private final double fastFallAccel = 300;
-    private final double fastFallMax = 320;
+    private final double fastFallAccel = 2700;
+    private final double fastFallMax = 640;
 
     // Dash Attributes
     private boolean isDashing = false;
@@ -92,7 +94,13 @@ public class Player {
      * @param camera The camera used for positioning.
      * @param root   The root pane where the elements are added.
      */
-    public Player(Camera camera, Pane root, TileMap tileMap) {
+    public Player(Camera camera, Pane root, TileMap tileMap, AudioManager audioManager) {
+        // Set Game Attributes
+        this.camera = camera;
+        this.root = root;
+        this.tileMap = tileMap;
+        this.audioManager = audioManager;
+
         idleThing = new MovingThing(camera, root, INITIAL_X, INITIAL_Y, DISPLAY_WIDTH, DISPLAY_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT, SPRITE_OFFSET_X, SPRITE_OFFSET_Y, ATTITUDE, MAX_INDEX_IDLE, DURATION_IDLE, SPRITE_SHEET_PATH_IDLE);
         runThing = new MovingThing(camera, root, INITIAL_X, INITIAL_Y, DISPLAY_WIDTH, DISPLAY_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT, SPRITE_OFFSET_X, SPRITE_OFFSET_Y, ATTITUDE, MAX_INDEX_RUN, DURATION_RUN, SPRITE_SHEET_PATH_RUN);
         jumpThing = new MovingThing(camera, root, INITIAL_X, INITIAL_Y, DISPLAY_WIDTH, DISPLAY_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT, SPRITE_OFFSET_X, SPRITE_OFFSET_Y, ATTITUDE, MAX_INDEX_JUMP, DURATION_JUMP, SPRITE_SHEET_PATH_JUMP);
@@ -103,17 +111,11 @@ public class Player {
         jumpThing.setHitboxSize(HITBOX_WIDTH, HITBOX_HEIGHT);
         dashThing.setHitboxSize(HITBOX_WIDTH, HITBOX_HEIGHT);
 
-        idleThing.setVisible(false, false, false);
         runThing.setVisible(true, true, true);
+        idleThing.setVisible(false, false, false);
         jumpThing.setVisible(false, false, false);
         dashThing.setVisible(false, false, false);
         currentThing = runThing;
-
-
-        // Set Game Attributes
-        this.camera = camera;
-        this.root = root;
-        this.tileMap = tileMap;
     }
 
 
@@ -319,6 +321,9 @@ public class Player {
             isJumping = true;
             dashTimer = DashTime;
             setThing(dashThing);
+
+            // Play a dash sound effect
+            audioManager.playSound("dash_sound");
 
             // Calculate the magnitude of the direction vector
             double dirMagnitude = Math.sqrt(getDirectionX() * getDirectionX() + getDirectionY() * getDirectionY());

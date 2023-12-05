@@ -4,6 +4,8 @@ package com.example.gameproject20javarunner.manager;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -84,6 +86,7 @@ public class AudioManager {
     public void playSound(String audioName) {
         validateAudioResource(audioName);
         MediaPlayer mediaPlayer = resources.get(audioName);
+        mediaPlayer.seek(Duration.seconds(0));
         playMedia(mediaPlayer, 1);
     }
 

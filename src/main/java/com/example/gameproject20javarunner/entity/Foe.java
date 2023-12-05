@@ -18,7 +18,7 @@ public class Foe extends MovingThing {
     private static final String SPRITE_SHEET_PATH = "/img/HonkaiStarRail_Herta_Kuru_Kuru_Kururin_498x498.png";
 
     // Movement Attributes
-    private static final double MOVEMENT_SPEED = 150.0;
+    private static final double MOVEMENT_SPEED = 200.0;
 
     /**
      * Constructs a Foe with the specified camera, root pane, initial position, and health.
