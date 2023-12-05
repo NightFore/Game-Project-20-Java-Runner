@@ -93,7 +93,7 @@ public class GameScene extends Scene {
     // Method to update the scene elements
     public void update(double deltaTime) {
         // Move the camera using physics equations
-        camera.update(deltaTime, player.getX());
+        camera.update(deltaTime, player.getX(), player.getY());
 
         backgroundManager.update();
         player.update(deltaTime);

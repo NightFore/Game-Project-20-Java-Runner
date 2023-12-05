@@ -7,12 +7,12 @@ public class Camera {
     private double x;
     private double y;
     private double vx;
+    private double vy;
 
     // Constants
     private final double m; // Mass constant
     private final double k; // Spring constant
     private final double f; // Damping constant
-    private static final double INITIAL_VELOCITY_X = 0;
 
     // Constructor
     public Camera(double x, double y, double m, double k, double f) {
@@ -21,7 +21,8 @@ public class Camera {
         this.m = m;
         this.k = k;
         this.f = f;
-        this.vx = INITIAL_VELOCITY_X;
+        this.vx = 0;
+        this.vy = 0;
     }
 
     // Getter for the x position
@@ -34,13 +35,27 @@ public class Camera {
         return y;
     }
 
-    // Update method to apply physics equations
-    public void update(double deltaTime, double targetX) {
-        double springForce = k * (targetX - x - 100);
+    private void followX(double deltaTime, double targetX) {
+        double springForce = k * (targetX - x - 400);
         double dampingForce = f * vx;
         double totalForce = springForce - dampingForce;
         double ax = totalForce / m;
         vx += ax * deltaTime;
         x += vx * deltaTime;
+    }
+
+    private void followY(double deltaTime, double targetY) {
+        double springForce = k * (targetY - y - 400);
+        double dampingForce = f * vy;
+        double totalForce = springForce - dampingForce;
+        double ay = totalForce / m;
+        vy += ay * deltaTime;
+        y += vy * deltaTime;
+    }
+
+    // Update method to apply physics equations
+    public void update(double deltaTime, double targetX, double targetY) {
+        followX(deltaTime, targetX);
+        followY(deltaTime, targetY);
     }
 }

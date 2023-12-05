@@ -7,6 +7,7 @@ import com.example.gameproject20javarunner.entity.Foe;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -17,12 +18,12 @@ public class FoeManager {
     private final List<Foe> foes;
 
     // Constants (Foe)
-    private static final int MIN_FOES = 5;
-    private static final int MAX_FOES = 10;
-    private static final float FOE_MIN_X = 800;
-    private static final float FOE_MAX_X = 1600;
-    private static final float FOE_MIN_Y = 350;
-    private static final float FOE_MAX_Y = 450;
+    private static final int MIN_FOES = 15;
+    private static final int MAX_FOES = 15;
+    private static final float FOE_MIN_X = 1200;
+    private static final float FOE_MAX_X = 3200;
+    private static final float FOE_MIN_Y = -800;
+    private static final float FOE_MAX_Y = 600;
 
     public FoeManager(Camera camera, Pane root) {
         this.camera = camera;
@@ -49,9 +50,22 @@ public class FoeManager {
     }
 
     public void update(double deltaTime) {
-        for (Foe foe : foes) {
+        Iterator<Foe> iterator = foes.iterator();
+
+        while (iterator.hasNext()) {
+            Foe foe = iterator.next();
             foe.update(deltaTime);
             foe.move(deltaTime);
+
+            // Remove foe
+            if (foe.getX() < -800) {
+                iterator.remove();
+                foe.removeFromRoot();
+            }
+        }
+
+        if (foes.size() < MIN_FOES) {
+            addRandomFoes();
         }
     }
 

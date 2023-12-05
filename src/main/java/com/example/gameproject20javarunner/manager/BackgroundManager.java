@@ -112,7 +112,6 @@ public class BackgroundManager {
     public void draw() {
         for (StaticThing background : List.of(backgroundLeft, backgroundRight)) {
             background.getImageView().setX(background.getX() - camera.getX());
-            background.getImageView().setY(camera.getY());
         }
     }
 }

@@ -6,8 +6,8 @@ import javafx.scene.layout.Pane;
 
 public class Foe extends MovingThing {
     // MovingThing Attributes
-    private static final double DISPLAY_WIDTH = 120;
-    private static final double DISPLAY_HEIGHT = 120;
+    private static final double DISPLAY_WIDTH = 64;
+    private static final double DISPLAY_HEIGHT = 64;
     private static final double FRAME_WIDTH = 498;
     private static final double FRAME_HEIGHT = 498;
     private static final double FRAME_OFFSET_X = 0;
@@ -18,7 +18,7 @@ public class Foe extends MovingThing {
     private static final String SPRITE_SHEET_PATH = "/img/HonkaiStarRail_Herta_Kuru_Kuru_Kururin_498x498.png";
 
     // Movement Attributes
-    private static final double MOVEMENT_SPEED = 100.0;
+    private static final double MOVEMENT_SPEED = 150.0;
 
     /**
      * Constructs a Foe with the specified camera, root pane, initial position, and health.

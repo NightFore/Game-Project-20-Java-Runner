@@ -21,12 +21,12 @@ public class Player {
     private double deltaTime = 0;
 
     // Thing Attributes
-    private static final double INITIAL_X = 0;
-    private static final double INITIAL_Y = 0;
+    private static final double INITIAL_X = 400;
+    private static final double INITIAL_Y = 1120;
     private static final double DISPLAY_WIDTH = 48;
     private static final double DISPLAY_HEIGHT = 48;
-    private static final double HITBOX_WIDTH = 16;
-    private static final double HITBOX_HEIGHT = 16;
+    private static final double HITBOX_WIDTH = 24;
+    private static final double HITBOX_HEIGHT = 24;
     private static final double SPRITE_WIDTH = 48;
     private static final double SPRITE_HEIGHT = 48;
     private static final double SPRITE_OFFSET_X = 0;
@@ -203,16 +203,22 @@ public class Player {
 
         // Check if the player is trying to move horizontally
         if (getDirectionX() != 0) {
+            // Check if the player is changing direction
+            if (getDirectionX() != (int) Math.signum(getSpeedX())) {
+                // Apply acceleration and deceleration to change direction
+                setSpeedX(getSpeedX() + (runAcceleleration - runDeceleration) * getDirectionX() * deltaTime);
+            }
             // Accelerate if the current speed is less than runMax
-            if (currentSpeedX < runMax) {
+            else if (currentSpeedX < runMax) {
                 setSpeedX(getSpeedX() + runAcceleleration * getDirectionX() * deltaTime);
             }
             // Accelerate (Hold) if the current speed is less than holdRunMax
             else if (currentSpeedX < holdRunMax) {
                 setSpeedX(getSpeedX() + holdRunAcceleration * getDirectionX() * deltaTime);
             }
-            else {
-                setSpeedX(getSpeedX() - runDeceleration * getDirectionX() * deltaTime);
+            // Maintain constant speed if the current speed is greater than holdRunMax
+            else if (getDirectionX() == (int) Math.signum(getSpeedX())){
+                setSpeedX(holdRunMax * getDirectionX());
             }
         }
 
@@ -368,9 +374,9 @@ public class Player {
     /**
      * Checks for potential horizontal collision with tiles using future position.
      *
-     * @return true if collision, false otherwise.
+     * @return The tile with which collision occurs, or null if no collision.
      */
-    public boolean checkCollisionX() {
+    public Thing checkCollisionX() {
         // Calculate future X position and hitbox
         double futureX = getHitboxX() + getSpeedX() * deltaTime;
         Rectangle futureHitboxX = new Rectangle(futureX, getY(), getHitboxWidth(), getHitboxHeight());
@@ -384,26 +390,26 @@ public class Player {
         int tileIndexYMax = (int) ((getHitboxHeight() + getHitboxY()) / tileMap.getDisplayTileHeight());
 
         // Check for collision with potential tiles along the Y-axis
-        boolean collision = false;
+        Thing collidedTileX = null;
         for (int tileIndexY = tileIndexYMin; tileIndexY <= tileIndexYMax; tileIndexY++) {
             Thing tile = tileMap.getTile(tileIndexY, tileIndexX);
             if (tile != null) {
-                collision = futureHitboxX.getBoundsInLocal().intersects(tile.getHitboxRectangle().getBoundsInLocal());
-                if (collision) {
+                if (futureHitboxX.getBoundsInLocal().intersects(tile.getHitboxRectangle().getBoundsInLocal())) {
+                    collidedTileX = tile;
                     break;
                 }
             }
         }
 
-        return collision;
+        return collidedTileX;
     }
 
     /**
      * Checks for potential vertical collision with tiles using future position.
      *
-     * @return true if collision, false otherwise.
+     * @return The tile with which collision occurs, or null if no collision.
      */
-    public boolean checkCollisionY() {
+    public Thing checkCollisionY() {
         // Calculate future Y position and hitbox
         double futureY = getHitboxY() + getSpeedY() * deltaTime;
         Rectangle futureHitboxY = new Rectangle(getX(), futureY, getHitboxWidth(), getHitboxHeight());
@@ -417,18 +423,18 @@ public class Player {
         int tileIndexXMax = (int) ((getHitboxWidth() + getHitboxX()) / tileMap.getDisplayTileWidth());
 
         // Check for collision with potential tiles along the X-axis
-        boolean collision = false;
+        Thing collidedTileY = null;
         for (int tileIndexX = tileIndexXMin; tileIndexX <= tileIndexXMax; tileIndexX++) {
             Thing tile = tileMap.getTile(tileIndexY, tileIndexX);
             if (tile != null) {
-                collision = futureHitboxY.getBoundsInLocal().intersects(tile.getHitboxRectangle().getBoundsInLocal());
-                if (collision) {
+                if (futureHitboxY.getBoundsInLocal().intersects(tile.getHitboxRectangle().getBoundsInLocal())) {
+                    collidedTileY = tile;
                     break;
                 }
             }
         }
 
-        return collision;
+        return collidedTileY;
     }
 
 
@@ -438,14 +444,35 @@ public class Player {
      * Applies the player's movement based on current speed, collisions, and elapsed time.
      */
     private void applyMovement() {
+
         // Check for horizontal collision
-        if (checkCollisionX()) {
+        Thing collidedTileX = checkCollisionX();
+        if (collidedTileX != null) {
+            // Adjust X position
+            int adjustedX;
+            if (Math.signum(getSpeedX()) == 1) {
+                adjustedX = (int) (getX() + collidedTileX.getHitboxX() - getHitboxX() - getHitboxWidth());
+            } else {
+                adjustedX = (int) (getX() + getHitboxX() - collidedTileX.getX() - collidedTileX.getHitboxWidth());
+            }
+            setX(adjustedX);
+
             // Stop horizontal movement
             setSpeedX(0);
         }
 
         // Check for vertical collisions
-        if (checkCollisionY()) {
+        Thing collidedTileY = checkCollisionY();
+        if (collidedTileY != null) {
+            // Adjust Y position
+            int adjustedY;
+            if (Math.signum(getSpeedY()) == 1) {
+                adjustedY = (int) (getY() + collidedTileY.getHitboxY() - getHitboxY() - getHitboxHeight());
+            } else {
+                adjustedY = (int) (getY() + getHitboxY() - collidedTileY.getY() - collidedTileY.getHitboxHeight());
+            }
+            setY(adjustedY);
+
             // Reset ground flag if descending (collision with the ground)
             if (getSpeedY() > 0) {
                 isOnGround = true;
