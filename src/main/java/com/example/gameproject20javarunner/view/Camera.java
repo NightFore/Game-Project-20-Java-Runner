@@ -35,6 +35,22 @@ public class Camera {
         return y;
     }
 
+    // Setter for the x position
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    // Setter for the y position
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    // Setter for the position
+    public void setPosition(double x, double y) {
+        setX(x);
+        setY(y);
+    }
+
     private void followX(double deltaTime, double targetX) {
         double springForce = k * (targetX - x - 400);
         double dampingForce = f * vx;

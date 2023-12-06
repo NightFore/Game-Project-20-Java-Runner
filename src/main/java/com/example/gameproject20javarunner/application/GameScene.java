@@ -49,6 +49,8 @@ public class GameScene extends Scene {
         foeManager = new FoeManager(camera, root);
         player = new Player(camera, root, tileMap, audioManager);
 
+        camera.setPosition(player.getX(), player.getY());
+
         setOnMouseClicked(event -> handleClickPress(event.getButton()));
         setOnKeyPressed(event -> handleKeyPress(event.getCode()));
         setOnKeyReleased(event -> handleKeyRelease(event.getCode()));

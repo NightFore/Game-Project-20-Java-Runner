@@ -13,8 +13,8 @@ public class HelloApplication extends Application {
     private static final String PROJECT_TITLE = "[Game Project 20] Java Runner";
     private static final int SCENE_WIDTH = 800;
     private static final int SCENE_HEIGHT = 640;
-    private static final int CAMERA_INITIAL_X = 400;
-    private static final int CAMERA_INITIAL_Y = 1200;
+    private static final int CAMERA_INITIAL_X = 0;
+    private static final int CAMERA_INITIAL_Y = 0;
     private static final double CAMERA_M = 1;
     private static final double CAMERA_K = 35;
     private static final double CAMERA_F = 10;
