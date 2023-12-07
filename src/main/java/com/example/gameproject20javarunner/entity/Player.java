@@ -24,7 +24,7 @@ public class Player {
 
     // Thing Attributes
     private static final double INITIAL_X = 400;
-    private static final double INITIAL_Y = 1200;
+    private static final double INITIAL_Y = 2160;
     private static final double DISPLAY_WIDTH = 48;
     private static final double DISPLAY_HEIGHT = 48;
     private static final double HITBOX_WIDTH = 24;
