@@ -8,6 +8,7 @@ import javafx.util.Duration;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -44,23 +45,29 @@ public class AudioManager {
      *
      * @param audioName The name to associate with the audio resource.
      * @param filePath  The file path to the audio resource.
+     * @throws IllegalArgumentException If an error occurs while loading the audio file.
      */
     public void loadAudio(String audioName, String filePath) {
-        // Ensure audioName and filePath are not null
-        if (audioName == null || filePath == null) {
-            throw new IllegalArgumentException("Audio name and file path cannot be null.");
-        }
-
         try {
-            // Convert the input stream URL to URI
-            URI uri = Objects.requireNonNull(getClass().getResource(filePath)).toURI();
+            // Get the resource URL for the given file path
+            URL resourceUrl = Objects.requireNonNull(getClass().getResource(filePath));
 
-            // Use Media and MediaPlayer to load and store the audio file
+            // Convert the resource URL to URI
+            URI uri = resourceUrl.toURI();
+
+            // Create Media from the URI
             Media media = new Media(uri.toString());
+
+            // Create MediaPlayer from the Media
             MediaPlayer mediaPlayer = new MediaPlayer(media);
+
+            // Store the MediaPlayer in the resources map
             resources.put(audioName, mediaPlayer);
+
         } catch (URISyntaxException | NullPointerException e) {
-            throw new IllegalArgumentException("Error loading audio file: " + filePath, e);
+            // Handle URI syntax or null pointer exceptions
+            String errorMessage = "Error loading audio file: " + filePath;
+            throw new IllegalArgumentException(errorMessage, e);
         }
     }
 
@@ -105,13 +112,18 @@ public class AudioManager {
         setSoundVolume(soundVolume + increment);
     }
 
+    /**
+     * Updates the volume of a loaded audio resource in the AudioManager.
+     *
+     * @param audioName The name of the audio resource to update.
+     * @param volume    The new volume level (0.0 to 1.0).
+     */
     private void updateAudioVolume(String audioName, double volume) {
         MediaPlayer mediaPlayer = resources.get(audioName);
         if (mediaPlayer != null) {
             mediaPlayer.setVolume(volume);
         }
     }
-
 
 
 
@@ -164,7 +176,8 @@ public class AudioManager {
      * Unpauses the currently paused background music.
      */
     public void unpauseMusic() {
-        playMedia(resources.get(currentMusicName), loop, musicVolume);
+        MediaPlayer mediaPlayer = resources.get(currentMusicName);
+        playMedia(mediaPlayer, loop, musicVolume);
     }
 
     /**
@@ -174,8 +187,10 @@ public class AudioManager {
         MediaPlayer mediaPlayer = resources.get(currentMusicName);
         if (mediaPlayer != null) {
             if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+                // If music is currently playing, pause it
                 pauseMedia(mediaPlayer);
             } else {
+                // If music is paused or stopped, play it
                 playMedia(mediaPlayer, loop, musicVolume);
             }
         }
@@ -193,8 +208,8 @@ public class AudioManager {
      */
     private void playMedia(MediaPlayer mediaPlayer, int loopCount, double volume) {
         if (mediaPlayer != null) {
-            mediaPlayer.setVolume(volume);
             mediaPlayer.setCycleCount(loopCount);
+            mediaPlayer.setVolume(volume);
             mediaPlayer.play();
         }
     }
